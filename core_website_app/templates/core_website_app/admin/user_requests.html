@@ -1,0 +1,71 @@
+{% extends "mdcs/extra/one_column.html" %}
+{% load staticfiles %}
+
+{% comment %}
+<!--
+################################################################################
+#
+# File Name: user_requests.html
+# Application: templates/admin
+# Description: 
+#
+# Author: Sharief Youssef
+#         sharief.youssef@nist.gov
+#
+#		  Guillaume SOUSA AMARAL
+#		  guillaume.sousa@nist.gov
+#
+# Sponsor: National Institute of Standards and Technology (NIST)
+#
+################################################################################
+-->
+{% endcomment %}
+
+{% block title %}<h1>Account Requests</h1>{% endblock %}
+
+{% block menu %}{% include 'admin/menu/main.html' with active_tab='tab2' %}{% endblock %}
+{% block submenu %}{% include 'admin/menu/submenu/user.html' with active_tab='tab2' %}{% endblock %}
+
+{% block content %}
+    {% if requests %}
+        <table class="data-table">
+            <tr>
+                <th>User</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email Address</th>
+                <th>Actions</th>
+            </tr>
+
+            {% for request in requests %}
+                {% cycle 'even' '' as rowcolors silent %}
+                <tr class="{{ rowcolors }}">
+                    <td>{{ request.username }}</td>
+                    <td>{{ request.first_name }}</td>
+                    <td>{{ request.last_name }}</td>
+                    <td>{{ request.email }}</td>
+
+                    <td>
+                        <div class="icon legend long accept request" requestid="{{ request.id }}">Accept</div>
+                        <div class="icon legend long remove request" requestid="{{ request.id }}">Deny</div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        No account requests pending at the moment.
+    {% endif %}
+{% endblock %}
+
+{% block popups %}
+{% include "core_website_app/admin/modals/user_requests/accept.html" %}
+{% include "core_website_app/admin/modals/user_requests/deny.html" %}
+{% include "core_website_app/admin/modals/user_requests/error.html" %}
+{% endblock %}
+
+{% block extrajs %}
+<script src="{% static 'core_website_app/admin/js/user_requests.js' %}"></script>
+<script>
+	loadUserRequestsHandler();
+</script>
+{% endblock %}

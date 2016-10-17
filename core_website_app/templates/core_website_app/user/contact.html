@@ -1,0 +1,44 @@
+{% extends "mdcs/extra/one_column.html" %}
+{% load staticfiles %}
+
+{% comment %}
+<!--
+################################################################################
+#
+# File Name: contact.html
+# Application: templates
+# Description: 
+#
+# Author: Sharief Youssef
+#         sharief.youssef@nist.gov
+#
+#		  Guillaume SOUSA AMARAL
+#		  guillaume.sousa@nist.gov
+#
+# Sponsor: National Institute of Standards and Technology
+#
+################################################################################
+-->
+{% endcomment %}
+
+{% block title %}<h1>Contact</h1>{% endblock %}
+{% block menu %}{% include 'mdcs/menus/main.html' with active_tab='contact' %}{% endblock %}
+
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static 'core_website_app/admin/css/style.css' %}" />
+{% endblock %}
+
+{% block content %}
+<br/>
+<div>
+<form action="/contact" method="post">
+ 	{% csrf_token %}
+    {{ form }}
+    <br/>
+    <div id="contact_error" style="font-weight: bold;">
+    {{action_result}}
+    </div>
+    <input type="submit" class="btn" value="Send Message"/>
+</form>
+</div>
+{% endblock %}

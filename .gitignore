@@ -238,3 +238,5 @@ radon.xml
 #virtual env
 venv/
 
+#packaging
+core_website_app.egg-info/
