@@ -1,10 +1,11 @@
 """ tests
 """
+
+from unittest.case import TestCase
 from ..api import *
 from ..models import *
 from mock import Mock, patch
-from django.test import TestCase
-from mgi.exceptions import MDCSError
+from core_main_app.commons.exceptions import MDCSError
 
 
 class TestsContactMessageGet(TestCase):

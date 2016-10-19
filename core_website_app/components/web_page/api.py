@@ -15,7 +15,7 @@
 ################################################################################
 """
 from mongoengine.errors import DoesNotExist
-from mgi.exceptions import MDCSError
+from core_main_app.commons.exceptions import MDCSError
 from .models import WebPage
 from .enums import WEB_PAGE_TYPES
 

@@ -1,8 +1,9 @@
 """ The API contains the available function to access, create, edit and delete the account requests
 """
-from mgi.common import send_mail as common_send_mail
-from mgi.exceptions import MDCSError
-from mgi.settings import MDCS_URI
+
+from core_main_app.utils.notifications.mail import send_mail as common_send_mail
+from core_main_app.commons.exceptions import MDCSError
+from core_website_app.settings import MDCS_URI
 from .models import Request
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
@@ -97,7 +98,8 @@ def request_accept(request_id, send_mail=True):
                        'firstname': user_request.first_name,
                        'URI': MDCS_URI}
 
-            common_send_mail(subject='Account approved', pathToTemplate='admin/email/request_account_approved.html',
+            common_send_mail(subject='Account approved',
+                             path_to_template='core_website_app/admin/email/request_account_approved.html',
                              context=context, recipient_list=[user_request.email])
     finally:
         # delete the user request

@@ -15,8 +15,7 @@
 ################################################################################
 """
 
-# Models
-from mgi.exceptions import MDCSError
+from core_main_app.commons.exceptions import MDCSError
 from .models import Message
 
 # import logging

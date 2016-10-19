@@ -3,10 +3,10 @@
 from ..api import *
 from ..models import *
 from mock import Mock, patch
-from django.test import TestCase
+from unittest.case import TestCase
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from mgi.exceptions import MDCSError
+from core_main_app.commons.exceptions import MDCSError
 
 
 class TestsAccountRequestGet(TestCase):
