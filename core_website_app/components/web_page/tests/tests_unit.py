@@ -86,7 +86,8 @@ class TestsWebPageApiPost(TestCase):
         self.assertEquals(content, result)
 
     @patch('core_website_app.components.web_page.models.WebPage.get_by_type')
-    def test_web_page_post_type_is_not_in_database(self, mock_get_web_page_by_type):
+    @patch('core_website_app.components.web_page.models.WebPage.save')
+    def test_web_page_post_type_is_not_in_database(self, mock_get_web_page_by_type, mock_save):
         # Arrange
         type = WEB_PAGE_TYPES["help"]
         content = "content"
