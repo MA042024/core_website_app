@@ -5,10 +5,6 @@
 # Application: api
 # Purpose:
 #
-# Author: Guillaume SOUSA AMARAL
-#         guillaume.sousa@nist.gov
-#
-#
 #
 # Sponsor: National Institute of Standards and Technology (NIST)
 #
@@ -16,11 +12,10 @@
 """
 
 # API
+from core_main_app.utils.permissions import api_staff_member_required
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
-# Permissions
-from mgi.permissions import api_staff_member_required
 # Models
 from core_website_app.components.privacy_policy.api import \
     privacy_policy_get as api_privacy_policy_get, \
@@ -43,7 +38,7 @@ def privacy_policy_get():
     if serializer.is_valid():
         return Response(serializer.data, status=status.HTTP_200_OK)
     else:
-        content = {'message': 'Serialization fail'}
+        content = {'message': 'Serialization failed'}
         return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -66,7 +61,7 @@ def privacy_policy(request):
             if serializer.is_valid():
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
-                content = {'message': 'Serialization fail'}
+                content = {'message': 'Serialization failed'}
                 return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception as api_exception:

@@ -1,10 +1,11 @@
+core-main-app==1.0.0-alpha1
 Django==1.8.14
-mongoengine==0.10.6
 djangorestframework==2.3.13
 django-oauth-toolkit==0.8.0
 django-rest-framework-mongoengine==1.3
 django-rest-swagger==0.1.14
-requests==2.3.0
 django-password-policies==0.4.1
+django-simple-menu==1.2.1
 mock==2.0.0
-core-main-app==1.0.0-alpha1
+mongoengine==0.10.6
+requests==2.3.0

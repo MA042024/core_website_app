@@ -1,27 +1,19 @@
 """ rest views for the help page
-################################################################################
-#
-# File Name: rest.py
+
+# File Name: views.py
 # Application: core_website_app
 # Components: help
 #
-# Author: Guillaume SOUSA AMARAL
-#         guillaume.sousa@nist.gov
-#
-#
-#
 # Sponsor: National Institute of Standards and Technology (NIST)
-#
-################################################################################
 """
+from core_main_app.utils.permissions import api_staff_member_required
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
-from mgi.permissions import api_staff_member_required
 from ..serializers import WebPageSerializer
 from core_website_app.components.help.api import help_get as api_help_get, help_post as api_help_post
 
-import logging
+# import logging
 # logger = logging.getLogger("core_website_app.rest.help")
 
 
@@ -36,7 +28,7 @@ def help_get():
     if serializer.is_valid():
         return Response(serializer.data, status=status.HTTP_200_OK)
     else:
-        content = {'message': 'Serialization fail'}
+        content = {'message': 'Serialization failed'}
         return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -59,7 +51,7 @@ def help_post(request):
             if serializer.is_valid():
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
-                content = {'message': 'Serialization fail'}
+                content = {'message': 'Serialization failed'}
                 return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception as api_exception:

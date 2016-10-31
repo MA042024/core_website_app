@@ -1,7 +1,9 @@
+""" Ajax views for the admin part
+"""
 from django.http import HttpResponse
 import json
 
-from mgi.exceptions import MDCSError
+from core_main_app.commons.exceptions import MDCSError
 from core_website_app.components.account_request.api import request_accept, request_deny
 from core_website_app.components.contact_message.api import message_delete
 from django.utils.importlib import import_module
@@ -18,7 +20,6 @@ def accept_request(request):
     :return:
     """
     try:
-        # request.DATA = request.POST
         request_id = request.POST['requestid']
         user = request_accept(request_id)
 

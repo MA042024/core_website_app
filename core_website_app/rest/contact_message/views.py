@@ -1,6 +1,5 @@
 """ rest views for the contact message API
-################################################################################
-#
+
 # File Name: rest.py
 # Application: core_website_app
 # Component: contact_message
@@ -8,19 +7,15 @@
 # Author: Guillaume SOUSA AMARAL
 #         guillaume.sousa@nist.gov
 #
-#
-#
 # Sponsor: National Institute of Standards and Technology (NIST)
-#
-################################################################################
 """
 
 # API
+from core_main_app.utils.permissions import api_staff_member_required
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
 # Permissions
-from mgi.permissions import api_staff_member_required
 # Models
 from core_website_app.components.contact_message.api import \
     message_list as api_message_list, \
@@ -30,7 +25,7 @@ from core_website_app.components.contact_message.api import \
 # Serializers
 from ..serializers import MessageSerializer
 
-import logging
+# import logging
 # logger = logging.getLogger("core_website_app.rest.contact_message")
 
 
@@ -48,7 +43,7 @@ def message_list(request):
     if serializer.is_valid():
         return Response(serializer.data, status=status.HTTP_200_OK)
     else:
-        content = {'message': 'Serialization fail'}
+        content = {'message': 'Serialization failed'}
         return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -70,7 +65,7 @@ def message_get(request):
             if serializer.is_valid():
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
-                content = {'message': 'Serialization fail'}
+                content = {'message': 'Serialization failed'}
                 return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception as api_exception:
@@ -97,9 +92,8 @@ def message_post(request):
 
         try:
             # Create the message
-            new_message = api_message_post(name=message_name,
-                                  email=message_email,
-                                  content=message_content)
+            new_message = api_message_post(message_name=message_name, message_email=message_email,
+                                           message_content=message_content)
 
             # Serialize the message
             serializer = MessageSerializer(new_message)
@@ -107,7 +101,7 @@ def message_post(request):
             if serializer.is_valid():
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
-                content = {'message': 'Serialization fail'}
+                content = {'message': 'Serialization failed'}
                 return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception as api_exception:
@@ -154,5 +148,5 @@ def message_delete(request):
 
     except Exception as e:
         content = {'message': 'Expected parameters not provided.'}
-        logger.exception(e.message)
+        # logger.exception(e.message)
         return Response(content, status=status.HTTP_400_BAD_REQUEST)
