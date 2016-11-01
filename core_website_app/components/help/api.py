@@ -1,18 +1,5 @@
-""" help page api
-################################################################################
-#
-# File Name: api.py
-# Application: core_website_app
-# Components: help
-#
-# Author: Guillaume SOUSA AMARAL
-#         guillaume.sousa@nist.gov
-#
-#
-#
-# Sponsor: National Institute of Standards and Technology (NIST)
-#
-################################################################################
+"""
+    help page api
 """
 from ..web_page.api import web_page_get, web_page_post
 from ..web_page.enums import WEB_PAGE_TYPES

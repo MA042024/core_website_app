@@ -1,17 +1,5 @@
-""" privacy policy api
-#################################################################################
-# File Name: views.py
-# Application: api
-# Purpose:
-#
-# Author: Guillaume SOUSA AMARAL
-#         guillaume.sousa@nist.gov
-#
-#
-#
-# Sponsor: National Institute of Standards and Technology (NIST)
-#
-################################################################################
+"""
+    privacy policy api
 """
 
 from ..web_page.api import web_page_get, web_page_post

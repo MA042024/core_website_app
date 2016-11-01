@@ -1,4 +1,5 @@
-""" Type of webpages
+"""
+    Type of webpages
 """
 WEB_PAGE_TYPES = {
     "terms_of_use": 0,

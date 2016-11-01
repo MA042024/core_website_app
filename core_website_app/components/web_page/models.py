@@ -1,4 +1,5 @@
-""" web page model
+"""
+    web page model
 """
 from django_mongoengine import fields, Document
 from .enums import WEB_PAGE_TYPES

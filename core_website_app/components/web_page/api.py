@@ -1,18 +1,5 @@
-""" Web page aPi
-################################################################################
-#
-# File Name: api.py
-# Application: core_website_app
-# Components: help
-#
-# Author: Guillaume SOUSA AMARAL
-#         guillaume.sousa@nist.gov
-#
-#
-#
-# Sponsor: National Institute of Standards and Technology (NIST)
-#
-################################################################################
+"""
+    Web page API
 """
 from mongoengine.errors import DoesNotExist
 from core_main_app.commons.exceptions import MDCSError
@@ -22,8 +9,8 @@ from .enums import WEB_PAGE_TYPES
 
 def web_page_get(page_type):
     """
-    Get the content of a given web page
-    :return:
+        Get the content of a given web page
+        :return: web page content
     """
     if page_type not in WEB_PAGE_TYPES.keys():
         return None
@@ -36,9 +23,10 @@ def web_page_get(page_type):
 
 def web_page_post(page_type, page_content):
     """
-    Post the help
-    :param help_content:
-    :return:
+        Post the page content
+        :param page_type: type of the web page (help, policy, terms)
+        :param page_content: content of the web page
+        :return:
     """
     if page_type not in WEB_PAGE_TYPES.values():
         raise MDCSError("Web page type does not exist")

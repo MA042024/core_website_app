@@ -1,9 +1,10 @@
-""" Web page models
+"""
+    Tests of the web page API
 """
 
-from unittest.case import TestCase
 from ..api import *
 from ..models import *
+from unittest.case import TestCase
 from mock import Mock, patch
 from core_main_app.commons.exceptions import MDCSError
 

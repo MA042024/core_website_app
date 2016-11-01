@@ -1,4 +1,5 @@
-""" Account requests model
+"""
+    Account requests model
 """
 from django_mongoengine import fields, Document
 

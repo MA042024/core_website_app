@@ -1,18 +1,5 @@
-""" Contact messages models
-################################################################################
-#
-# File Name: models.py
-# Application: core_website_app
-# Component: contact_message
-#
-# Author: Guillaume SOUSA AMARAL
-#         guillaume.sousa@nist.gov
-#
-#
-#
-# Sponsor: National Institute of Standards and Technology (NIST)
-#
-################################################################################
+"""
+    Contact messages models
 """
 
 from django_mongoengine import fields, Document

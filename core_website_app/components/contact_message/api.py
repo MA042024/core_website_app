@@ -1,18 +1,5 @@
-""" Low level API
-################################################################################
-#
-# File Name: api.py
-# Application: core_website_app
-# Component: contact_message
-#
-# Author: Guillaume SOUSA AMARAL
-#         guillaume.sousa@nist.gov
-#
-#
-#
-# Sponsor: National Institute of Standards and Technology (NIST)
-#
-################################################################################
+"""
+    contact message API
 """
 
 from core_main_app.commons.exceptions import MDCSError
@@ -29,17 +16,17 @@ from .models import Message
 
 def message_list():
     """
-    List all messages
-    :return:
+        List all messages
+        :return:
     """
     return Message.objects.all()
 
 
 def message_get(message_id):
     """
-    Get a message
-    :param message_id:
-    :return:
+        Get a message
+        :param message_id:
+        :return:
     """
     try:
         return Message.get_by_id(message_id)
@@ -50,11 +37,11 @@ def message_get(message_id):
 
 def message_post(message_name, message_email, message_content):
     """
-    Post a message
-    :param message_name:
-    :param message_email:
-    :param message_content:
-    :return: message's pk
+        Post a message
+        :param message_name:
+        :param message_email:
+        :param message_content:
+        :return: message's pk
     """
     message_to_save = Message(name=message_name, email=message_email, content=message_content)
     try:
@@ -68,9 +55,9 @@ def message_post(message_name, message_email, message_content):
 
 def message_delete(message_id):
     """
-    Delete a message
-    :param message_id:
-    :return:
+        Delete a message
+        :param message_id:
+        :return:
     """
     message = message_get(message_id)
     # No exception possible for delete method

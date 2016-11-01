@@ -1,4 +1,5 @@
-""" Tests of the account request object
+"""
+    Tests of the account request API
 """
 from ..api import *
 from ..models import *

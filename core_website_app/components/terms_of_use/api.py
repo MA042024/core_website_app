@@ -1,18 +1,5 @@
-""" terms of use api
-################################################################################
-#
-# File Name: views.py
-# Application: api
-# Purpose:
-#
-# Author: Guillaume SOUSA AMARAL
-#         guillaume.sousa@nist.gov
-#
-#
-#
-# Sponsor: National Institute of Standards and Technology (NIST)
-#
-################################################################################
+"""
+    terms of use api
 """
 from ..web_page.api import web_page_get, web_page_post
 from ..web_page.enums import WEB_PAGE_TYPES

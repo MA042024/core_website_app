@@ -1,4 +1,5 @@
-""" The API contains the available function to access, create, edit and delete the account requests
+"""
+    The API contains the available function to access, create, edit and delete the account requests
 """
 
 from core_main_app.utils.notifications.mail import send_mail as common_send_mail
@@ -10,25 +11,27 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 def request_list():
-    """ List of opened account requests
+    """
+        List of opened account requests
 
-    Returns:
-        list: List of all requests
+        Returns:
+            list: List of all requests
     """
     return Request.objects()
 
 
 def request_get(request_id):
-    """ Get an account request given its primary key
+    """
+        Get an account request given its primary key
 
-    Parameters:
-        request_id (str): Primary key of the request
+        Parameters:
+            request_id (str): Primary key of the request
 
-    Returns:
-        :class:`~models.AccountRequest`: The corresponding request
+        Returns:
+            :class:`~models.AccountRequest`: The corresponding request
 
-    Raises:
-        MDCSError: If no `request_id` does not correspond to any request.
+        Raises:
+            MDCSError: If no `request_id` does not correspond to any request.
     """
     try:
         return Request.get_by_id(request_id)
@@ -37,16 +40,17 @@ def request_get(request_id):
 
 
 def request_post(request_username, request_first_name, request_last_name, request_password, request_email):
-    """ Create or modify a new request
+    """
+        Create or modify a new request
 
-    Parameters:
-        request_username:
-        request_first_name:
-        request_last_name:
-        request_password:
-        request_email:
+        Parameters:
+            request_username:
+            request_first_name:
+            request_last_name:
+            request_password:
+            request_email:
 
-    Returns:
+        Returns:
 
     """
     try:
@@ -70,11 +74,12 @@ def request_post(request_username, request_first_name, request_last_name, reques
 
 
 def request_accept(request_id, send_mail=True):
-    """ Accept an account request
+    """
+        Accept an account request
 
-    :param request_id:
-    :param send_mail:
-    :return:
+        :param request_id:
+        :param send_mail:
+        :return:
     """
 
     user_request = request_get(request_id)
@@ -111,10 +116,11 @@ def request_accept(request_id, send_mail=True):
 
 
 def request_deny(request_id):
-    """ Deny an account request
+    """
+        Deny an account request
 
-    :param request_id:
-    :return:
+        :param request_id:
+        :return:
     """
     user_request = request_get(request_id)
     # No exception possible for delete method
@@ -122,32 +128,35 @@ def request_deny(request_id):
 
 
 def _get_user_by_username(username):
-    """ Returns a user given its username
+    """
+        Returns a user given its username
 
-    :param username:
-    :return:
+        :param username:
+        :return:
     """
     return User.objects.get(username=username)
 
 
 def _get_user_by_id(user_id):
-    """ Returns a user given its primary key
+    """
+        Returns a user given its primary key
 
-    :param user_id:
-    :return:
+        :param user_id:
+        :return:
     """
     return User.objects.get(pk=user_id)
 
 
 def _save_user(username, password, first_name, last_name, email):
-    """ Save a user with the given parameters
+    """
+        Save a user with the given parameters
 
-    :param username:
-    :param password:
-    :param first_name:
-    :param last_name:
-    :param email:
-    :return:
+        :param username:
+        :param password:
+        :param first_name:
+        :param last_name:
+        :param email:
+        :return:
     """
     user = User.objects.create_user(username=username,
                                     password=password,

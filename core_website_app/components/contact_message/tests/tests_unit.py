@@ -1,9 +1,9 @@
-""" tests
 """
-
-from unittest.case import TestCase
+    Tests of contact message API
+"""
 from ..api import *
 from ..models import *
+from unittest.case import TestCase
 from mock import Mock, patch
 from core_main_app.commons.exceptions import MDCSError
 
@@ -32,7 +32,7 @@ class TestsContactMessageGet(TestCase):
         mock_get_by_id.side_effect = Exception()
         # Act # Assert
         with self.assertRaises(MDCSError):
-            result = message_get(message_id)
+            message_get(message_id)
 
 
 class TestsContactMessageDelete(TestCase):
