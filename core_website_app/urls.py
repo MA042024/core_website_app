@@ -1,14 +1,14 @@
 """ Url router for the main application
 """
-from django.conf.urls import include, url
-from .views.user import views as public_views
+from django.conf.urls import url, include
+from views.user import views as public_views
 
 urlpatterns = [
-    url(r'^request-new-account', public_views.request_new_account, name='request-new-account'),
-    url(r'^contact', public_views.contact, name='contact'),
-    url(r'^help', public_views.help, name='help'),
-    url(r'^privacy-policy', public_views.privacy_policy, name='privacy-policy'),
-    url(r'^terms-of-use', public_views.terms_of_use, name='terms-of-use'),
+    url(r'^account-request', public_views.request_new_account, name='core_website_account_request'),
+    url(r'^contact', public_views.contact, name='core_website_contact'),
+    url(r'^help', public_views.help, name='core_website_help'),
+    url(r'^privacy', public_views.privacy_policy, name='core_website_privacy'),
+    url(r'^terms', public_views.terms_of_use, name='core_website_terms'),
 
     url(r'^api/', include('core_website_app.rest.urls')),
 ]

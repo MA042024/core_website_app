@@ -1,6 +1,5 @@
 """ rest api views
-################################################################################
-#
+
 # File Name: rest.py
 # Application: core_website_app
 # Component: account_request
@@ -11,10 +10,8 @@
 #
 #
 # Sponsor: National Institute of Standards and Technology (NIST)
-#
-################################################################################
 """
-from mgi.permissions import api_staff_member_required
+from core_main_app.utils.permissions import api_staff_member_required
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
@@ -44,7 +41,7 @@ def request_list(request):
     if serializer.is_valid():
         return Response(serializer.data, status=status.HTTP_200_OK)
     else:
-        content = {'message': 'Serialization fail'}
+        content = {'message': 'Serialization failed'}
         return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -67,7 +64,7 @@ def request_get(request):
             if serializer.is_valid():
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
-                content = {'message': 'Serialization fail'}
+                content = {'message': 'Serialization failed'}
                 return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception as api_exception:
@@ -108,7 +105,7 @@ def request_post(request):
             if serializer.is_valid():
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
-                content = {'message': 'Serialization fail'}
+                content = {'message': 'Serialization failed'}
                 return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception as api_exception:
@@ -157,7 +154,7 @@ def request_accept(request):
         if serializer.is_valid():
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
-            content = {'message': 'Serialization fail'}
+            content = {'message': 'Serialization failed'}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
     except Exception as e:

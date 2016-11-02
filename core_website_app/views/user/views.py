@@ -1,8 +1,10 @@
-from django.shortcuts import render
+""" Views available for the user
+"""
+from core_main_app.utils.rendering import render
 from django.shortcuts import redirect
 from django.contrib import messages
 
-from mgi.exceptions import MDCSError
+from core_main_app.commons.exceptions import MDCSError
 from .forms import RequestAccountForm, ContactForm
 from core_website_app.components.account_request.api import request_post
 from core_website_app.components.contact_message.api import message_post
