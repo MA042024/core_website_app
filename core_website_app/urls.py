@@ -4,6 +4,7 @@ from django.conf.urls import url, include
 from views.user import views as public_views
 
 urlpatterns = [
+    url(r'^$', public_views.homepage, name='core_website_homepage'),
     url(r'^account-request', public_views.request_new_account, name='core_website_account_request'),
     url(r'^contact', public_views.contact, name='core_website_contact'),
     url(r'^help', public_views.help, name='core_website_help'),
@@ -12,7 +13,3 @@ urlpatterns = [
 
     url(r'^api/', include('core_website_app.rest.urls')),
 ]
-
-
-
-

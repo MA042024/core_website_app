@@ -1,16 +1,34 @@
 """ Views available for the user
 """
 from core_main_app.utils.rendering import render
+from django.contrib.staticfiles import finders
 from django.shortcuts import redirect
 from django.contrib import messages
-
 from core_main_app.commons.exceptions import MDCSError
+
 from .forms import RequestAccountForm, ContactForm
 from core_website_app.components.account_request.api import request_post
 from core_website_app.components.contact_message.api import message_post
 from core_website_app.components.help.api import help_get
 from core_website_app.components.privacy_policy.api import privacy_policy_get
 from core_website_app.components.terms_of_use.api import terms_of_use_get
+
+
+def homepage(request):
+    """ Homepage for the website
+
+    :param request:
+    :return:
+    """
+    context = {}
+
+    if finders.find("core_website_app/css/homepage.css") is not None:
+        context["css"] = ["core_website_app/css/homepage.css"]
+
+    if finders.find("core_website_app/js/homepage.js") is not None:
+        context["js"] = ["core_website_app/js/homepage.js"]
+
+    return render(request, "core_website_app/user/homepage.html", context)
 
 
 def request_new_account(request):

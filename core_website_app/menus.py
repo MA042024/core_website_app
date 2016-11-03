@@ -3,6 +3,10 @@ from menu import Menu, MenuItem
 
 
 Menu.add_item(
+    "main", MenuItem("Home", reverse("core_website_homepage"), icon="fa-home")
+)
+
+Menu.add_item(
     "main", MenuItem("Contact", reverse("core_website_contact"))
 )
 
