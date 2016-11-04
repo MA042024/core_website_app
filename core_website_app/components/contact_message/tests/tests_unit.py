@@ -1,7 +1,7 @@
 """
     Tests of contact message API
 """
-from ..api import *
+from core_website_app.components.contact_message import api as contact_message_api
 from ..models import *
 from unittest.case import TestCase
 from mock import Mock, patch
@@ -21,7 +21,7 @@ class TestsContactMessageGet(TestCase):
         mock_message.id = message_id
         mock_get_by_id.return_value = mock_message
         # Act
-        result = message_get(message_id)
+        result = contact_message_api.get(message_id)
         # Assert
         self.assertIsInstance(result, Message)
 
@@ -32,7 +32,7 @@ class TestsContactMessageGet(TestCase):
         mock_get_by_id.side_effect = Exception()
         # Act # Assert
         with self.assertRaises(MDCSError):
-            message_get(message_id)
+            contact_message_api.get(message_id)
 
 
 class TestsContactMessageDelete(TestCase):
@@ -44,7 +44,7 @@ class TestsContactMessageDelete(TestCase):
         mock_get_by_id.side_effect = Exception()
         # Act # Assert
         with self.assertRaises(MDCSError):
-            message_delete(message_id)
+            contact_message_api.delete(message_id)
 
 
 class TestsContactMessagePost(TestCase):
@@ -58,7 +58,7 @@ class TestsContactMessagePost(TestCase):
         mock_message.content = "content"
         mock_save.return_value = mock_message
         # Act
-        result = message_post("name", "mail@mail.com", "content")
+        result = contact_message_api.save("name", "mail@mail.com", "content")
         # Assert
         self.assertIsInstance(result, Message)
 
@@ -68,5 +68,5 @@ class TestsContactMessagePost(TestCase):
         mock_save.side_effect = Exception()
         # Act # Assert
         with self.assertRaises(MDCSError):
-            message_post("name", "mail@mail.com", "content")
+            contact_message_api.save("name", "mail@mail.com", "content")
 

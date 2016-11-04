@@ -7,7 +7,7 @@ from .models import WebPage
 from .enums import WEB_PAGE_TYPES
 
 
-def web_page_get(page_type):
+def get(page_type):
     """
         Get the content of a given web page
         :return: web page content
@@ -21,7 +21,7 @@ def web_page_get(page_type):
         return None
 
 
-def web_page_post(page_type, page_content):
+def save(page_type, page_content):
     """
         Post the page content
         :param page_type: type of the web page (help, policy, terms)
@@ -42,7 +42,7 @@ def web_page_post(page_type, page_content):
         return page_content
 
 
-def web_page_delete(page_type):
+def delete(page_type):
     """
     """
     pass

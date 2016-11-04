@@ -1,7 +1,6 @@
 """
     The API contains the available function to access, create, edit and delete the account requests
 """
-
 from core_main_app.utils.notifications.mail import send_mail as common_send_mail
 from core_main_app.commons.exceptions import MDCSError
 from core_website_app.settings import MDCS_URI
@@ -10,7 +9,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 
 
-def request_list():
+def get_all():
     """
         List of opened account requests
 
@@ -20,7 +19,7 @@ def request_list():
     return Request.objects()
 
 
-def request_get(request_id):
+def get(request_id):
     """
         Get an account request given its primary key
 
@@ -39,7 +38,7 @@ def request_get(request_id):
         raise MDCSError('No request could be found with the given id.')
 
 
-def request_post(request_username, request_first_name, request_last_name, request_password, request_email):
+def save(request_username, request_first_name, request_last_name, request_password, request_email):
     """
         Create or modify a new request
 
@@ -73,7 +72,7 @@ def request_post(request_username, request_first_name, request_last_name, reques
     return new_request
 
 
-def request_accept(request_id, send_mail=True):
+def accept(request_id, send_mail=True):
     """
         Accept an account request
 
@@ -81,9 +80,8 @@ def request_accept(request_id, send_mail=True):
         :param send_mail:
         :return:
     """
-
-    user_request = request_get(request_id)
-    can_return_user = False
+    user_request = get(request_id)
+    user = None
     try:
         # check if a user with the same username exists
         _get_user_by_username(user_request.username)
@@ -94,8 +92,6 @@ def request_accept(request_id, send_mail=True):
                           first_name=user_request.first_name,
                           last_name=user_request.last_name,
                           email=user_request.email)
-
-        can_return_user = True
 
         if send_mail:
             # FIXME send_mail should use a User object
@@ -109,20 +105,20 @@ def request_accept(request_id, send_mail=True):
     finally:
         # delete the user request
         user_request.delete()
-        if can_return_user:
+        if user is not None:
             return user
         else:
             raise MDCSError("User already exist")
 
 
-def request_deny(request_id):
+def deny(request_id):
     """
         Deny an account request
 
         :param request_id:
         :return:
     """
-    user_request = request_get(request_id)
+    user_request = get(request_id)
     # No exception possible for delete method
     user_request.delete()
 

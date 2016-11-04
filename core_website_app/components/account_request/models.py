@@ -18,7 +18,7 @@ class Request(Document):
         """ Get a request given its primary key
 
         Parameters:
-            request_id (int): Primary key of the request
+            request_id (str): Primary key of the request
 
         Returns:
             Request object corresponding to the given id
