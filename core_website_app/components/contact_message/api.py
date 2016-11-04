@@ -1,7 +1,6 @@
 """
     contact message API
 """
-
 from core_main_app.commons.exceptions import MDCSError
 from .models import Message
 
@@ -14,7 +13,7 @@ from .models import Message
 # logger.setLevel(logging.WARNING)
 
 
-def message_list():
+def get_all():
     """
         List all messages
         :return:
@@ -22,7 +21,7 @@ def message_list():
     return Message.objects.all()
 
 
-def message_get(message_id):
+def get(message_id):
     """
         Get a message
         :param message_id:
@@ -35,7 +34,7 @@ def message_get(message_id):
         raise MDCSError('No message could be found with the given id.')
 
 
-def message_post(message_name, message_email, message_content):
+def save(message_name, message_email, message_content):
     """
         Post a message
         :param message_name:
@@ -53,12 +52,12 @@ def message_post(message_name, message_email, message_content):
         raise MDCSError('Save message failed')
 
 
-def message_delete(message_id):
+def delete(message_id):
     """
         Delete a message
         :param message_id:
         :return:
     """
-    message = message_get(message_id)
+    message = get(message_id)
     # No exception possible for delete method
     message.delete()

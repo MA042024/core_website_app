@@ -1,8 +1,9 @@
 """
     Tests of the web page API
 """
+from mongoengine.errors import DoesNotExist
 
-from ..api import *
+from core_website_app.components.web_page import api as web_page_api
 from ..models import *
 from unittest.case import TestCase
 from mock import Mock, patch
@@ -19,7 +20,7 @@ class TestsWebPageApiGet(TestCase):
         mock_webpage_privacy.content = "content web page privacy"
         mock_get_web_page_by_type.return_value = mock_webpage_privacy
         # Act
-        result = web_page_get("privacy_policy")
+        result = web_page_api.get("privacy_policy")
         # Assert
         self.assertEqual("content web page privacy", result)
 
@@ -31,7 +32,7 @@ class TestsWebPageApiGet(TestCase):
         mock_webpage_termsof.content = "content web page terms"
         mock_get_web_page_by_type.return_value = mock_webpage_termsof
         # Act
-        result = web_page_get("terms_of_use")
+        result = web_page_api.get("terms_of_use")
         # Assert
         self.assertEqual("content web page terms", result)
 
@@ -43,7 +44,7 @@ class TestsWebPageApiGet(TestCase):
         mock_webpage_help.content = "content web page help"
         mock_get_web_page_by_type.return_value = mock_webpage_help
         # Act
-        result = web_page_get("help")
+        result = web_page_api.get("help")
         # Assert
         self.assertEqual("content web page help", result)
 
@@ -52,14 +53,14 @@ class TestsWebPageApiGet(TestCase):
         # Arrange
         mock_get_web_page_by_type.side_effect = DoesNotExist()
         # Act
-        result = web_page_get("help")
+        result = web_page_api.get("help")
         # Assert
         self.assertEqual(None, result)
 
     def test_web_page_get_with_wrong_type_return_none(self):
         # Arrange
         # Act
-        page = web_page_get("wrong_type")
+        page = web_page_api.get("wrong_type")
         # Assert
         self.assertEqual(None, page)
 
@@ -70,19 +71,19 @@ class TestsWebPageApiPost(TestCase):
         # Arrange
         # Act Assert
         with self.assertRaises(MDCSError):
-            web_page_post("wrong_type", "content")
+            web_page_api.save("wrong_type", "content")
 
     @patch('core_website_app.components.web_page.models.WebPage.get_by_type')
     def test_web_page_post(self, mock_get_web_page_by_type):
         # Arrange
-        type = WEB_PAGE_TYPES["help"]
+        web_page_type = WEB_PAGE_TYPES["help"]
         content = "content"
         mock_webpage = Mock(spec=WebPage)
-        mock_webpage.type = type
+        mock_webpage.type = web_page_type
         mock_webpage.content = content
         mock_get_web_page_by_type.return_value = mock_webpage
         # Act
-        result = web_page_post(type, content)
+        result = web_page_api.save(web_page_type, content)
         # Assert
         self.assertEquals(content, result)
 
@@ -90,10 +91,10 @@ class TestsWebPageApiPost(TestCase):
     @patch('core_website_app.components.web_page.models.WebPage.save')
     def test_web_page_post_type_is_not_in_database(self, mock_get_web_page_by_type, mock_save):
         # Arrange
-        type = WEB_PAGE_TYPES["help"]
+        web_page_type = WEB_PAGE_TYPES["help"]
         content = "content"
         mock_get_web_page_by_type.side_effect = DoesNotExist()
         # Act
-        result = web_page_post(type, content)
+        result = web_page_api.save(web_page_type, content)
         # Assert
         self.assertEquals(content, result)
