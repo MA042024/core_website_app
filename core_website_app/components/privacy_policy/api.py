@@ -1,29 +1,24 @@
 """
     privacy policy api
 """
-
-from ..web_page.api import web_page_get, web_page_post
-from ..web_page.enums import WEB_PAGE_TYPES
+import core_website_app.components.web_page.api as web_page_api
+from core_website_app.components.web_page.enums import WEB_PAGE_TYPES
 
 PRIVACY_PAGE_TYPE = WEB_PAGE_TYPES["privacy_policy"]
 
 
-def privacy_policy_get():
+def get():
     """
     Get the privacy policy
     :return:
     """
-    return web_page_get(PRIVACY_PAGE_TYPE)
+    return web_page_api.get(PRIVACY_PAGE_TYPE)
 
 
-def privacy_policy_post(privacy_policy_content):
+def save(privacy_policy_content):
     """
     Post the privacy policy
     :param privacy_policy_content:
     :return:
     """
-    return web_page_post(PRIVACY_PAGE_TYPE, privacy_policy_content)
-
-
-
-
+    return web_page_api.save(PRIVACY_PAGE_TYPE, privacy_policy_content)

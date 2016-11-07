@@ -1,39 +1,22 @@
 """ rest api for the terms of use
-################################################################################
-#
-# File Name: views.py
-# Application: api
-# Purpose:
-#
-#
-# Sponsor: National Institute of Standards and Technology (NIST)
-#
-################################################################################
 """
-
-# API
 from core_main_app.utils.permissions import api_staff_member_required
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
-# Models
-from core_website_app.components.terms_of_use.api import \
-    terms_of_use_get as api_terms_of_use_get, \
-    terms_of_use_post as api_terms_of_use_post
-# Serializers
-from ..serializers import WebPageSerializer
+import core_website_app.components.terms_of_use.api as terms_of_use_api
+from core_website_app.rest.serializers import WebPageSerializer
 
 import logging
-# logger = logging.getLogger("core_website_app.rest.terms_of_use")
+logger = logging.getLogger("core_website_app.rest.terms_of_use.views")
 
 
-def terms_of_use_get():
+def get():
     """
     Get the terms of use
-    :param request:
     :return:
     """
-    help_page = api_terms_of_use_get()
+    help_page = terms_of_use_api.get()
     serializer = WebPageSerializer(help_page)
 
     if serializer.is_valid():
@@ -44,7 +27,7 @@ def terms_of_use_get():
 
 
 @api_staff_member_required()
-def terms_of_use_post(request):
+def post(request):
     """
     Post the terms of use
     :param request:
@@ -54,7 +37,7 @@ def terms_of_use_post(request):
         # Get parameters
         help_content = request.DATA['content']
         try:
-            help_page_content = api_terms_of_use_post(help_content)
+            help_page_content = terms_of_use_api.save(help_content)
 
             # Serialize the request
             serializer = WebPageSerializer(help_page_content)
@@ -71,7 +54,7 @@ def terms_of_use_post(request):
 
     except Exception as e:
         content = {'message': 'Expected parameters not provided.'}
-        # logger.exception(e.message)
+        logger.exception(e.message)
         return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -83,6 +66,6 @@ def terms_of_use(request):
     :return:
     """
     if request.method == 'GET':
-        return terms_of_use_get(request)
+        return get()
     elif request.method == 'POST':
-        return terms_of_use_post(request)
+        return post(request)

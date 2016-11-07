@@ -1,7 +1,5 @@
+""" Contact messages models
 """
-    Contact messages models
-"""
-
 from django_mongoengine import fields, Document
 
 
@@ -14,3 +12,12 @@ class Message(Document):
     @staticmethod
     def get_by_id(message_id):
         return Message.objects().get(message_id)
+
+    @staticmethod
+    def get_all():
+        return Message.objects.all()
+
+    @staticmethod
+    def create(message_name, message_email, message_content):
+        new_message = Message(name=message_name, email=message_email, content=message_content).save()
+        return new_message

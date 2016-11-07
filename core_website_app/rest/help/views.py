@@ -1,28 +1,22 @@
 """ rest views for the help page
-
-# File Name: views.py
-# Application: core_website_app
-# Components: help
-#
-# Sponsor: National Institute of Standards and Technology (NIST)
 """
 from core_main_app.utils.permissions import api_staff_member_required
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
-from ..serializers import WebPageSerializer
-from core_website_app.components.help.api import help_get as api_help_get, help_post as api_help_post
+from core_website_app.rest.serializers import WebPageSerializer
+import core_website_app.components.help.api as help_api
 
-# import logging
-# logger = logging.getLogger("core_website_app.rest.help")
+import logging
+logger = logging.getLogger("core_website_app.rest.help.views")
 
 
-def help_get():
+def get():
     """
     Get the help
     :return:
     """
-    help_page = api_help_get()
+    help_page = help_api.get()
     serializer = WebPageSerializer(help_page)
 
     if serializer.is_valid():
@@ -33,7 +27,7 @@ def help_get():
 
 
 @api_staff_member_required()
-def help_post(request):
+def post(request):
     """
     Post the help
     :param request:
@@ -43,7 +37,7 @@ def help_post(request):
         # Get parameters
         help_content = request.DATA['content']
         try:
-            help_page_content = api_help_post(help_content)
+            help_page_content = help_api.save(help_content)
 
             # Serialize the request
             serializer = WebPageSerializer(help_page_content)
@@ -60,18 +54,18 @@ def help_post(request):
 
     except Exception as e:
         content = {'message': 'Expected parameters not provided.'}
-        # logger.exception(e.message)
+        logger.exception(e.message)
         return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET', 'POST'])
-def help(request):
+def rest_help_page(request):
     """
     Help
     :param request:
     :return:
     """
     if request.method == 'GET':
-        return help_get()
+        return get()
     elif request.method == 'POST':
-        return help_post(request)
+        return post(request)

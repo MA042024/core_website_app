@@ -40,7 +40,7 @@ def get(request_id):
 
 def save(request_username, request_first_name, request_last_name, request_password, request_email):
     """
-        Create or modify a new request
+        Create a new request
 
         Parameters:
             request_username:

@@ -1,43 +1,25 @@
 """ rest views for the contact message API
-
-# File Name: rest.py
-# Application: core_website_app
-# Component: contact_message
-#
-# Author: Guillaume SOUSA AMARAL
-#         guillaume.sousa@nist.gov
-#
-# Sponsor: National Institute of Standards and Technology (NIST)
 """
-
-# API
 from core_main_app.utils.permissions import api_staff_member_required
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
-# Permissions
-# Models
-from core_website_app.components.contact_message.api import \
-    message_list as api_message_list, \
-    message_delete as api_message_delete, \
-    message_get as api_message_get, \
-    message_post as api_message_post
-# Serializers
-from ..serializers import MessageSerializer
+import core_website_app.components.contact_message.api as contact_message_api
+from core_website_app.rest.serializers import MessageSerializer
 
-# import logging
-# logger = logging.getLogger("core_website_app.rest.contact_message")
+import logging
+logger = logging.getLogger("core_website_app.rest.contact_message.views")
 
 
 @api_view(['GET'])
 @api_staff_member_required()
-def message_list(request):
+def get_all(request):
     """
     List all messages
     :param request:
     :return:
     """
-    messages = api_message_list()
+    messages = contact_message_api.get_all()
     serializer = MessageSerializer(messages)
 
     if serializer.is_valid():
@@ -48,7 +30,7 @@ def message_list(request):
 
 
 @api_staff_member_required()
-def message_get(request):
+def get(request):
     """
     Get a message
     :param request:
@@ -59,7 +41,7 @@ def message_get(request):
         message_id = request.DATA['requestid']
 
         try:
-            messages = api_message_get(message_id)
+            messages = contact_message_api.get(message_id)
             serializer = MessageSerializer(messages)
 
             if serializer.is_valid():
@@ -74,11 +56,11 @@ def message_get(request):
 
     except Exception as e:
         content = {'message': 'Expected parameters not provided.'}
-        # logger.exception(e.message)
+        logger.exception(e.message)
         return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
 
-def message_post(request):
+def post(request):
     """
     Post a message
     :param request:
@@ -92,8 +74,8 @@ def message_post(request):
 
         try:
             # Create the message
-            new_message = api_message_post(message_name=message_name, message_email=message_email,
-                                           message_content=message_content)
+            new_message = contact_message_api.save(message_name=message_name, message_email=message_email,
+                                                   message_content=message_content)
 
             # Serialize the message
             serializer = MessageSerializer(new_message)
@@ -110,7 +92,7 @@ def message_post(request):
 
     except Exception as e:
         content = {'message': 'Expected parameters not provided.'}
-        # logger.exception(e.message)
+        logger.exception(e.message)
         return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -122,13 +104,13 @@ def message(request):
     :return:
     """
     if request.method == 'GET':
-        return message_get(request)
+        return get(request)
     elif request.method == 'POST':
-        return message_post(request)
+        return post(request)
 
 
 @api_view(['POST'])
-def message_delete(request):
+def delete(request):
     """
     Delete a message
     :param request:
@@ -139,7 +121,7 @@ def message_delete(request):
         message_id = request.DATA['messageid']
 
         try:
-            api_message_delete(message_id)
+            contact_message_api.delete(message_id)
             return Response({}, status=status.HTTP_204_NO_CONTENT)
 
         except Exception as api_exception:
@@ -148,5 +130,5 @@ def message_delete(request):
 
     except Exception as e:
         content = {'message': 'Expected parameters not provided.'}
-        # logger.exception(e.message)
+        logger.exception(e.message)
         return Response(content, status=status.HTTP_400_BAD_REQUEST)

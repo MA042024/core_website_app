@@ -1,16 +1,10 @@
+"""contact message API
 """
-    contact message API
-"""
+import logging
 from core_main_app.commons.exceptions import MDCSError
-from .models import Message
+from core_website_app.components.contact_message.models import Message
 
-# import logging
-# logger = logging.getLogger('core_website_app')
-# hdlr = logging.FileHandler('core_website_app.components.contact_message.api.log')
-# formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-# hdlr.setFormatter(formatter)
-# logger.addHandler(hdlr)
-# logger.setLevel(logging.WARNING)
+logger = logging.getLogger("core_website_app.components.contact_message.api")
 
 
 def get_all():
@@ -18,7 +12,7 @@ def get_all():
         List all messages
         :return:
     """
-    return Message.objects.all()
+    return Message.get_all()
 
 
 def get(message_id):
@@ -30,7 +24,7 @@ def get(message_id):
     try:
         return Message.get_by_id(message_id)
     except Exception as e:
-        # logger.error(e.message)
+        logger.error(e.message)
         raise MDCSError('No message could be found with the given id.')
 
 
@@ -42,13 +36,12 @@ def save(message_name, message_email, message_content):
         :param message_content:
         :return: message's pk
     """
-    message_to_save = Message(name=message_name, email=message_email, content=message_content)
     try:
         # save method return self
-        return_value = message_to_save.save()
+        return_value = Message.create(message_name, message_email, message_content)
         return return_value
     except Exception as e:
-        # logger.error(e.message)
+        logger.error(e.message)
         raise MDCSError('Save message failed')
 
 

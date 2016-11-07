@@ -5,11 +5,11 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from .forms import HelpForm, PrivacyPolicyForm, TermsOfUseForm
-from core_website_app.components.account_request.api import request_list
-from core_website_app.components.contact_message.api import message_list
-from core_website_app.components.privacy_policy.api import privacy_policy_get, privacy_policy_post
-from core_website_app.components.terms_of_use.api import terms_of_use_get, terms_of_use_post
-from core_website_app.components.help.api import help_get, help_post
+import core_website_app.components.account_request.api as account_request_api
+import core_website_app.components.contact_message.api as contact_message_api
+import core_website_app.components.help.api as help_api
+import core_website_app.components.privacy_policy.api as privacy_policy_api
+import core_website_app.components.terms_of_use.api as terms_of_use_api
 
 
 @staff_member_required
@@ -21,7 +21,7 @@ def user_requests(request):
     """
 
     # Call the API
-    requests = request_list()
+    requests = account_request_api.get_all()
 
     return render(request, 'core_website_app/admin/user_requests.html', {'requests': requests})
 
@@ -35,7 +35,7 @@ def contact_messages(request):
     """
 
     # Call the API
-    messages_contact = message_list()
+    messages_contact = contact_message_api.get_all()
 
     return render(request, 'core_website_app/admin/contact_messages.html', {'contacts': messages_contact})
 
@@ -52,11 +52,11 @@ def help_admin(request):
         form = HelpForm(request.POST)
         if form.is_valid():
             # Call the API
-            help_post(request.POST['content'])
+            help_api.save(request.POST['content'])
             messages.add_message(request, messages.INFO, 'Help saved with success.')
             return redirect('/admin/website')
     else:
-        help = help_get()
+        help = help_api.get()
         content = help.content if help is not None else ''
         form = HelpForm({'content': content})
 
@@ -75,11 +75,11 @@ def privacy_policy_admin(request):
         form = PrivacyPolicyForm(request.POST)
         if form.is_valid():
             # Call the API
-            privacy_policy_post(request.POST['content'])
+            privacy_policy_api.save(request.POST['content'])
             messages.add_message(request, messages.INFO, 'Privacy Policy saved with success.')
             return redirect('/admin/website')
     else:
-        policy = privacy_policy_get()
+        policy = privacy_policy_api.get()
         content = policy.content if policy is not None else ''
         form = PrivacyPolicyForm({'content': content})
 
@@ -98,11 +98,11 @@ def terms_of_use_admin(request):
         form = TermsOfUseForm(request.POST)
         if form.is_valid():
             # Call the API
-            terms_of_use_post(request.POST['content'])
+            terms_of_use_api.save(request.POST['content'])
             messages.add_message(request, messages.INFO, 'Terms of Use saved with success.')
             return redirect('/admin/website')
     else:
-        terms = terms_of_use_get()
+        terms = terms_of_use_api.get()
         content = terms.content if terms is not None else ''
         form = TermsOfUseForm({'content': content})
 

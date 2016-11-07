@@ -1,38 +1,22 @@
 """ rest api for the privacy policy
-################################################################################
-#
-# File Name: views.py
-# Application: api
-# Purpose:
-#
-#
-# Sponsor: National Institute of Standards and Technology (NIST)
-#
-################################################################################
 """
-
-# API
 from core_main_app.utils.permissions import api_staff_member_required
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
-# Models
-from core_website_app.components.privacy_policy.api import \
-    privacy_policy_get as api_privacy_policy_get, \
-    privacy_policy_post as api_privacy_policy_post
-# Serializers
-from ..serializers import WebPageSerializer
+import core_website_app.components.privacy_policy.api as privacy_policy_api
+from core_website_app.rest.serializers import WebPageSerializer
 
 import logging
-# logger = logging.getLogger("core_website_app.rest.privacy_policy")
+logger = logging.getLogger("core_website_app.rest.privacy_policy.views")
 
 
-def privacy_policy_get():
+def get():
     """
     Get the privacy policy
     :return:
     """
-    privacy_policy_page = api_privacy_policy_get()
+    privacy_policy_page = privacy_policy_api.get()
     serializer = WebPageSerializer(privacy_policy_page)
 
     if serializer.is_valid():
@@ -43,7 +27,7 @@ def privacy_policy_get():
 
 
 @api_staff_member_required()
-def privacy_policy(request):
+def post(request):
     """
     Post the privacy policy
     :param request:
@@ -53,7 +37,7 @@ def privacy_policy(request):
         # Get parameters
         privacy_policy_content = request.DATA['content']
         try:
-            privacy_policy_page_content = api_privacy_policy_post(privacy_policy_content)
+            privacy_policy_page_content = privacy_policy_api.save(privacy_policy_content)
 
             # Serialize the request
             serializer = WebPageSerializer(privacy_policy_page_content)
@@ -70,7 +54,7 @@ def privacy_policy(request):
 
     except Exception as e:
         content = {'message': 'Expected parameters not provided.'}
-        # logger.exception(e.message)
+        logger.exception(e.message)
         return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -82,6 +66,6 @@ def privacy_policy(request):
     :return:
     """
     if request.method == 'GET':
-        return privacy_policy(request)
+        return get()
     elif request.method == 'POST':
-        return privacy_policy(request)
+        return post(request)

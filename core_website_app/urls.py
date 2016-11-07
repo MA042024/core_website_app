@@ -11,5 +11,8 @@ urlpatterns = [
     url(r'^privacy', public_views.privacy_policy, name='core_website_privacy'),
     url(r'^terms', public_views.terms_of_use, name='core_website_terms'),
 
+    url(r'^login', public_views.custom_login, name='core_website_login'),
+    url(r'^logout', public_views.custom_logout, name='core_website_logout'),
+
     url(r'^api/', include('core_website_app.rest.urls')),
 ]

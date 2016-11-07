@@ -1,24 +1,16 @@
 {% load staticfiles %}
 <div class="row">
     <div class="col-md-12">
-        <h1><span>Request New Account</span></h1>
+        <h2>Request New Account</h2>
 
-        <div id="main" style="margin-left:20px;">
         Use the following form to request an user account on the {{CUSTOM_TITLE}} Curation System.
-            <div>
-                <br/>
-                <form action="/request-new-account" method="post">
-                    {% csrf_token %}
-                    {{ form }}
-                    <br/>
-                    <div id="request_error" style="font-weight: bold;">
-                    {{action_result}}
-                    </div>
-                    <input type="submit" class="btn" value="Make a Request"/>
-                </form>
+        <form action="/request-new-account" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <div id="request_error" style="font-weight: bold;">
+            {{action_result}}
             </div>
-        <div class="clearer">&nbsp;</div>
-        </div>
-        <script src="{% static 'core_website_app/public/js/user_account_req.js' %}"></script>
+            <input type="submit" class="btn btn-lg btn-default" value="Make a Request"/>
+        </form>
     </div>
 </div>

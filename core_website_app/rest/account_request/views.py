@@ -1,41 +1,25 @@
 """ rest api views
-
-# File Name: rest.py
-# Application: core_website_app
-# Component: account_request
-#
-# Author: Guillaume SOUSA AMARAL
-#         guillaume.sousa@nist.gov
-#
-#
-#
-# Sponsor: National Institute of Standards and Technology (NIST)
 """
 from core_main_app.utils.permissions import api_staff_member_required
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
-from core_website_app.components.account_request.api import \
-    request_list as api_request_list, \
-    request_post as api_request_post, \
-    request_accept as api_request_accept, \
-    request_deny as api_request_deny, \
-    request_get as api_request_get
-from ..serializers import RequestSerializer
+import core_website_app.components.account_request.api as account_request_api
+from core_website_app.rest.serializers import RequestSerializer
 
-# import logging
-# logger = logging.getLogger("core_website_app.rest.account_request")
+import logging
+logger = logging.getLogger("core_website_app.rest.account_request.views")
 
 
 @api_view(['GET'])
 @api_staff_member_required()
-def request_list(request):
+def get_all(request):
     """
     List all account requests
     :param request:
     :return:
     """
-    requests = api_request_list()
+    requests = account_request_api.get_all()
     serializer = RequestSerializer(requests)
 
     if serializer.is_valid():
@@ -46,7 +30,7 @@ def request_list(request):
 
 
 @api_staff_member_required()
-def request_get(request):
+def get(request):
     """
     Get an account request
     :param request:
@@ -58,7 +42,7 @@ def request_get(request):
         request_id = request.DATA['requestid']
 
         try:
-            requests = api_request_get(request_id)
+            requests = account_request_api.get(request_id)
             serializer = RequestSerializer(requests)
 
             if serializer.is_valid():
@@ -73,11 +57,11 @@ def request_get(request):
 
     except Exception as e:
         content = {'message': 'Expected parameters not provided.'}
-        # logger.exception(e.message)
+        logger.exception(e.message)
         return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
 
-def request_post(request):
+def post(request):
     """
     Post a new account request
     :param request:
@@ -93,11 +77,11 @@ def request_post(request):
 
         try:
             # Create the request
-            request_content = api_request_post(username=request_username,
-                                               first_name=request_first_name,
-                                               last_name=request_last_name,
-                                               password=request_password,
-                                               email=request_email)
+            request_content = account_request_api.save(request_username=request_username,
+                                                       request_first_name=request_first_name,
+                                                       request_last_name=request_last_name,
+                                                       request_password=request_password,
+                                                       request_email=request_email)
 
             # Serialize the request
             serializer = RequestSerializer(request_content)
@@ -114,25 +98,26 @@ def request_post(request):
 
     except Exception as e:
         content = {'message': 'Expected parameters not provided.'}
-        # logger.exception(e.message)
+        logger.exception(e.message)
         return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET', 'POST'])
-def request(request):
+def account_request(request):
     """
     Account Request
     :param request:
     :return:
     """
     if request.method == 'GET':
-        return request_get(request)
+        return get(request)
     elif request.method == 'POST':
-        return request_post(request)
+        return post(request)
 
 
 @api_view(['POST'])
-def request_accept(request):
+@api_staff_member_required()
+def accept(request):
     """
     Accept an account request
     :param request:
@@ -143,7 +128,7 @@ def request_accept(request):
         request_id = request.DATA['requestid']
 
         try:
-            user_request = api_request_accept(request_id, send_mail=False)
+            user_request = account_request_api.accept(request_id, send_mail=False)
         except Exception as api_exception:
             content = {'message': api_exception.message}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
@@ -159,12 +144,13 @@ def request_accept(request):
 
     except Exception as e:
         content = {'message': 'Expected parameters not provided.'}
-        # logger.exception(e.message)
+        logger.exception(e.message)
         return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
-def request_deny(request):
+@api_staff_member_required()
+def deny(request):
     """
     Deny an account request
     :param request:
@@ -176,7 +162,7 @@ def request_deny(request):
         request_id = request.DATA['requestid']
 
         try:
-            api_request_deny(request_id)
+            account_request_api.deny(request_id)
             return Response({}, status=status.HTTP_204_NO_CONTENT)
 
         except Exception as api_exception:
@@ -185,5 +171,5 @@ def request_deny(request):
 
     except Exception as e:
         content = {'message': 'Expected parameters not provided.'}
-        # logger.exception(e.message)
+        logger.exception(e.message)
         return Response(content, status=status.HTTP_400_BAD_REQUEST)

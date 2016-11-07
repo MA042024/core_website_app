@@ -2,15 +2,9 @@
 """
 from django.http import HttpResponse
 import json
-
 from core_main_app.commons.exceptions import MDCSError
-from core_website_app.components.account_request.api import request_accept, request_deny
-from core_website_app.components.contact_message.api import message_delete
-from django.utils.importlib import import_module
-import os
-settings_file = os.environ.get("DJANGO_SETTINGS_MODULE")
-settings = import_module(settings_file)
-MDCS_URI = settings.MDCS_URI
+import core_website_app.components.account_request.api as account_request_api
+import core_website_app.components.contact_message.api as contact_message_api
 
 
 def accept_request(request):
@@ -21,7 +15,7 @@ def accept_request(request):
     """
     try:
         request_id = request.POST['requestid']
-        user = request_accept(request_id)
+        user = account_request_api.accept(request_id)
 
         message = "Request Accepted"
     except MDCSError as error:
@@ -42,7 +36,7 @@ def deny_request(request):
     try:
         request.DATA = request.POST
         request_id = request.POST['requestid']
-        request_deny(request_id)
+        account_request_api.deny(request_id)
         message = "Request denied"
     except MDCSError as error:
         message = error.message
@@ -62,7 +56,7 @@ def remove_message(request):
     try:
         request.DATA = request.POST
         message_id = request.POST['messageid']
-        message_delete(message_id)
+        contact_message_api.delete(message_id)
         message = "Message deleted"
     except MDCSError as error:
         message = error.message
