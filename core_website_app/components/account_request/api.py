@@ -2,9 +2,9 @@
     The API contains the available function to access, create, edit and delete the account requests
 """
 from core_main_app.utils.notifications.mail import send_mail as common_send_mail
-from core_main_app.commons.exceptions import MDCSError
-from core_website_app.settings import MDCS_URI
-from .models import Request
+from core_main_app.commons.exceptions import ApiError
+from core_website_app.settings import SERVER_URI
+from core_website_app.components.account_request.models import AccountRequest
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -16,119 +16,109 @@ def get_all():
         Returns:
             list: List of all requests
     """
-    return Request.objects()
+    return AccountRequest.objects()
 
 
-def get(request_id):
+def get(account_request_id):
     """
         Get an account request given its primary key
 
         Parameters:
-            request_id (str): Primary key of the request
+            account_request_id (str): Primary key of the request
 
         Returns:
-            :class:`~models.AccountRequest`: The corresponding request
+            :class:`~models.AccountRequest`: The corresponding account request
 
         Raises:
             MDCSError: If no `request_id` does not correspond to any request.
     """
     try:
-        return Request.get_by_id(request_id)
+        return AccountRequest.get_by_id(account_request_id)
     except:
-        raise MDCSError('No request could be found with the given id.')
+        raise ApiError('No request could be found with the given id.')
 
 
-def save(request_username, request_first_name, request_last_name, request_password, request_email):
+def insert(account_request):
     """
         Create a new request
 
         Parameters:
-            request_username:
-            request_first_name:
-            request_last_name:
-            request_password:
-            request_email:
+            account_request:
 
-        Returns:
-
+        Returns: new account request
     """
     try:
         # check if a user with the same username exists
-        _get_user_by_username(request_username)
-        user_exits = True
+        _get_user_by_username(account_request.username)
+        raise ApiError('A user with the same username already exists.')
     except ObjectDoesNotExist:
-        user_exits = False
-
-    if user_exits:
-        raise MDCSError('A user with the same username already exists.')
-
-    # Create the request
-    new_request = Request(username=request_username,
-                          first_name=request_first_name,
-                          last_name=request_last_name,
-                          password=request_password,
-                          email=request_email).save()
-
-    return new_request
+        return account_request.save()
 
 
-def accept(request_id, send_mail=True):
+def accept(account_request, send_mail=True):
     """
         Accept an account request
 
-        :param request_id:
-        :param send_mail:
-        :return:
+        Parameters:
+            account_request (obj): Primary key of the request
+            send_mail (bool): send email
+
+        Returns:
+            User object
+
+        Raises:
+            ApiError: If user already exists
     """
-    user_request = get(request_id)
     user = None
     try:
         # check if a user with the same username exists
-        _get_user_by_username(user_request.username)
+        _get_user_by_username(account_request.username)
     except ObjectDoesNotExist:
         # create the user
-        user = _save_user(username=user_request.username,
-                          password=user_request.password,
-                          first_name=user_request.first_name,
-                          last_name=user_request.last_name,
-                          email=user_request.email)
+        user = _create_and_save_user(username=account_request.username,
+                                     password=account_request.password,
+                                     first_name=account_request.first_name,
+                                     last_name=account_request.last_name,
+                                     email=account_request.email)
 
         if send_mail:
             # FIXME send_mail should use a User object
-            context = {'lastname': user_request.last_name,
-                       'firstname': user_request.first_name,
-                       'URI': MDCS_URI}
+            context = {'lastname': account_request.last_name,
+                       'firstname': account_request.first_name,
+                       'URI': SERVER_URI}
 
             common_send_mail(subject='Account approved',
                              path_to_template='core_website_app/admin/email/request_account_approved.html',
-                             context=context, recipient_list=[user_request.email])
+                             context=context, recipient_list=[account_request.email])
     finally:
         # delete the user request
-        user_request.delete()
+        account_request.delete()
         if user is not None:
             return user
         else:
-            raise MDCSError("User already exist")
+            raise ApiError("User already exists")
 
 
-def deny(request_id):
+def deny(account_request):
     """
-        Deny an account request
+        Delete an account request
 
-        :param request_id:
-        :return:
+        Parameters:
+            account_request (obj): Primary key of the request
     """
-    user_request = get(request_id)
     # No exception possible for delete method
-    user_request.delete()
+    account_request.delete()
 
 
 def _get_user_by_username(username):
     """
         Returns a user given its username
 
-        :param username:
-        :return:
+        Parameters:
+            username (str): Given username
+
+        Returns:
+            User object
     """
     return User.objects.get(username=username)
 
@@ -137,22 +127,28 @@ def _get_user_by_id(user_id):
     """
         Returns a user given its primary key
 
-        :param user_id:
-        :return:
+        Parameters:
+            user_id (str): Given user id
+
+        Returns:
+            User object
     """
     return User.objects.get(pk=user_id)
 
 
-def _save_user(username, password, first_name, last_name, email):
+def _create_and_save_user(username, password, first_name, last_name, email):
     """
         Save a user with the given parameters
 
-        :param username:
-        :param password:
-        :param first_name:
-        :param last_name:
-        :param email:
-        :return:
+        Parameters:
+            username (str): Given user name
+            password (str): Given password
+            first_name (str): Given first name
+            last_name (str): Given last name
+            email (str): Given email
+
+        Returns:
+            User object
     """
     user = User.objects.create_user(username=username,
                                     password=password,

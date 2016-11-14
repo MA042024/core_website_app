@@ -1,7 +1,7 @@
 """contact message API
 """
 import logging
-from core_main_app.commons.exceptions import MDCSError
+from core_main_app.commons.exceptions import ApiError
 from core_website_app.components.contact_message.models import Message
 
 logger = logging.getLogger("core_website_app.components.contact_message.api")
@@ -25,7 +25,7 @@ def get(message_id):
         return Message.get_by_id(message_id)
     except Exception as e:
         logger.error(e.message)
-        raise MDCSError('No message could be found with the given id.')
+        raise ApiError('No message could be found with the given id.')
 
 
 def save(message_name, message_email, message_content):
@@ -42,7 +42,7 @@ def save(message_name, message_email, message_content):
         return return_value
     except Exception as e:
         logger.error(e.message)
-        raise MDCSError('Save message failed')
+        raise ApiError('Save message failed')
 
 
 def delete(message_id):

@@ -2,7 +2,7 @@
     Web page API
 """
 from mongoengine.errors import DoesNotExist
-from core_main_app.commons.exceptions import MDCSError
+from core_main_app.commons.exceptions import ApiError
 from .models import WebPage
 from .enums import WEB_PAGE_TYPES
 
@@ -29,7 +29,7 @@ def save(page_type, page_content):
         :return:
     """
     if page_type not in WEB_PAGE_TYPES.values():
-        raise MDCSError("Web page type does not exist")
+        raise ApiError("Web page type does not exist")
 
     page_object = None
     try:

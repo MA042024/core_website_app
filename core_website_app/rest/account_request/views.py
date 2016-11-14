@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
 import core_website_app.components.account_request.api as account_request_api
+from core_website_app.components.account_request.models import AccountRequest
 from core_website_app.rest.serializers import RequestSerializer
 
 import logging
@@ -15,9 +16,13 @@ logger = logging.getLogger("core_website_app.rest.account_request.views")
 @api_staff_member_required()
 def get_all(request):
     """
-    List all account requests
-    :param request:
-    :return:
+        List all account requests
+
+        Parameters:
+            request (HttpRequest): request
+
+        Returns:
+            Response object
     """
     requests = account_request_api.get_all()
     serializer = RequestSerializer(requests)
@@ -32,17 +37,19 @@ def get_all(request):
 @api_staff_member_required()
 def get(request):
     """
-    Get an account request
-    :param request:
-    :return:
-    """
+        Get an account request
 
+        Parameters:
+            request (HttpRequest): request
+
+        Returns:
+            Response object
+    """
     try:
         # Get parameters
-        request_id = request.DATA['requestid']
-
+        account_request_id = request.POST['request_id']
         try:
-            requests = account_request_api.get(request_id)
+            requests = account_request_api.get(account_request_id)
             serializer = RequestSerializer(requests)
 
             if serializer.is_valid():
@@ -63,29 +70,32 @@ def get(request):
 
 def post(request):
     """
-    Post a new account request
-    :param request:
-    :return:
+        Post a new account request
+
+        Parameters:
+            request (HttpRequest): request
+
+        Returns:
+            Response object
     """
     try:
         # Get parameters
-        request_username = request.DATA['username']
-        request_first_name = request.DATA['firstname']
-        request_last_name = request.DATA['lastname']
-        request_password = request.DATA['password']
-        request_email = request.DATA['email']
+        username = request.POST['username']
+        first_name = request.POST['firstname']
+        last_name = request.POST['lastname']
+        password = request.POST['password']
+        email = request.POST['email']
 
+        account_request_from_request = AccountRequest(username,
+                                                      first_name,
+                                                      last_name,
+                                                      password,
+                                                      email)
         try:
             # Create the request
-            request_content = account_request_api.save(request_username=request_username,
-                                                       request_first_name=request_first_name,
-                                                       request_last_name=request_last_name,
-                                                       request_password=request_password,
-                                                       request_email=request_email)
-
+            request_content = account_request_api.insert(account_request_from_request)
             # Serialize the request
             serializer = RequestSerializer(request_content)
-
             if serializer.is_valid():
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
@@ -105,9 +115,13 @@ def post(request):
 @api_view(['GET', 'POST'])
 def account_request(request):
     """
-    Account Request
-    :param request:
-    :return:
+        Account request redirect to POST or GET methods
+
+        Parameters:
+            request (HttpRequest): request
+
+        Returns:
+            Response object
     """
     if request.method == 'GET':
         return get(request)
@@ -119,16 +133,20 @@ def account_request(request):
 @api_staff_member_required()
 def accept(request):
     """
-    Accept an account request
-    :param request:
-    :return:
+        Accept an account request
+
+        Parameters:
+            request (HttpRequest): request
+
+        Returns:
+            Response object
     """
     try:
         # Get parameters
-        request_id = request.DATA['requestid']
-
+        request_id = request.POST['requestid']
+        account_request_from_api = account_request_api.get(request_id)
         try:
-            user_request = account_request_api.accept(request_id, send_mail=False)
+            user_request = account_request_api.accept(account_request_from_api, send_mail=False)
         except Exception as api_exception:
             content = {'message': api_exception.message}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
@@ -152,17 +170,20 @@ def accept(request):
 @api_staff_member_required()
 def deny(request):
     """
-    Deny an account request
-    :param request:
-    :return:
-    """
+        Deny an account request
 
+        Parameters:
+            request (HttpRequest): request
+
+        Returns:
+            Response object
+    """
     try:
         # Get parameters
-        request_id = request.DATA['requestid']
-
+        request_id = request.POST['requestid']
+        account_request_from_api = account_request_api.get(request_id)
         try:
-            account_request_api.deny(request_id)
+            account_request_api.deny(account_request_from_api)
             return Response({}, status=status.HTTP_204_NO_CONTENT)
 
         except Exception as api_exception:

@@ -1,4 +1,5 @@
-""" Views available for the user
+"""
+    Views available for the user
 """
 from core_main_app.utils.rendering import render
 from django.contrib.auth import authenticate, login, logout
@@ -7,15 +8,16 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse
 from django.shortcuts import redirect
 from django.contrib import messages
-from core_main_app.commons.exceptions import MDCSError
 from rest_framework.status import HTTP_405_METHOD_NOT_ALLOWED
 
 from core_website_app.views.user.forms import LoginForm
 from .forms import RequestAccountForm, ContactForm
+
+from core_website_app.common.exceptions import ViewsWebsiteError
+from core_website_app.components.account_request.models import AccountRequest
 import core_website_app.components.account_request.api as account_request_api
 import core_website_app.components.contact_message.api as contact_message_api
 import core_website_app.components.help.api as help_api
-
 import core_website_app.components.privacy_policy.api as privacy_policy_api
 import core_website_app.components.terms_of_use.api as terms_of_use_api
 
@@ -49,14 +51,17 @@ def request_new_account(request):
         if form.is_valid():
             # call the API
             try:
-                account_request_api.save(request.POST['username'],
-                                         request.POST['firstname'],
-                                         request.POST['lastname'],
-                                         request.POST['password'],
-                                         request.POST['email'])
+                account_request = AccountRequest(request.POST['username'],
+                                                 request.POST['firstname'],
+                                                 request.POST['lastname'],
+                                                 request.POST['password'],
+                                                 request.POST['email'])
+
+                account_request_api.insert(account_request)
+
                 messages.add_message(request, messages.INFO, 'User Account Request sent to the administrator.')
                 return redirect('/')
-            except MDCSError, e:
+            except ViewsWebsiteError, e:
                 message = e.message
                 return render(request, 'request_new_account.html', {'form': form, 'action_result': message})
     else:

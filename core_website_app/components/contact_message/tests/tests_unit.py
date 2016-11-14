@@ -5,7 +5,7 @@ from core_website_app.components.contact_message import api as contact_message_a
 from ..models import *
 from unittest.case import TestCase
 from mock import Mock, patch
-from core_main_app.commons.exceptions import MDCSError
+from core_main_app.commons.exceptions import ApiError
 
 
 class TestsContactMessageGet(TestCase):
@@ -31,7 +31,7 @@ class TestsContactMessageGet(TestCase):
         message_id = 1
         mock_get_by_id.side_effect = Exception()
         # Act # Assert
-        with self.assertRaises(MDCSError):
+        with self.assertRaises(ApiError):
             contact_message_api.get(message_id)
 
 
@@ -69,7 +69,7 @@ class TestsContactMessageDelete(TestCase):
         message_id = 1
         mock_get_by_id.side_effect = Exception()
         # Act # Assert
-        with self.assertRaises(MDCSError):
+        with self.assertRaises(ApiError):
             contact_message_api.delete(message_id)
 
 
@@ -93,6 +93,6 @@ class TestsContactMessagePost(TestCase):
         # Arrange
         mock_create.side_effect = Exception()
         # Act # Assert
-        with self.assertRaises(MDCSError):
+        with self.assertRaises(ApiError):
             contact_message_api.save("name", "mail@mail.com", "content")
 

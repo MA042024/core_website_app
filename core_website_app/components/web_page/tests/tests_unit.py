@@ -7,7 +7,7 @@ from core_website_app.components.web_page import api as web_page_api
 from ..models import *
 from unittest.case import TestCase
 from mock import Mock, patch
-from core_main_app.commons.exceptions import MDCSError
+from core_main_app.commons.exceptions import ApiError
 
 
 class TestsWebPageApiGet(TestCase):
@@ -70,7 +70,7 @@ class TestsWebPageApiPost(TestCase):
     def test_web_page_post_with_wrong_type_raise_mdcs_error(self):
         # Arrange
         # Act Assert
-        with self.assertRaises(MDCSError):
+        with self.assertRaises(ApiError):
             web_page_api.save("wrong_type", "content")
 
     @patch('core_website_app.components.web_page.models.WebPage.get_by_type')

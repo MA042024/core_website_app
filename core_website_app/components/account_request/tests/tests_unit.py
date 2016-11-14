@@ -2,108 +2,110 @@
     Tests of the account request API
 """
 from core_website_app.components.account_request import api as account_request_api
-from ..models import *
+from core_website_app.components.account_request.models import AccountRequest
 from mock import Mock, patch
 from unittest.case import TestCase
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from core_main_app.commons.exceptions import MDCSError
+from core_main_app.commons.exceptions import ApiError
 
 
 class TestsAccountRequestGet(TestCase):
 
-    @patch('core_website_app.components.account_request.models.Request.get_by_id')
+    @patch('core_website_app.components.account_request.models.AccountRequest.get_by_id')
     def test_account_request_get_return_request_object(self, mock_get_by_id):
         # Arrange
         request_id = "1"
-        mock_request = Mock(spec=Request)
-        mock_request.username = "my message name"
-        mock_request.first_name = "mail@mail.com"
-        mock_request.last_name = "content"
-        mock_request.email = request_id
-        mock_get_by_id.return_value = mock_request
+        mock_account_request = _create_mock_account_request()
+        mock_get_by_id.return_value = mock_account_request
         # Act
         result = account_request_api.get(request_id)
         # Assert
-        self.assertIsInstance(result, Request)
+        self.assertIsInstance(result, AccountRequest)
 
-    @patch('core_website_app.components.account_request.models.Request.get_by_id')
+    @patch('core_website_app.components.account_request.models.AccountRequest.get_by_id')
     def test_account_request_get_raise_MDCSError_if_request_not_found(self, mock_get_by_id):
         # Arrange
         request_id = "1"
         mock_get_by_id.side_effect = Exception()
         # Act # Assert
-        with self.assertRaises(MDCSError):
+        with self.assertRaises(ApiError):
             account_request_api.get(request_id)
 
 
 class TestsAccountRequestAccept(TestCase):
 
+    def setUp(self):
+       self.mock_account_request = _create_mock_account_request()
+
+    @patch('core_website_app.components.account_request.models.AccountRequest.delete')
     @patch('core_website_app.components.account_request.api._get_user_by_username')
-    @patch('core_website_app.components.account_request.api.get')
-    def test_account_request_accept_raise_MDCSError_if_user_already_exist(self, mock_request_get, mock_get_user_by_username):
+    def test_account_request_accept_raise_ApiError_if_user_already_exist(self, mock_get_user_by_username, mock_delete):
         # Arrange
-        mock_request = Mock(spec=Request)
-        mock_request.username = "username"
-        mock_request_get.return_value = mock_request
         mock_user = Mock(spec=User)
         mock_user.username = "username"
         mock_get_user_by_username.return_value = mock_user
+        mock_delete.return_value = None
         # Act # Assert
-        with self.assertRaises(MDCSError):
-            account_request_api.accept(1, False)
+        with self.assertRaises(ApiError):
+            account_request_api.accept(self.mock_account_request, False)
 
-    @patch('core_website_app.components.account_request.api._save_user')
+    @patch('core_website_app.components.account_request.models.AccountRequest.delete')
+    @patch('core_website_app.components.account_request.api._create_and_save_user')
     @patch('core_website_app.components.account_request.api._get_user_by_username')
-    @patch('core_website_app.components.account_request.api.get')
-    def test_account_request_accept_return_user_if_user_doesnt_exist(self, mock_request_get, mock_get_by_username,
-                                                                     mock_save):
+    def test_account_request_accept_return_user_if_user_doesnt_exist(self, mock_get_by_username, mock_create_and_save,
+                                                                     mock_delete):
         # Arrange
-        mock_request = Mock(spec=Request)
-        mock_request.username = "username"
-        mock_request_get.return_value = mock_request
         mock_get_by_username.side_effect = ObjectDoesNotExist()
         mock_user = Mock(spec=User)
         mock_user.id = 1
-        mock_save.return_value = mock_user
+        mock_create_and_save.return_value = mock_user
+        mock_delete.return_value = None
         # Act
-        result = account_request_api.accept(1, False)
+        result = account_request_api.accept(self.mock_account_request, False)
         #  Assert
         self.assertIsInstance(result, User)
 
 
-class TestsAccountRequestPost(TestCase):
+class TestsAccountRequestInsert(TestCase):
+
+    def setUp(self):
+        self.mock_account_request = _create_mock_account_request()
 
     @patch('core_website_app.components.account_request.api._get_user_by_username')
-    def test_account_request_post_raise_MDCSError_if_username_already_exist(self, mock_get_user_by_username):
+    def test_account_request_insert_raise_ApiError_if_username_already_exist(self, mock_get_user_by_username):
         # Arrange
         mock_user = Mock(spec=User)
         mock_user.username = "username"
         mock_get_user_by_username.return_value = mock_user
         # Act # Assert
-        with self.assertRaises(MDCSError):
-            account_request_api.save("username", "firestname", "lastname", "password", "mail@mail.com")
+        with self.assertRaises(ApiError):
+            account_request_api.insert(self.mock_account_request)
 
-    @patch('core_website_app.components.account_request.models.Request.save')
+    @patch('core_website_app.components.account_request.models.AccountRequest.save')
     @patch('core_website_app.components.account_request.api._get_user_by_username')
-    def test_account_request_post_return_request_if_username_doesnt_exist(self, mock_get_user_by_username, mock_save):
+    def test_account_request_insert_return_request_if_username_doesnt_exist(self, mock_get_user_by_username, mock_save):
         # Arrange
         mock_get_user_by_username.side_effect = ObjectDoesNotExist()
-        mock_request = Mock(spec=Request)
-        mock_save.return_value = mock_request
+        mock_save.return_value = self.mock_account_request
         # Act
-        result = account_request_api.save("username", "firestname", "lastname", "password", "mail@mail.com")
+        result = account_request_api.insert(self.mock_account_request)
         # Assert
-        self.assertIsInstance(result, Request)
+        self.assertIsInstance(result, AccountRequest)
 
 
-class TestsAccountRequestDeny(TestCase):
-
-    @patch('core_website_app.components.account_request.models.Request.get_by_id')
-    def test_account_request_deny_raise_MDCSError_if_request_not_found(self, mock_get_by_id):
-        # Arrange
-        request_id = 1
-        mock_get_by_id.side_effect = Exception()
-        # Act # Assert
-        with self.assertRaises(MDCSError):
-            account_request_api.deny(request_id)
+def _create_mock_account_request(username="username",
+                                 password="password",
+                                 first_name="first_name",
+                                 last_name="last_name",
+                                 email="mail@mail.com"):
+    """
+        create an mock object using account request model
+        :param username:
+        :param password:
+        :param first_name:
+        :param last_name:
+        :param email:
+        :return:
+    """
+    return AccountRequest(username, password, first_name, last_name, email)
