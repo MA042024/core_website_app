@@ -7,7 +7,7 @@ urlpatterns = [
     url(r'^$', public_views.homepage, name='core_website_homepage'),
     url(r'^account-request', public_views.request_new_account, name='core_website_account_request'),
     url(r'^contact', public_views.contact, name='core_website_contact'),
-    url(r'^help', public_views.help, name='core_website_help'),
+    url(r'^help', public_views.help_page, name='core_website_help'),
     url(r'^privacy', public_views.privacy_policy, name='core_website_privacy'),
     url(r'^terms', public_views.terms_of_use, name='core_website_terms'),
 

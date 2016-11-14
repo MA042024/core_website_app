@@ -1,8 +1,8 @@
 """contact message API
 """
 import logging
-from core_main_app.commons.exceptions import ApiError
-from core_website_app.components.contact_message.models import Message
+from core_main_app.commons import exceptions
+from core_website_app.components.contact_message.models import ContactMessage
 
 logger = logging.getLogger("core_website_app.components.contact_message.api")
 
@@ -12,7 +12,7 @@ def get_all():
         List all messages
         :return:
     """
-    return Message.get_all()
+    return ContactMessage.get_all()
 
 
 def get(message_id):
@@ -22,35 +22,34 @@ def get(message_id):
         :return:
     """
     try:
-        return Message.get_by_id(message_id)
+        return ContactMessage.get_by_id(message_id)
     except Exception as e:
         logger.error(e.message)
-        raise ApiError('No message could be found with the given id.')
+        raise exceptions.ApiError('No message could be found with the given id.')
 
 
-def save(message_name, message_email, message_content):
-    """
-        Post a message
-        :param message_name:
-        :param message_email:
-        :param message_content:
+def upsert(contact_message):
+    """ Insert or update a given message
+
+        :param contact_message:
         :return: message's pk
     """
     try:
         # save method return self
-        return_value = Message.create(message_name, message_email, message_content)
-        return return_value
+        return contact_message.save()
     except Exception as e:
         logger.error(e.message)
-        raise ApiError('Save message failed')
+        raise exceptions.ApiError('Save message failed')
 
 
-def delete(message_id):
+def delete(contact_message):
     """
         Delete a message
-        :param message_id:
+        :param contact_message:
         :return:
     """
-    message = get(message_id)
-    # No exception possible for delete method
-    message.delete()
+    try:
+        contact_message.delete()
+    except Exception as e:
+        logger.error(e.message)
+        raise exceptions.ApiError("Impossible to delete contact message.")

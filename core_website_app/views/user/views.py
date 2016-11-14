@@ -8,12 +8,11 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse
 from django.shortcuts import redirect
 from django.contrib import messages
+from core_main_app.commons import exceptions
 from rest_framework.status import HTTP_405_METHOD_NOT_ALLOWED
-
+from core_website_app.components.contact_message.models import ContactMessage
 from core_website_app.views.user.forms import LoginForm
 from .forms import RequestAccountForm, ContactForm
-
-from core_website_app.common.exceptions import ViewsWebsiteError
 from core_website_app.components.account_request.models import AccountRequest
 import core_website_app.components.account_request.api as account_request_api
 import core_website_app.components.contact_message.api as contact_message_api
@@ -61,7 +60,7 @@ def request_new_account(request):
 
                 messages.add_message(request, messages.INFO, 'User Account Request sent to the administrator.')
                 return redirect('/')
-            except ViewsWebsiteError, e:
+            except exceptions.ViewsWebsiteError, e:
                 message = e.message
                 return render(request, 'request_new_account.html', {'form': form, 'action_result': message})
     else:
@@ -88,7 +87,13 @@ def contact(request):
         form = ContactForm(request.POST)
         if form.is_valid():
             # Call the API
-            contact_message_api.save(request.POST['name'], request.POST['email'], request.POST['message'])
+            contact_message = ContactMessage(
+                name=request.POST["name"],
+                email=request.POST["email"],
+                content=request.POST["message"],
+            )
+
+            contact_message_api.upsert(contact_message)
             messages.add_message(request, messages.INFO, 'Your message has been sent to the administrator.')
             return redirect('/')
     else:
@@ -97,7 +102,7 @@ def contact(request):
     return render(request, 'core_website_app/user/contact.html', {'form': form})
 
 
-def help(request):
+def help_page(request):
     """
     Page that provides FAQ
     :param request:

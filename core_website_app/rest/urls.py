@@ -1,18 +1,4 @@
 """ Url router for the Rest API
-################################################################################
-#
-# File Name: urls.py
-# Application: core_website_app
-# Purpose:
-#
-# Author: Guillaume Sousa Amaral
-#         guillaume.sousa@nist.gov
-#
-#
-#
-# Sponsor: National Institute of Standards and Technology (NIST)
-#
-################################################################################
 """
 from django.conf.urls import url
 from .help import views as help_rest_views

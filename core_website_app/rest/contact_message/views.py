@@ -5,7 +5,8 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
 import core_website_app.components.contact_message.api as contact_message_api
-from core_website_app.rest.serializers import MessageSerializer
+from core_website_app.components.contact_message.models import ContactMessage
+from core_website_app.rest.serializers import ContactMessageSerializer
 
 import logging
 logger = logging.getLogger("core_website_app.rest.contact_message.views")
@@ -20,7 +21,7 @@ def get_all(request):
     :return:
     """
     messages = contact_message_api.get_all()
-    serializer = MessageSerializer(messages)
+    serializer = ContactMessageSerializer(messages)
 
     if serializer.is_valid():
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -42,7 +43,7 @@ def get(request):
 
         try:
             messages = contact_message_api.get(message_id)
-            serializer = MessageSerializer(messages)
+            serializer = ContactMessageSerializer(messages)
 
             if serializer.is_valid():
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -73,12 +74,16 @@ def post(request):
         message_content = request.DATA['message']
 
         try:
-            # Create the message
-            new_message = contact_message_api.save(message_name=message_name, message_email=message_email,
-                                                   message_content=message_content)
+            # Create the message and insert it
+            contact_message_object = ContactMessage(
+                name=message_name,
+                email=message_email,
+                content=message_content
+            )
+            new_contact_message = contact_message_api.upsert(contact_message_object)
 
             # Serialize the message
-            serializer = MessageSerializer(new_message)
+            serializer = ContactMessageSerializer(new_contact_message)
 
             if serializer.is_valid():
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -121,7 +126,8 @@ def delete(request):
         message_id = request.DATA['messageid']
 
         try:
-            contact_message_api.delete(message_id)
+            contact_message = ContactMessage(pk=message_id)
+            contact_message_api.delete(contact_message)
             return Response({}, status=status.HTTP_204_NO_CONTENT)
 
         except Exception as api_exception:
