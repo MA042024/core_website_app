@@ -16,8 +16,7 @@ class TestsAccountRequestGet(TestCase):
     def test_account_request_get_return_request_object(self, mock_get_by_id):
         # Arrange
         request_id = "1"
-        mock_account_request = _create_mock_account_request()
-        mock_get_by_id.return_value = mock_account_request
+        mock_get_by_id.return_value = _create_account_request()
         # Act
         result = account_request_api.get(request_id)
         # Assert
@@ -36,7 +35,7 @@ class TestsAccountRequestGet(TestCase):
 class TestsAccountRequestAccept(TestCase):
 
     def setUp(self):
-       self.mock_account_request = _create_mock_account_request()
+        self.account_request = _create_account_request()
 
     @patch('core_website_app.components.account_request.models.AccountRequest.delete')
     @patch('core_website_app.components.account_request.api._get_user_by_username')
@@ -48,7 +47,7 @@ class TestsAccountRequestAccept(TestCase):
         mock_delete.return_value = None
         # Act # Assert
         with self.assertRaises(ApiError):
-            account_request_api.accept(self.mock_account_request, False)
+            account_request_api.accept(self.account_request, False)
 
     @patch('core_website_app.components.account_request.models.AccountRequest.delete')
     @patch('core_website_app.components.account_request.api._create_and_save_user')
@@ -62,7 +61,7 @@ class TestsAccountRequestAccept(TestCase):
         mock_create_and_save.return_value = mock_user
         mock_delete.return_value = None
         # Act
-        result = account_request_api.accept(self.mock_account_request, False)
+        result = account_request_api.accept(self.account_request, False)
         #  Assert
         self.assertIsInstance(result, User)
 
@@ -70,7 +69,7 @@ class TestsAccountRequestAccept(TestCase):
 class TestsAccountRequestInsert(TestCase):
 
     def setUp(self):
-        self.mock_account_request = _create_mock_account_request()
+        self.mock_account_request = _create_account_request()
 
     @patch('core_website_app.components.account_request.api._get_user_by_username')
     def test_account_request_insert_raise_ApiError_if_username_already_exist(self, mock_get_user_by_username):
@@ -94,18 +93,22 @@ class TestsAccountRequestInsert(TestCase):
         self.assertIsInstance(result, AccountRequest)
 
 
-def _create_mock_account_request(username="username",
-                                 password="password",
-                                 first_name="first_name",
-                                 last_name="last_name",
-                                 email="mail@mail.com"):
+def _create_account_request(username="username",
+                            password="password",
+                            first_name="first_name",
+                            last_name="last_name",
+                            email="mail@mail.com"):
     """
-        create an mock object using account request model
-        :param username:
-        :param password:
-        :param first_name:
-        :param last_name:
-        :param email:
-        :return:
+        Create an AccountRequest object using default parameters
+
+        Parameters:
+            username (str):
+            password (str):
+            first_name (str):
+            last_name (str):
+            email (str):
+
+        Returns:
+            AccountRequest object
     """
     return AccountRequest(username, password, first_name, last_name, email)

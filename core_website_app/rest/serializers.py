@@ -1,13 +1,13 @@
 """ Serializers used throughout the Rest API
 """
 from rest_framework_mongoengine import serializers
-from core_website_app.components.account_request.api import Request
+from core_website_app.components.account_request.api import AccountRequest
 from core_website_app.components.contact_message.api import ContactMessage
 
 
-class RequestSerializer(serializers.MongoEngineModelSerializer):
+class AccountRequestSerializer(serializers.MongoEngineModelSerializer):
     class Meta:
-        model = Request
+        model = AccountRequest
 
 
 class ContactMessageSerializer(serializers.MongoEngineModelSerializer):
