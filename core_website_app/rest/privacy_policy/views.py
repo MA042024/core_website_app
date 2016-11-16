@@ -4,6 +4,7 @@ from core_main_app.utils.permissions import api_staff_member_required
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
+from core_website_app.components.web_page.models import WebPage, WEB_PAGE_TYPES
 import core_website_app.components.privacy_policy.api as privacy_policy_api
 from core_website_app.rest.serializers import WebPageSerializer
 
@@ -36,11 +37,18 @@ def post(request):
     try:
         # Get parameters
         privacy_policy_content = request.DATA['content']
+        privacy_policy_page = privacy_policy_api.get()
+
+        if privacy_policy_page is None:
+            privacy_policy_page = WebPage(WEB_PAGE_TYPES["privacy_policy"], privacy_policy_content)
+        else:
+            privacy_policy_page.content = privacy_policy_content
+
         try:
-            privacy_policy_page_content = privacy_policy_api.save(privacy_policy_content)
+            privacy_policy_page = privacy_policy_api.upsert(privacy_policy_page)
 
             # Serialize the request
-            serializer = WebPageSerializer(privacy_policy_page_content)
+            serializer = WebPageSerializer(privacy_policy_page.content)
 
             if serializer.is_valid():
                 return Response(serializer.data, status=status.HTTP_200_OK)

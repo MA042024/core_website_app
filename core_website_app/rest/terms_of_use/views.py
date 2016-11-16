@@ -4,6 +4,7 @@ from core_main_app.utils.permissions import api_staff_member_required
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
+from core_website_app.components.web_page.models import WebPage, WEB_PAGE_TYPES
 import core_website_app.components.terms_of_use.api as terms_of_use_api
 from core_website_app.rest.serializers import WebPageSerializer
 
@@ -35,12 +36,19 @@ def post(request):
     """
     try:
         # Get parameters
-        help_content = request.DATA['content']
+        terms_of_use_content = request.DATA['content']
+        terms_of_use_page = terms_of_use_api.get()
+
+        if terms_of_use_page is None:
+            terms_of_use_page = WebPage(WEB_PAGE_TYPES["privacy_policy"], terms_of_use_content)
+        else:
+            terms_of_use_page.content = terms_of_use_content
+
         try:
-            help_page_content = terms_of_use_api.save(help_content)
+            terms_of_use_page = terms_of_use_api.upsert(terms_of_use_page)
 
             # Serialize the request
-            serializer = WebPageSerializer(help_page_content)
+            serializer = WebPageSerializer(terms_of_use_page.content)
 
             if serializer.is_valid():
                 return Response(serializer.data, status=status.HTTP_200_OK)

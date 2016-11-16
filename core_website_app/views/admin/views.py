@@ -6,6 +6,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from .forms import HelpForm, PrivacyPolicyForm, TermsOfUseForm
+from core_website_app.components.web_page.models import WebPage, WEB_PAGE_TYPES
 import core_website_app.components.account_request.api as account_request_api
 import core_website_app.components.contact_message.api as contact_message_api
 import core_website_app.components.help.api as help_api
@@ -53,7 +54,13 @@ def help_admin(request):
         form = HelpForm(request.POST)
         if form.is_valid():
             # Call the API
-            help_api.save(request.POST['content'])
+            help_content = request.POST['content']
+            help_page = help_api.get()
+            if help_page is None:
+                help_page = WebPage(WEB_PAGE_TYPES["help"], help_content)
+            else:
+                help_page.content = help_content
+            help_api.upsert(help_page)
             messages.add_message(request, messages.INFO, 'Help saved with success.')
             return redirect('/admin/website')
     else:
@@ -66,17 +73,25 @@ def help_admin(request):
 
 @staff_member_required
 def privacy_policy_admin(request):
-    """
-    Page that allows to edit Privacy Policy
-    :param request:
-    :return:
+    """Page that allows to edit Privacy Policy
+
+        Parameters:
+            request:
+
+        Returns: Http response
     """
 
     if request.method == 'POST':
         form = PrivacyPolicyForm(request.POST)
         if form.is_valid():
             # Call the API
-            privacy_policy_api.save(request.POST['content'])
+            privacy_policy_content = request.POST['content']
+            privacy_policy_page = privacy_policy_api.get()
+            if privacy_policy_page is None:
+                privacy_policy_page = WebPage(WEB_PAGE_TYPES["privacy_policy"], privacy_policy_content)
+            else:
+                privacy_policy_page.content = privacy_policy_content
+            privacy_policy_api.upsert(privacy_policy_page)
             messages.add_message(request, messages.INFO, 'Privacy Policy saved with success.')
             return redirect('/admin/website')
     else:
@@ -89,17 +104,25 @@ def privacy_policy_admin(request):
 
 @staff_member_required
 def terms_of_use_admin(request):
-    """
-    Page that allows to edit Terms of Use
-    :param request:
-    :return:
+    """Page that allows to edit Terms of Use
+
+        Parameters:
+            request:
+
+        Returns: Http response
     """
 
     if request.method == 'POST':
         form = TermsOfUseForm(request.POST)
         if form.is_valid():
             # Call the API
-            terms_of_use_api.save(request.POST['content'])
+            terms_of_use_content = request.POST['content']
+            terms_of_use_page = terms_of_use_api.get()
+            if terms_of_use_page is None:
+                terms_of_use_page = WebPage(WEB_PAGE_TYPES["privacy_policy"], terms_of_use_content)
+            else:
+                terms_of_use_page.content = terms_of_use_content
+            terms_of_use_api.upsert(terms_of_use_page)
             messages.add_message(request, messages.INFO, 'Terms of Use saved with success.')
             return redirect('/admin/website')
     else:
@@ -112,10 +135,12 @@ def terms_of_use_admin(request):
 
 @staff_member_required
 def website(request):
-    """
-    Page that allows to edit website pages
-    :param request:
-    :return:
+    """Page that allows to edit website pages
+
+        Parameters:
+            request:
+
+        Returns: Http Response
     """
 
     return render(request, 'core_website_app/admin/website.html', {})

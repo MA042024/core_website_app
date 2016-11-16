@@ -1,10 +1,11 @@
-""" rest views for the help page
+"""Rest views for the help page
 """
 from core_main_app.utils.permissions import api_staff_member_required
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
 from core_website_app.rest.serializers import WebPageSerializer
+from core_website_app.components.web_page.models import WebPage, WEB_PAGE_TYPES
 import core_website_app.components.help.api as help_api
 
 import logging
@@ -12,9 +13,9 @@ logger = logging.getLogger("core_website_app.rest.help.views")
 
 
 def get():
-    """
-    Get the help
-    :return:
+    """Get the help
+
+        Returns: Http Response
     """
     help_page = help_api.get()
     serializer = WebPageSerializer(help_page)
@@ -28,19 +29,28 @@ def get():
 
 @api_staff_member_required()
 def post(request):
-    """
-    Post the help
-    :param request:
-    :return:
+    """Post the help
+
+        Parameters:
+            request: context
+
+        Returns: Http Response
     """
     try:
         # Get parameters
         help_content = request.DATA['content']
+        help_page = help_api.get()
+
+        if help_page is None:
+            help_page = WebPage(WEB_PAGE_TYPES["help"], help_content)
+        else:
+            help_page.content = help_content
+
         try:
-            help_page_content = help_api.save(help_content)
+            help_page = help_api.upsert(help_page)
 
             # Serialize the request
-            serializer = WebPageSerializer(help_page_content)
+            serializer = WebPageSerializer(help_page.content)
 
             if serializer.is_valid():
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -60,10 +70,12 @@ def post(request):
 
 @api_view(['GET', 'POST'])
 def rest_help_page(request):
-    """
-    Help
-    :param request:
-    :return:
+    """Help
+
+        Parameters:
+            request:
+
+        Returns:
     """
     if request.method == 'GET':
         return get()

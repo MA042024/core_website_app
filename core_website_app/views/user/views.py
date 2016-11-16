@@ -8,7 +8,6 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse
 from django.shortcuts import redirect
 from django.contrib import messages
-from core_main_app.commons import exceptions
 from rest_framework.status import HTTP_405_METHOD_NOT_ALLOWED
 from core_website_app.components.contact_message.models import ContactMessage
 from core_website_app.views.user.forms import LoginForm
@@ -19,13 +18,16 @@ import core_website_app.components.contact_message.api as contact_message_api
 import core_website_app.components.help.api as help_api
 import core_website_app.components.privacy_policy.api as privacy_policy_api
 import core_website_app.components.terms_of_use.api as terms_of_use_api
+import core_website_app.common.exceptions as exceptions
 
 
 def homepage(request):
     """ Homepage for the website
 
-    :param request:
-    :return:
+        Parameters:
+            request:
+
+        Returns:
     """
     context = {}
 
@@ -39,10 +41,12 @@ def homepage(request):
 
 
 def request_new_account(request):
-    """
-    Page that allows to request a user account
-    :param request:
-    :return:
+    """Page that allows to request a user account
+
+        Parameters:
+            request:
+
+        Returns: Http response
     """
 
     if request.method == 'POST':
@@ -60,7 +64,7 @@ def request_new_account(request):
 
                 messages.add_message(request, messages.INFO, 'User Account Request sent to the administrator.')
                 return redirect('/')
-            except exceptions.ViewsWebsiteError, e:
+            except exceptions.WebsiteViewsError, e:
                 message = e.message
                 return render(request, 'request_new_account.html', {'form': form, 'action_result': message})
     else:
@@ -77,10 +81,12 @@ def request_new_account(request):
 
 
 def contact(request):
-    """
-    Contact form
-    :param request:
-    :return:
+    """Contact form
+
+        Parameters:
+            request:
+
+        Returns: Http response
     """
 
     if request.method == 'POST':
@@ -103,10 +109,12 @@ def contact(request):
 
 
 def help_page(request):
-    """
-    Page that provides FAQ
-    :param request:
-    :return:
+    """Page that provides FAQ
+
+        Parameters:
+            request: Http response
+
+        Returns:
     """
 
     # Call the API
@@ -116,10 +124,12 @@ def help_page(request):
 
 
 def privacy_policy(request):
-    """
-    Page that provides privacy policy
-    :param request:
-    :return:
+    """Page that provides privacy policy
+
+        Parameters:
+            request:
+
+        Returns: Http response
     """
 
     # Call the API
@@ -129,10 +139,12 @@ def privacy_policy(request):
 
 
 def terms_of_use(request):
-    """
-    Page that provides terms of use
-    :param request:
-    :return:
+    """Page that provides terms of use
+
+        Parameters:
+            request:
+
+        Returns: Http Response
     """
 
     # Call the API
