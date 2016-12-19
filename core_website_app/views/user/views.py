@@ -29,15 +29,30 @@ def homepage(request):
 
         Returns:
     """
-    context = {}
+    assets = {
+        "js": []
+    }
 
     if finders.find("core_website_app/css/homepage.css") is not None:
-        context["css"] = ["core_website_app/css/homepage.css"]
+        assets["css"] = ["core_website_app/css/homepage.css"]
 
     if finders.find("core_website_app/js/homepage.js") is not None:
-        context["js"] = ["core_website_app/js/homepage.js"]
+        assets["js"].append(
+            {
+                "path": "core_website_app/js/homepage.js",
+                "is_raw": False
+            }
+        )
 
-    return render(request, "core_website_app/user/homepage.html", context)
+    if finders.find("core_website_app/js/homepage.raw.js") is not None:
+        assets["js"].append(
+            {
+                "path": "core_website_app/js/homepage.raw.js",
+                "is_raw": True
+            }
+        )
+
+    return render(request, "core_website_app/user/homepage.html", assets=assets)
 
 
 def request_new_account(request):
@@ -50,8 +65,8 @@ def request_new_account(request):
     """
 
     if request.method == 'POST':
-        form = RequestAccountForm(request.POST)
-        if form.is_valid():
+        request_form = RequestAccountForm(request.POST)
+        if request_form.is_valid():
             # call the API
             try:
                 account_request = AccountRequest(request.POST['username'],
@@ -66,18 +81,25 @@ def request_new_account(request):
                 return redirect('/')
             except exceptions.WebsiteViewsError, e:
                 message = e.message
-                return render(request, 'request_new_account.html', {'form': form, 'action_result': message})
+                return render(request, 'request_new_account.html',
+                              context={'request_form': request_form, 'action_result': message})
     else:
-        form = RequestAccountForm()
+        request_form = RequestAccountForm()
 
     context = {
-        "js": [
-            "core_website_app/user/js/user_account_req.js"
-        ],
-        "form": form
+        "request_form": request_form
     }
 
-    return render(request, 'core_website_app/user/request_new_account.html', context)
+    assets = {
+        "js": [
+            {
+                "path": "core_website_app/user/js/user_account_req.js",
+                "is_raw": False
+            }
+        ],
+    }
+
+    return render(request, 'core_website_app/user/request_new_account.html', assets=assets, context=context)
 
 
 def contact(request):
@@ -90,8 +112,8 @@ def contact(request):
     """
 
     if request.method == 'POST':
-        form = ContactForm(request.POST)
-        if form.is_valid():
+        contact_form = ContactForm(request.POST)
+        if contact_form.is_valid():
             # Call the API
             contact_message = ContactMessage(
                 name=request.POST["name"],
@@ -103,9 +125,9 @@ def contact(request):
             messages.add_message(request, messages.INFO, 'Your message has been sent to the administrator.')
             return redirect('/')
     else:
-        form = ContactForm()
+        contact_form = ContactForm()
 
-    return render(request, 'core_website_app/user/contact.html', {'form': form})
+    return render(request, 'core_website_app/user/contact.html', context={'contact_form': contact_form})
 
 
 def help_page(request):
@@ -116,11 +138,10 @@ def help_page(request):
 
         Returns:
     """
-
     # Call the API
     help_content = help_api.get()
 
-    return render(request, 'core_website_app/user/help.html', {'help': help_content})
+    return render(request, 'core_website_app/user/help.html', context={'help': help_content})
 
 
 def privacy_policy(request):
@@ -135,7 +156,7 @@ def privacy_policy(request):
     # Call the API
     policy = privacy_policy_api.get()
 
-    return render(request, 'core_website_app/user/privacy-policy.html', {'policy': policy})
+    return render(request, 'core_website_app/user/privacy-policy.html', context={'policy': policy})
 
 
 def terms_of_use(request):
@@ -150,7 +171,7 @@ def terms_of_use(request):
     # Call the API
     terms = terms_of_use_api.get()
 
-    return render(request, 'core_website_app/user/terms-of-use.html', {'terms': terms})
+    return render(request, 'core_website_app/user/terms-of-use.html', context={'terms': terms})
 
 
 def custom_login(request):
@@ -164,12 +185,13 @@ def custom_login(request):
 
             return redirect(reverse("core_website_homepage"))
         except Exception as e:
-            return render(request, "core_website_app/user/login.html", {'form': LoginForm(), 'login_error': True})
+            return render(request, "core_website_app/user/login.html",
+                          context={'login_form': LoginForm(), 'login_error': True})
     elif request.method == "GET":
         if request.user.is_authenticated():
             return redirect(reverse("core_website_homepage"))
 
-        return render(request, "core_website_app/user/login.html", {'form': LoginForm()})
+        return render(request, "core_website_app/user/login.html", context={'login_form': LoginForm()})
     else:
         return HttpResponse(status=HTTP_405_METHOD_NOT_ALLOWED)
 

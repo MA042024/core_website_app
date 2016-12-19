@@ -1,10 +1,11 @@
 """
     Admin views
 """
-from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
+
+from core_main_app.utils.rendering import render
 from .forms import HelpForm, PrivacyPolicyForm, TermsOfUseForm
 from core_website_app.components.web_page.models import WebPage, WEB_PAGE_TYPES
 import core_website_app.components.account_request.api as account_request_api
@@ -99,7 +100,7 @@ def privacy_policy_admin(request):
         content = policy.content if policy is not None else ''
         form = PrivacyPolicyForm({'content': content})
 
-    return render(request, 'core_website_app/admin/privacy_policy.html', {'form': form})
+    return render(request, 'core_website_app/admin/privacy_policy.html', context={'form': form})
 
 
 @staff_member_required
