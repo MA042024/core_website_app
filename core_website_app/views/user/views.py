@@ -167,7 +167,6 @@ def terms_of_use(request):
 
         Returns: Http Response
     """
-
     # Call the API
     terms = terms_of_use_api.get()
 

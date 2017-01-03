@@ -4,12 +4,13 @@
         <h2>Request New Account</h2>
 
         Use the following form to request an user account on the {{CUSTOM_TITLE}} Curation System.
-        <form action="/request-new-account" method="post">
+        <form action="{% url 'core_website_account_request' %}" method="post">
             {% csrf_token %}
-            {{ form }}
+            {{ data.request_form }}
             <div id="request_error" style="font-weight: bold;">
-            {{action_result}}
+            {{ data.action_result }}
             </div>
+
             <input type="submit" class="btn btn-lg btn-default" value="Make a Request"/>
         </form>
     </div>

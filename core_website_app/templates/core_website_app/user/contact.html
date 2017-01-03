@@ -6,7 +6,7 @@
         <form action="/contact" method="post" class="form-horizontal">
             {% csrf_token %}
 
-            {% for field in form %}
+            {% for field in data.contact_form %}
             <div class="form-group">
                 <label for="{{ field.id_for_label }}" class="col-sm-2 control-label">{{ field.label }}</label>
                 <div class="col-sm-10">
