@@ -1,6 +1,6 @@
 """ rest api for the terms of use
 """
-from core_main_app.utils.permissions import api_staff_member_required
+from core_main_app.utils.decorators import api_staff_member_required
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
