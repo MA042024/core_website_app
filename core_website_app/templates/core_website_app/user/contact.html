@@ -3,7 +3,7 @@
     <div class="col-md-12">
         <h2>Contact Form</h2>
 
-        <form action="/contact" method="post" class="form-horizontal">
+        <form action="{% url 'core_website_app_contact' %}" method="post" class="form-horizontal">
             {% csrf_token %}
 
             {% for field in data.contact_form %}

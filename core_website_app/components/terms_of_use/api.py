@@ -2,10 +2,12 @@
     terms of use api
 """
 import core_website_app.components.web_page.api as web_page_api
+from core_main_app.commons.exceptions import ApiError
 from core_website_app.components.web_page.models import WebPage
 from core_website_app.components.web_page.enums import WEB_PAGE_TYPES
 
-TERMOF_PAGE_TYPE = WEB_PAGE_TYPES["terms_of_use"]
+TERMS_PAGE_NAME = "terms_of_use"
+TERMS_PAGE_TYPE = WEB_PAGE_TYPES[TERMS_PAGE_NAME]
 
 
 def get():
@@ -14,16 +16,21 @@ def get():
 
         Returns: Terms of use web page
     """
-    return web_page_api.get(TERMOF_PAGE_TYPE)
+    return web_page_api.get(TERMS_PAGE_NAME)
 
 
-def upsert(terms_of_use_content):
+def upsert(terms_of_use_page):
     """
         Post the terms of use
 
         Parameters:
-            terms_of_use_content (str): content of the web page
+            terms_of_use_page (str): content of the web page
 
         Returns: Terms of use web page
     """
-    return web_page_api.upsert(WebPage(TERMOF_PAGE_TYPE, terms_of_use_content))
+    if terms_of_use_page.type != TERMS_PAGE_TYPE:
+        raise ApiError(
+            "Webpage type not coherent (expected: %s; actual %s" % (str(TERMS_PAGE_TYPE), str(terms_of_use_page.type))
+        )
+
+    return web_page_api.upsert(terms_of_use_page)

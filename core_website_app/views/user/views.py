@@ -1,6 +1,12 @@
 """
     Views available for the user
 """
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import User
+from django.template.loader import get_template
+from mongoengine.errors import ValidationError
+
+from core_main_app.commons.exceptions import ApiError
 from core_main_app.utils.rendering import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.staticfiles import finders
@@ -63,33 +69,6 @@ def request_new_account(request):
 
         Returns: Http response
     """
-
-    if request.method == 'POST':
-        request_form = RequestAccountForm(request.POST)
-        if request_form.is_valid():
-            # call the API
-            try:
-                account_request = AccountRequest(request.POST['username'],
-                                                 request.POST['firstname'],
-                                                 request.POST['lastname'],
-                                                 request.POST['password'],
-                                                 request.POST['email'])
-
-                account_request_api.insert(account_request)
-
-                messages.add_message(request, messages.INFO, 'User Account Request sent to the administrator.')
-                return redirect('/')
-            except exceptions.WebsiteViewsError, e:
-                message = e.message
-                return render(request, 'request_new_account.html',
-                              context={'request_form': request_form, 'action_result': message})
-    else:
-        request_form = RequestAccountForm()
-
-    context = {
-        "request_form": request_form
-    }
-
     assets = {
         "js": [
             {
@@ -97,6 +76,49 @@ def request_new_account(request):
                 "is_raw": False
             }
         ],
+        "css": ['core_website_app/user/css/list.css']
+    }
+
+    if request.method == 'POST':
+        request_form = RequestAccountForm(request.POST)
+        if request_form.is_valid():
+            # Call the API
+            try:
+                user = User(username=request.POST['username'],
+                            first_name=request.POST['firstname'],
+                            last_name=request.POST['lastname'],
+                            password=make_password(request.POST['password']),
+                            email=request.POST['email'],
+                            is_active=False)
+
+                account_request_api.insert(user)
+
+                messages.add_message(request, messages.INFO, 'User Account Request sent to the administrator.')
+                return redirect('/')
+            except ApiError as e:
+                error_message = e.message
+
+                error_template = get_template("core_website_app/user/request_error.html")
+                error_box = error_template.render({"error_message": error_message})
+
+                return render(request, 'core_website_app/user/request_new_account.html',
+                              assets=assets,
+                              context={'request_form': request_form, 'action_result': error_box})
+            except ValidationError as e:
+                error_message = "The following error(s) occured during validation:"
+                error_items = [str(field).capitalize() + ": " + str(error) for field, error in e.errors.items()]
+
+                error_template = get_template("core_website_app/user/request_error.html")
+                error_box = error_template.render({"error_message": error_message, "error_items": error_items})
+
+                return render(request, 'core_website_app/user/request_new_account.html',
+                              assets=assets,
+                              context={'request_form': request_form, 'action_result': error_box})
+    else:
+        request_form = RequestAccountForm()
+
+    context = {
+        "request_form": request_form
     }
 
     return render(request, 'core_website_app/user/request_new_account.html', assets=assets, context=context)
@@ -123,7 +145,7 @@ def contact(request):
 
             contact_message_api.upsert(contact_message)
             messages.add_message(request, messages.INFO, 'Your message has been sent to the administrator.')
-            return redirect('/')
+            return redirect(reverse("core_website_app_homepage"))
     else:
         contact_form = ContactForm()
 
@@ -180,15 +202,20 @@ def custom_login(request):
 
         try:
             user = authenticate(username=username, password=password)
+
+            if not user.is_active:
+                return render(request, "core_website_app/user/login.html",
+                              context={'login_form': LoginForm(), 'login_locked': True})
+
             login(request, user)
 
-            return redirect(reverse("core_website_homepage"))
+            return redirect(reverse("core_website_app_homepage"))
         except Exception as e:
             return render(request, "core_website_app/user/login.html",
                           context={'login_form': LoginForm(), 'login_error': True})
     elif request.method == "GET":
         if request.user.is_authenticated():
-            return redirect(reverse("core_website_homepage"))
+            return redirect(reverse("core_website_app_homepage"))
 
         return render(request, "core_website_app/user/login.html", context={'login_form': LoginForm()})
     else:
@@ -197,4 +224,4 @@ def custom_login(request):
 
 def custom_logout(request):
     logout(request)
-    return redirect(reverse("core_website_login"))
+    return redirect(reverse("core_website_app_login"))

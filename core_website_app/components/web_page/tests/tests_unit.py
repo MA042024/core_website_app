@@ -20,7 +20,7 @@ class TestsWebPageApiGet(TestCase):
         # Act
         result = web_page_api.get("privacy_policy")
         # Assert
-        self.assertEqual("content web page privacy", result)
+        self.assertEqual("content web page privacy", result.content)
 
     @patch('core_website_app.components.web_page.models.WebPage.get_by_type')
     def test_web_page_get_term_of_use(self, mock_get_web_page_by_type):
@@ -30,7 +30,7 @@ class TestsWebPageApiGet(TestCase):
         # Act
         result = web_page_api.get("terms_of_use")
         # Assert
-        self.assertEqual("content web page terms", result)
+        self.assertEqual("content web page terms", result.content)
 
     @patch('core_website_app.components.web_page.models.WebPage.get_by_type')
     def test_web_page_get_help(self, mock_get_web_page_by_type):
@@ -40,7 +40,7 @@ class TestsWebPageApiGet(TestCase):
         # Act
         result = web_page_api.get("help")
         # Assert
-        self.assertEqual("content web page help", result)
+        self.assertEqual("content web page help", result.content)
 
     @patch('core_website_app.components.web_page.models.WebPage.get_by_type')
     def test_web_page_get_not_in_database_return_none(self, mock_get_web_page_by_type):

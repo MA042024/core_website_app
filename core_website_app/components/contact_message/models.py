@@ -11,8 +11,19 @@ class ContactMessage(Document):
 
     @staticmethod
     def get_by_id(message_id):
-        return ContactMessage.objects().get(message_id)
+        """ Get a message using its primary key
+
+        Args:
+            message_id: 
+
+        Returns:
+        """
+        return ContactMessage.objects().get(pk=str(message_id))
 
     @staticmethod
     def get_all():
+        """ Get all messages
+
+        Returns:
+        """
         return ContactMessage.objects.all()

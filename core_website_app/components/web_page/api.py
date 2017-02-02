@@ -17,7 +17,7 @@ def get(page_type):
     if page_type not in WEB_PAGE_TYPES.keys():
         return None
     try:
-        return WebPage.get_by_type(page_type).content
+        return WebPage.get_by_type(page_type)
     except WebsiteWebPageDoesNotExistError:
         return None
 

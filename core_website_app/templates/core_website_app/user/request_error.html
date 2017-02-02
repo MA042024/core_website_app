@@ -1,0 +1,11 @@
+<span>
+    <i class="fa fa-exclamation-circle"></i>
+    {{ error_message }}
+</span>
+{% if error_items %}
+<ul class="bullet-list">
+    {% for error_item in error_items %}
+        <li>{{ error_item }}</li>
+    {% endfor %}
+</ul>
+{% endif %}

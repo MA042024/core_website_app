@@ -1,0 +1,14 @@
+{% extends 'core_main_app/_render/admin/theme/tools/modal.html' %}
+
+{% block modal_id %}deny-request-modal{% endblock %}
+{% block modal_title %}Deny user requests{% endblock %}
+
+{% block modal_body %}
+    Are you sure you want to deny this request? The user will be deleted and unable to access the platform.
+    <input type="hidden" id="deny-request-id" value=""/>
+{% endblock %}
+
+{% block modal_footer %}
+<a class="btn btn-default pull-left" data-dismiss="modal" href="#"><i class="fa fa-times"></i> Cancel</a>
+<a id="btn-deny-request" class="btn btn-danger" href="#"><i class="fa fa-trash"></i> Confirm</a>
+{% endblock %}

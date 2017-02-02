@@ -1,0 +1,35 @@
+{% extends 'core_main_app/_render/admin/theme/tools/box.html' %}
+
+{% block box_title %}Pending requests{% endblock %}
+
+{% block box_body %}
+<table class="table table-bordered table-striped table-hover">
+    <tr>
+        <th width="30%">User</th>
+        <th width="30%">Date</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for request in data.requests %}
+        <tr id="{{ request.id }}">
+            <td><a href="#">{{ request.username }}</a></td>
+            <td>{{ request.date }}</td>
+
+            <td>
+                <div class="btn btn-success accept_request">
+                    <i class="fa fa-check"></i> Accept
+                </div>
+                <div class="btn btn-danger deny_request">
+                    <i class="fa fa-times"></i> Deny
+                </div>
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td class="empty" colspan="3">
+                No account requests pending at the moment.
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}

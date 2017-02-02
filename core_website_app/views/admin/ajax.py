@@ -3,6 +3,7 @@
 """
 from django.http import HttpResponse
 import json
+from core_main_app.commons import exceptions as main_exceptions
 from core_website_app.common import exceptions
 import core_website_app.components.account_request.api as account_request_api
 import core_website_app.components.contact_message.api as contact_message_api
@@ -19,10 +20,10 @@ def accept_request(request):
         account_request_from_api = account_request_api.get(request_id)
         account_request_api.accept(account_request_from_api)
         message = "Request Accepted"
-    except exceptions.WebsiteAjaxError as error:
-        message = error.message
+    except main_exceptions.ApiError as error:
+        raise exceptions.WebsiteAjaxError(error.message)
     except Exception as exception:
-        message = exception.message
+        raise exceptions.WebsiteAjaxError(exception.message)
 
     return HttpResponse(json.dumps({"message": message}), content_type='application/json')
 
@@ -39,10 +40,10 @@ def deny_request(request):
         account_request_from_api = account_request_api.get(request_id)
         account_request_api.deny(account_request_from_api)
         message = "Request denied"
-    except exceptions.WebsiteAjaxError as error:
-        message = error.message
+    except main_exceptions.ApiError as error:
+        raise exceptions.WebsiteAjaxError(error.message)
     except Exception as exception:
-        message = exception.message
+        raise exceptions.WebsiteAjaxError(exception.message)
 
     return HttpResponse(json.dumps({"message": message}), content_type='application/json')
 
@@ -55,8 +56,8 @@ def remove_message(request):
     """
 
     try:
-        message_id = request.POST['messageid']
-        contact_message_api.delete(message_id)
+        contact_message = contact_message_api.get(request.POST['messageid'])
+        contact_message_api.delete(contact_message)
         message = "Message deleted"
     except exceptions.WebsiteAjaxError as error:
         message = error.message

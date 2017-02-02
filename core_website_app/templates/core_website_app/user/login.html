@@ -2,14 +2,20 @@
     <div class="col-md-12">
         <h2>Login</h2>
 
-        {% if login_error %}
+        {% if data.login_error %}
         <div class="alert alert-danger">
             <i class="fa fa-exclamation-circle"></i> Invalid username and/or password. Please try again or
             <a href="#">contact an administrator</a> for any assistance.
         </div>
         {% endif %}
+        {% if data.login_locked %}
+        <div class="alert alert-info">
+            <i class="fa fa-info-circle"></i> Your username is not activated yet. Please check back soon or
+            <a href="#">contact an administrator</a> for any assistance.
+        </div>
+        {% endif %}
 
-        <form method="post" action="{% url 'core_website_login' %}" class="form-horizontal">
+        <form method="post" action="{% url 'core_website_app_login' %}" class="form-horizontal">
             {% csrf_token %}
 
             {% for field in data.login_form %}
@@ -31,7 +37,7 @@
                         <i class="fa fa-sign-in"></i> Login
                     </button>
                     <a class="btn btn-default btn-lg request account pull-right"
-                       href="{% url 'core_website_account_request' %}">
+                       href="{% url 'core_website_app_account_request' %}">
                         <i class="fa fa-user-plus"></i> Request an Account
                     </a>
                 </div>

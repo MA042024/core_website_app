@@ -5,8 +5,8 @@
 
 		<div class="left" style="width: 830px">
 			<br/>
-			{% if help %}
-				{{ help.content | safe}}
+			{% if data.help %}
+				{{ data.help.content | safe}}
 			{% else %}
 				<div class="left" style="width: 400px">
 					<p>
@@ -55,7 +55,8 @@
 
 				<h3 id="How-do-I-contact-the-admin">How do I contact the {{CUSTOM_NAME}} administrator for questions?</h3>
 				<p class="large">
-					You can contact the {{CUSTOM_NAME}} administrator using this <a href="/contact">form</a>.
+					You can contact the {{CUSTOM_NAME}} administrator using this
+                    <a href="{% url 'core_website_app_contact' %}">form</a>.
 				</p>
 			{% endif %}
 		</div>

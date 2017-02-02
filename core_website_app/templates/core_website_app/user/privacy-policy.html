@@ -1,14 +1,14 @@
 {% load staticfiles %}
 <div class="row">
 	<div class="col-md-12">
-		<h1><span>Privacy Policy</span></h1>
+		<h2>Privacy Policy</h2>
 
 		<div class="left" style="width: 830px">
 		<br/>
-		{% if policy %}
-			{{ policy.content | safe}}
+		{% if data.policy %}
+			{{ data.policy.content | safe}}
 		{% else %}
-			<a href="/contact">Contact the administrator</a>
+			<a href="{% url 'core_website_app_contact' %}">Contact the administrator</a>
 		{% endif %}
 	</div>
 	</div>

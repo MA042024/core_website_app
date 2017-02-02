@@ -38,20 +38,24 @@ def get(account_request_id):
         raise ApiError('No request could be found with the given id.')
 
 
-def insert(account_request):
+def insert(user):
     """
         Create a new request
 
         Parameters:
-            account_request:
+            user:
 
         Returns: new account request
     """
     try:
         # check if a user with the same username exists
-        _get_user_by_username(account_request.username)
+        _get_user_by_username(user.username)
         raise ApiError('A user with the same username already exists.')
     except ObjectDoesNotExist:
+        user.save()
+
+        # Create the account request and save it
+        account_request = AccountRequest(username=user.username)
         return account_request.save()
 
 
@@ -72,14 +76,9 @@ def accept(account_request, send_mail=True):
     user = None
     try:
         # check if a user with the same username exists
-        _get_user_by_username(account_request.username)
-    except ObjectDoesNotExist:
-        # create the user
-        user = _create_and_save_user(username=account_request.username,
-                                     password=account_request.password,
-                                     first_name=account_request.first_name,
-                                     last_name=account_request.last_name,
-                                     email=account_request.email)
+        user = _get_user_by_username(account_request.username)
+        user.is_active = True
+        user.save()
 
         if send_mail:
             # FIXME send_mail should use a User object
@@ -96,7 +95,7 @@ def accept(account_request, send_mail=True):
         if user is not None:
             return user
         else:
-            raise ApiError("User already exists")
+            raise ApiError("User does not exist")
 
 
 def deny(account_request):
@@ -106,8 +105,18 @@ def deny(account_request):
         Parameters:
             account_request (obj): Primary key of the request
     """
-    # No exception possible for delete method
-    account_request.delete()
+    user = None
+    try:
+        # check if a user with the same username exists
+        user = _get_user_by_username(account_request.username)
+        user.delete()
+    finally:
+        # delete the user request
+        account_request.delete()
+        if user is not None:
+            return
+        else:
+            raise ApiError("User does not exist")
 
 
 def _get_user_by_username(username):

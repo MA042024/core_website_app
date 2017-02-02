@@ -1,14 +1,14 @@
 {% load staticfiles %}
 <div class="row">
     <div class="col-md-12">
-        <h1><span>Terms of Use</span></h1>
+        <h2>Terms of Use</h2>
 
         <div class="left" style="width: 830px">
             <br/>
-            {% if terms %}
-                {{ terms.content | safe}}
+            {% if data.terms %}
+                {{ data.terms.content | safe}}
             {% else %}
-                <a href="/contact">Contact the administrator</a>
+                <a href="{% url 'core_website_app_contact' %}">Contact the administrator</a>
             {% endif %}
         </div>
     </div>
