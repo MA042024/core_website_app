@@ -7,9 +7,6 @@ from django.views.generic.base import RedirectView
 from views.admin import views as admin_views, ajax as admin_ajax
 
 admin_urls = [
-    url(r'^login', RedirectView.as_view(url=reverse_lazy("core_website_app_login"))),
-    url(r'^logout', RedirectView.as_view(url=reverse_lazy("core_website_app_logout"))),
-
     url(r'^user-requests$', admin_views.user_requests, name='core_website_app_user_requests'),
     url(r'^accept_request', admin_ajax.accept_request, name="core_website_app_accept_user_request"),
     url(r'^deny_request', admin_ajax.deny_request, name="core_website_app_deny_user_request"),

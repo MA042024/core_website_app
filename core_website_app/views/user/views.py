@@ -5,60 +5,18 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.template.loader import get_template
 from mongoengine.errors import ValidationError
-
 from core_main_app.commons.exceptions import ApiError
 from core_main_app.utils.rendering import render
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.staticfiles import finders
 from django.core.urlresolvers import reverse
-from django.http.response import HttpResponse
 from django.shortcuts import redirect
 from django.contrib import messages
-from rest_framework.status import HTTP_405_METHOD_NOT_ALLOWED
 from core_website_app.components.contact_message.models import ContactMessage
-from core_website_app.views.user.forms import LoginForm
 from .forms import RequestAccountForm, ContactForm
-from core_website_app.components.account_request.models import AccountRequest
 import core_website_app.components.account_request.api as account_request_api
 import core_website_app.components.contact_message.api as contact_message_api
 import core_website_app.components.help.api as help_api
 import core_website_app.components.privacy_policy.api as privacy_policy_api
 import core_website_app.components.terms_of_use.api as terms_of_use_api
-import core_website_app.common.exceptions as exceptions
-
-
-def homepage(request):
-    """ Homepage for the website
-
-        Parameters:
-            request:
-
-        Returns:
-    """
-    assets = {
-        "js": []
-    }
-
-    if finders.find("core_website_app/css/homepage.css") is not None:
-        assets["css"] = ["core_website_app/css/homepage.css"]
-
-    if finders.find("core_website_app/js/homepage.js") is not None:
-        assets["js"].append(
-            {
-                "path": "core_website_app/js/homepage.js",
-                "is_raw": False
-            }
-        )
-
-    if finders.find("core_website_app/js/homepage.raw.js") is not None:
-        assets["js"].append(
-            {
-                "path": "core_website_app/js/homepage.raw.js",
-                "is_raw": True
-            }
-        )
-
-    return render(request, "core_website_app/user/homepage.html", assets=assets)
 
 
 def request_new_account(request):
@@ -193,35 +151,3 @@ def terms_of_use(request):
     terms = terms_of_use_api.get()
 
     return render(request, 'core_website_app/user/terms-of-use.html', context={'terms': terms})
-
-
-def custom_login(request):
-    if request.method == "POST":
-        username = request.POST["username"]
-        password = request.POST["password"]
-
-        try:
-            user = authenticate(username=username, password=password)
-
-            if not user.is_active:
-                return render(request, "core_website_app/user/login.html",
-                              context={'login_form': LoginForm(), 'login_locked': True})
-
-            login(request, user)
-
-            return redirect(reverse("core_website_app_homepage"))
-        except Exception as e:
-            return render(request, "core_website_app/user/login.html",
-                          context={'login_form': LoginForm(), 'login_error': True})
-    elif request.method == "GET":
-        if request.user.is_authenticated():
-            return redirect(reverse("core_website_app_homepage"))
-
-        return render(request, "core_website_app/user/login.html", context={'login_form': LoginForm()})
-    else:
-        return HttpResponse(status=HTTP_405_METHOD_NOT_ALLOWED)
-
-
-def custom_logout(request):
-    logout(request)
-    return redirect(reverse("core_website_app_login"))

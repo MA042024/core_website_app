@@ -34,10 +34,3 @@ class ContactForm(forms.Form):
     email = forms.EmailField(label='Email Address', max_length=100, required=True)
     message = forms.CharField(label='Message', widget=forms.Textarea(attrs={'class': 'textarea_lock_h'}),
                               required=True)
-
-
-class LoginForm(forms.Form):
-    """ Custom login form for the user
-    """
-    username = forms.CharField(label="Username", required=True)
-    password = forms.CharField(label="Password", required=True, widget=forms.PasswordInput)

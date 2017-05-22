@@ -3,10 +3,6 @@ from menu import Menu, MenuItem
 
 
 Menu.add_item(
-    "main", MenuItem("Home", reverse("core_website_app_homepage"), icon="home", weight=-1000)
-)
-
-Menu.add_item(
     "main", MenuItem("Contact", reverse("core_website_app_contact"), icon="envelope", weight=1001)
 )
 
