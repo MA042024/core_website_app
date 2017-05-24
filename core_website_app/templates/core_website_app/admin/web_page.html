@@ -5,21 +5,7 @@
 {% block section_subtitle %}Optional description{% endblock %}
 
 {% block section_content %}
-<div class="row">
-    <div class="col-md-12">
-        Use this form to provide content for the {{ webpage_name | lower }}. You can use HTML syntax or HTML tags to
-        write the text.
-        <br/>
-        <div>
-        <form action="{% url webpage_url %}" method="post">
-            {% csrf_token %}
-            {{ data.form }}
-            <br/>
-            <input type="submit" class="btn" value="Save"/>
-        </form>
-        </div>
-    </div>
-</div>
+    {% include "core_website_app/admin/web_page/main.html" %}
 {% endblock %}
 
 {% block extrastyle %}

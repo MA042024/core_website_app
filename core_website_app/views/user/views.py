@@ -103,7 +103,7 @@ def contact(request):
 
             contact_message_api.upsert(contact_message)
             messages.add_message(request, messages.INFO, 'Your message has been sent to the administrator.')
-            return redirect(reverse("core_website_app_homepage"))
+            return redirect(reverse("core_main_app_homepage"))
     else:
         contact_form = ContactForm()
 

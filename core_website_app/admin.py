@@ -2,9 +2,12 @@
 """
 from django.contrib import admin
 from django.conf.urls import url
-from django.core.urlresolvers import reverse_lazy
-from django.views.generic.base import RedirectView
 from views.admin import views as admin_views, ajax as admin_ajax
+import core_website_app.components.help.api as help_api
+import core_website_app.components.privacy_policy.api as privacy_policy_api
+import core_website_app.components.terms_of_use.api as terms_of_use_api
+from core_website_app.components.web_page.models import WEB_PAGE_TYPES
+
 
 admin_urls = [
     url(r'^user-requests$', admin_views.user_requests, name='core_website_app_user_requests'),
@@ -14,9 +17,26 @@ admin_urls = [
     url(r'^contact-messages$', admin_views.contact_messages, name='core_website_app_contact_messages'),
     url(r'^remove_message', admin_ajax.remove_message, name="core_website_app_remove_contact_message"),
 
-    url(r'^privacy-policy$', admin_views.privacy_policy_admin, name='core_website_app_privacy'),
-    url(r'^terms-of-use$', admin_views.terms_of_use_admin, name='core_website_app_terms'),
-    url(r'^help$', admin_views.help_admin, name='core_website_app_help'),
+    url(r'^privacy-policy$',
+        admin_views.WebSiteInfoView.as_view(api=privacy_policy_api,
+                                            get_redirect='core_website_app/admin/privacy_policy.html',
+                                            post_redirect='admin:core_website_app_privacy',
+                                            web_page_type=WEB_PAGE_TYPES["privacy_policy"]),
+        name='core_website_app_privacy'),
+
+    url(r'^terms-of-use$',
+        admin_views.WebSiteInfoView.as_view(api=terms_of_use_api,
+                                            get_redirect='core_website_app/admin/terms_of_use.html',
+                                            post_redirect='admin:core_website_app_terms',
+                                            web_page_type=WEB_PAGE_TYPES["privacy_policy"]),
+        name='core_website_app_terms'),
+
+    url(r'^help$',
+        admin_views.WebSiteInfoView.as_view(api=help_api,
+                                            get_redirect='core_website_app/admin/help.html',
+                                            post_redirect='admin:core_website_app_help',
+                                            web_page_type=WEB_PAGE_TYPES["help"]),
+        name='core_website_app_help'),
 ]
 
 urls = admin.site.get_urls()
