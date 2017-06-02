@@ -52,7 +52,7 @@ def request_new_account(request):
                 account_request_api.insert(user)
 
                 messages.add_message(request, messages.INFO, 'User Account Request sent to the administrator.')
-                return redirect('/')
+                return redirect(reverse("core_main_app_homepage"))
             except ApiError as e:
                 error_message = e.message
 
@@ -63,7 +63,7 @@ def request_new_account(request):
                               assets=assets,
                               context={'request_form': request_form, 'action_result': error_box})
             except ValidationError as e:
-                error_message = "The following error(s) occured during validation:"
+                error_message = "The following error(s) occurred during validation:"
                 error_items = [str(field).capitalize() + ": " + str(error) for field, error in e.errors.items()]
 
                 error_template = get_template("core_website_app/user/request_error.html")
