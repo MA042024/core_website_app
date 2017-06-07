@@ -9,12 +9,11 @@
         <th width="30%">Date</th>
         <th>Actions</th>
     </tr>
-
     {% for request in data.requests %}
         <tr id="{{ request.id }}">
-            <td><a href="#">{{ request.username }}</a></td>
+            {# FIXME add link to /admin/auth/user #}
+            <td>{{ request.username }}</td>
             <td>{{ request.date }}</td>
-
             <td>
                 <div class="btn btn-success accept_request">
                     <i class="fa fa-check"></i> Accept
