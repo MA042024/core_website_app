@@ -5,6 +5,8 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
+from django.utils.decorators import method_decorator
+
 from core_main_app.utils.rendering import admin_render as render
 from core_website_app.views.admin.forms import TextAreaForm
 from core_website_app.components.web_page.models import WebPage, WEB_PAGE_TYPES
@@ -84,6 +86,7 @@ class WebSiteInfoView(View):
     post_redirect = None
     web_page_type = None
 
+    @method_decorator(staff_member_required)
     def get(self, request, *args, **kwargs):
         """ GET request. Create/Show the form for the configuration.
 
@@ -99,8 +102,15 @@ class WebSiteInfoView(View):
         content = website_object.content if website_object is not None else ''
         form = self.form_class({'content': content})
 
-        return render(request, self.get_redirect, context={'form': form})
+        assets = {
+            "css": [
+                "core_website_app/admin/css/style.css"
+            ]
+        }
 
+        return render(request, self.get_redirect, context={'form': form}, assets=assets)
+
+    @method_decorator(staff_member_required)
     def post(self, request, *args, **kwargs):
         """ POST request. Try to save the configuration.
 
