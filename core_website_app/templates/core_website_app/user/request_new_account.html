@@ -11,10 +11,25 @@
         </div>
         {% endif %}
 
-        <form action="{% url 'core_website_app_account_request' %}" method="post">
+        <form novalidate action="{% url 'core_website_app_account_request' %}" method="post" class="form-horizontal">
             {% csrf_token %}
-            {{ data.request_form }}
-            <input type="submit" class="btn btn-lg btn-default" value="Send Request"/>
+
+            {% for field in data.request_form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}" class="col-sm-2 control-label">{{ field.label }}</label>
+                <div class="col-sm-10">
+                    {{ field }}
+                    <span style="color:red">{{ field.errors }}</span>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <button type="submit" class="btn btn-lg btn-default pull-right">
+                        <i class="fa fa-send-o"></i> Send Request
+                    </button>
+                </div>
+            </div>
         </form>
     </div>
 </div>

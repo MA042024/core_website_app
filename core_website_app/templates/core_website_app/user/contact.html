@@ -3,7 +3,7 @@
     <div class="col-md-12">
         <h2>Contact Form</h2>
 
-        <form action="{% url 'core_website_app_contact' %}" method="post" class="form-horizontal">
+        <form novalidate action="{% url 'core_website_app_contact' %}" method="post" class="form-horizontal">
             {% csrf_token %}
 
             {% for field in data.contact_form %}
@@ -11,12 +11,13 @@
                 <label for="{{ field.id_for_label }}" class="col-sm-2 control-label">{{ field.label }}</label>
                 <div class="col-sm-10">
                     {{ field }}
+                    <span style="color:red">{{ field.errors }}</span>
                 </div>
             </div>
             {% endfor %}
             <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-lg btn-default">
+                <div class="col-sm-12">
+                    <button type="submit" class="btn btn-lg btn-default pull-right">
                         <i class="fa fa-send-o"></i> Send Message
                     </button>
                 </div>
