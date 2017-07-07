@@ -7,7 +7,7 @@ from core_website_app.components.web_page.models import WebPage, WEB_PAGE_TYPES
 from unittest.case import TestCase
 from mock import Mock, patch
 from core_main_app.commons.exceptions import ApiError
-from core_website_app.common.exceptions import WebsiteWebPageDoesNotExistError
+from core_website_app.commons.exceptions import WebsiteWebPageDoesNotExistError
 
 
 class TestsWebPageApiGet(TestCase):

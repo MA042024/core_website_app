@@ -19,6 +19,15 @@ def get_all():
     return AccountRequest.objects()
 
 
+def get_count():
+    """ Count number of account request currently in the database.
+
+    Returns:
+        int: number of account requests
+    """
+    return len(get_all())
+
+
 def get(account_request_id):
     """
         Get an account request given its primary key

@@ -13,9 +13,11 @@ admin_urls = [
     url(r'^user-requests$', admin_views.user_requests, name='core_website_app_user_requests'),
     url(r'^accept_request', admin_ajax.accept_request, name="core_website_app_accept_user_request"),
     url(r'^deny_request', admin_ajax.deny_request, name="core_website_app_deny_user_request"),
+    url(r'^request_count', admin_ajax.account_request_count, name="core_website_app_request_count"),
 
     url(r'^contact-messages$', admin_views.contact_messages, name='core_website_app_contact_messages'),
     url(r'^remove_message', admin_ajax.remove_message, name="core_website_app_remove_contact_message"),
+    url(r'^message_count', admin_ajax.contact_message_count, name="core_website_app_message_count"),
 
     url(r'^privacy-policy$',
         admin_views.WebSiteInfoView.as_view(api=privacy_policy_api,

@@ -1,6 +1,6 @@
 """Web page API
 """
-from core_website_app.common.exceptions import WebsiteWebPageDoesNotExistError
+from core_website_app.commons.exceptions import WebsiteWebPageDoesNotExistError
 from core_main_app.commons.exceptions import ApiError
 from .models import WebPage
 from .enums import WEB_PAGE_TYPES

@@ -4,7 +4,7 @@
 from django.http import HttpResponse
 import json
 from core_main_app.commons import exceptions as main_exceptions
-from core_website_app.common import exceptions
+from core_website_app.commons import exceptions
 import core_website_app.components.account_request.api as account_request_api
 import core_website_app.components.contact_message.api as contact_message_api
 
@@ -66,3 +66,16 @@ def remove_message(request):
 
     return HttpResponse(json.dumps({"message": message}), content_type='application/json')
 
+
+def account_request_count(request):
+    """
+
+
+    Returns:
+
+    """
+    return HttpResponse(json.dumps({"count": account_request_api.get_count()}), content_type='application/json')
+
+
+def contact_message_count(request):
+    return HttpResponse(json.dumps({"count": contact_message_api.get_count()}), content_type='application/json')

@@ -15,6 +15,15 @@ def get_all():
     return ContactMessage.get_all()
 
 
+def get_count():
+    """ Count number of contact messages currently in the database.
+
+    Returns:
+        int: number of contact messages
+    """
+    return len(get_all())
+
+
 def get(message_id):
     """
         Get a message

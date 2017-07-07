@@ -2,7 +2,7 @@
 """
 from django_mongoengine import fields, Document
 from core_website_app.components.web_page.enums import WEB_PAGE_TYPES
-from core_website_app.common.exceptions import WebsiteWebPageDoesNotExistError
+from core_website_app.commons.exceptions import WebsiteWebPageDoesNotExistError
 
 
 class WebPage(Document):
