@@ -6,15 +6,11 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
-
 from core_main_app.utils.rendering import admin_render as render
 from core_website_app.views.admin.forms import TextAreaForm
-from core_website_app.components.web_page.models import WebPage, WEB_PAGE_TYPES
+from core_website_app.components.web_page.models import WebPage
 import core_website_app.components.account_request.api as account_request_api
 import core_website_app.components.contact_message.api as contact_message_api
-import core_website_app.components.help.api as help_api
-import core_website_app.components.privacy_policy.api as privacy_policy_api
-import core_website_app.components.terms_of_use.api as terms_of_use_api
 from django.views.generic import View
 
 

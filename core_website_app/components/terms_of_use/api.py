@@ -24,13 +24,14 @@ def upsert(terms_of_use_page):
         Post the terms of use
 
         Parameters:
-            terms_of_use_page (str): content of the web page
+            terms_of_use_page (WebPage): content of the web page
 
         Returns: Terms of use web page
     """
     if terms_of_use_page.type != TERMS_PAGE_TYPE:
         raise ApiError(
-            "Webpage type not coherent (expected: %s; actual %s" % (str(TERMS_PAGE_TYPE), str(terms_of_use_page.type))
+            "Webpage type not coherent (expected: %s; entered: %s)" % (str(TERMS_PAGE_TYPE),
+                                                                       str(terms_of_use_page.type))
         )
 
     return web_page_api.upsert(terms_of_use_page)

@@ -28,7 +28,7 @@ admin_urls = [
         admin_views.WebSiteInfoView.as_view(api=terms_of_use_api,
                                             get_redirect='core_website_app/admin/terms_of_use.html',
                                             post_redirect='admin:core_website_app_terms',
-                                            web_page_type=WEB_PAGE_TYPES["privacy_policy"]),
+                                            web_page_type=WEB_PAGE_TYPES["terms_of_use"]),
         name='core_website_app_terms'),
 
     url(r'^help$',
