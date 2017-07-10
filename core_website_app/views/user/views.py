@@ -11,6 +11,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.contrib import messages
 from core_website_app.components.contact_message.models import ContactMessage
+from core_website_app.utils.markdown_parser import parse
 from .forms import RequestAccountForm, ContactForm
 import core_website_app.components.account_request.api as account_request_api
 import core_website_app.components.contact_message.api as contact_message_api
@@ -119,9 +120,10 @@ def help_page(request):
         Returns:
     """
     # Call the API
-    help_content = help_api.get()
+    help = help_api.get()
+    help.content = parse(help.content)
 
-    return render(request, 'core_website_app/user/help.html', context={'help': help_content})
+    return render(request, 'core_website_app/user/help.html', context={'help': help})
 
 
 def privacy_policy(request):
@@ -135,6 +137,7 @@ def privacy_policy(request):
 
     # Call the API
     policy = privacy_policy_api.get()
+    policy.content = parse(policy.content)
 
     return render(request, 'core_website_app/user/privacy-policy.html', context={'policy': policy})
 
@@ -149,5 +152,6 @@ def terms_of_use(request):
     """
     # Call the API
     terms = terms_of_use_api.get()
+    terms.content = parse(terms.content)
 
     return render(request, 'core_website_app/user/terms-of-use.html', context={'terms': terms})

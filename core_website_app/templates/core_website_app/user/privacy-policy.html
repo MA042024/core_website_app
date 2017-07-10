@@ -1,12 +1,12 @@
 {% load staticfiles %}
+{% load stripjs %}
 <div class="row">
 	<div class="col-md-12">
 		<h2>Privacy Policy</h2>
 
 		<div class="left" style="width: 830px">
-		<br/>
 		{% if data.policy %}
-			{{ data.policy.content | safe}}
+			{{ data.policy.content | stripjs }}
 		{% else %}
 			<a href="{% url 'core_website_app_contact' %}">Contact the administrator</a>
 		{% endif %}

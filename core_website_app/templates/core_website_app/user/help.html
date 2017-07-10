@@ -1,12 +1,12 @@
 {% load staticfiles %}
+{% load stripjs %}
 <div class="row">
     <div class="col-md-12">
 		<h2>Help</h2>
 
 		<div class="left" style="width: 830px">
-			<br/>
 			{% if data.help %}
-				{{ data.help.content | safe}}
+				{{ data.help.content | stripjs }}
 			{% else %}
 				<div class="left large">
 					<p>
