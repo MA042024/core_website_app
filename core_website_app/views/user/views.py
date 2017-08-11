@@ -121,7 +121,8 @@ def help_page(request):
     """
     # Call the API
     help = help_api.get()
-    help.content = parse(help.content)
+    if help is not None:
+        help.content = parse(help.content)
 
     return render(request, 'core_website_app/user/help.html', context={'help': help})
 
@@ -137,7 +138,8 @@ def privacy_policy(request):
 
     # Call the API
     policy = privacy_policy_api.get()
-    policy.content = parse(policy.content)
+    if policy is not None:
+        policy.content = parse(policy.content)
 
     return render(request, 'core_website_app/user/privacy-policy.html', context={'policy': policy})
 
@@ -152,6 +154,7 @@ def terms_of_use(request):
     """
     # Call the API
     terms = terms_of_use_api.get()
-    terms.content = parse(terms.content)
+    if terms is not None:
+        terms.content = parse(terms.content)
 
     return render(request, 'core_website_app/user/terms-of-use.html', context={'terms': terms})
