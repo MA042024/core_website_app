@@ -1,4 +1,4 @@
-core-main-app==1.0.0-alpha3
+core-main-app==1.0.0-alpha4
 django-simple-menu==1.2.1
 markdown==2.6.8
 mock==2.0.0
