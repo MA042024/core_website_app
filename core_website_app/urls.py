@@ -1,7 +1,7 @@
 """ Url router for the main application
 """
 from django.conf.urls import url, include
-from views.user import views as user_views
+from core_website_app.views.user import views as user_views
 
 urlpatterns = [
     url(r'^account-request', user_views.request_new_account, name='core_website_app_account_request'),

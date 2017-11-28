@@ -2,7 +2,7 @@
 """
 from django.contrib import admin
 from django.conf.urls import url
-from views.admin import views as admin_views, ajax as admin_ajax
+from core_website_app.views.admin import views as admin_views, ajax as admin_ajax
 import core_website_app.components.help.api as help_api
 import core_website_app.components.privacy_policy.api as privacy_policy_api
 import core_website_app.components.terms_of_use.api as terms_of_use_api
