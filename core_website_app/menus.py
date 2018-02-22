@@ -3,19 +3,19 @@ from menu import Menu, MenuItem
 
 
 Menu.add_item(
-    "main", MenuItem("Contact", reverse("core_website_app_contact"), icon="envelope", weight=1001)
+    "footer", MenuItem("Privacy policy", reverse("core_website_app_privacy"), weight=1001)
 )
 
 Menu.add_item(
-    "main", MenuItem("Help", reverse("core_website_app_help"), icon="question-circle", weight=1002)
+    "footer", MenuItem("Terms of use", reverse("core_website_app_terms"), weight=1002)
 )
 
 Menu.add_item(
-    "footer", MenuItem("Privacy policy", reverse("core_website_app_privacy"))
+    "footer", MenuItem("Contact", reverse("core_website_app_contact"), icon="envelope", weight=1003)
 )
 
 Menu.add_item(
-    "footer", MenuItem("Terms of use", reverse("core_website_app_terms"))
+    "footer", MenuItem("Help", reverse("core_website_app_help"), icon="question-circle", weight=1004)
 )
 
 # Admin menus for website app
