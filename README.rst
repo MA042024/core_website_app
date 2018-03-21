@@ -1,4 +1,5 @@
-core_website_app
+================
+Core Website App
 ================
 
 Basic web functionalities for the curator core project.
