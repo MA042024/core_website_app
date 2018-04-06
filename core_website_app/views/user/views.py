@@ -3,6 +3,7 @@
 """
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
 from django.template.loader import get_template
 from mongoengine.errors import ValidationError
 from core_main_app.commons.exceptions import ApiError
@@ -11,6 +12,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.contrib import messages
 from core_website_app.components.contact_message.models import ContactMessage
+from core_website_app.settings import DISPLAY_NIST_HEADERS
 from core_website_app.utils.markdown_parser import parse
 from .forms import RequestAccountForm, ContactForm
 import core_website_app.components.account_request.api as account_request_api
@@ -135,6 +137,8 @@ def privacy_policy(request):
 
         Returns: Http response
     """
+    if DISPLAY_NIST_HEADERS:
+        return HttpResponseRedirect("https://www.nist.gov/privacy-policy")
 
     # Call the API
     policy = privacy_policy_api.get()
@@ -152,6 +156,9 @@ def terms_of_use(request):
 
         Returns: Http Response
     """
+    if DISPLAY_NIST_HEADERS:
+        return HttpResponseRedirect("https://www.nist.gov/privacy-policy")
+
     # Call the API
     terms = terms_of_use_api.get()
     if terms is not None:
