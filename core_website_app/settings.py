@@ -9,4 +9,4 @@ INSTALLED_APPS = (
     'core_main_app',
 )
 
-DISPLAY_NIST_HEADERS = getattr(settings, 'DISPLAY_NIST_HEADERS', True)
+DISPLAY_NIST_HEADERS = getattr(settings, 'DISPLAY_NIST_HEADERS', False)
