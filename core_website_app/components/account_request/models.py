@@ -1,21 +1,22 @@
+""" Account requests model
 """
-    Account requests model
-"""
-from django_mongoengine import fields, Document
 import datetime
+
+from django_mongoengine import fields, Document
+from mongoengine import errors as mongoengine_errors
+
+from core_main_app.commons import exceptions
 
 
 class AccountRequest(Document):
-    """
-        Represents a request sent by an user to get an account
+    """ Represents a request sent by an user to get an account
     """
     username = fields.StringField(blank=False)  #: Username associated with the request
     date = fields.DateTimeField(default=datetime.datetime.now, blank=False)
 
     @staticmethod
     def get_by_id(request_id):
-        """
-            Get a request given its primary key
+        """ Get a request given its primary key
 
             Parameters:
                 request_id (str): Primary key of the request
@@ -23,4 +24,9 @@ class AccountRequest(Document):
             Returns:
                 Request object corresponding to the given id
         """
-        return AccountRequest.objects().get(pk=str(request_id))
+        try:
+            return AccountRequest.objects().get(pk=str(request_id))
+        except mongoengine_errors.DoesNotExist as e:
+            raise exceptions.DoesNotExist(e.message)
+        except Exception as ex:
+            raise exceptions.ModelError(ex.message)

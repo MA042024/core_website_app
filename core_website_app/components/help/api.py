@@ -1,18 +1,15 @@
+""" Help page api
 """
-    help page api
-"""
-import core_website_app.components.web_page.api as web_page_api
+import core_main_app.components.web_page.api as web_page_api
 from core_main_app.commons.exceptions import ApiError
-from core_website_app.components.web_page.models import WebPage
-from core_website_app.components.web_page.enums import WEB_PAGE_TYPES
+from core_website_app.commons.enums import WEB_PAGE_TYPES
 
 HELP_PAGE_NAME = "help"
 HELP_PAGE_TYPE = WEB_PAGE_TYPES[HELP_PAGE_NAME]
 
 
 def get():
-    """
-        Get the help if exist
+    """ Get the help if exist
 
         Returns: help web page
     """
@@ -20,8 +17,7 @@ def get():
 
 
 def upsert(help_page):
-    """
-        Post the help
+    """ Post the help
 
         Parameters:
             help_page (WebPage): Webpage for the help

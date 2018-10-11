@@ -1,18 +1,20 @@
-"""
-    Tests of the web page API
+""" Tests of the web page API
 """
 
-from core_website_app.components.web_page import api as web_page_api
-from core_website_app.components.web_page.models import WebPage, WEB_PAGE_TYPES
 from unittest.case import TestCase
+
 from mock import Mock, patch
+
+import core_main_app.components.web_page.api as web_page_api
 from core_main_app.commons.exceptions import ApiError
+from core_main_app.components.web_page.models import WebPage
+from core_website_app.commons.enums import WEB_PAGE_TYPES
 from core_website_app.commons.exceptions import WebsiteWebPageDoesNotExistError
 
 
 class TestsWebPageApiGet(TestCase):
 
-    @patch('core_website_app.components.web_page.models.WebPage.get_by_type')
+    @patch.object(WebPage, 'get_by_type')
     def test_web_page_get_policy_privacy(self, mock_get_web_page_by_type):
         # Arrange
         content = "content web page privacy"
@@ -22,7 +24,7 @@ class TestsWebPageApiGet(TestCase):
         # Assert
         self.assertEqual("content web page privacy", result.content)
 
-    @patch('core_website_app.components.web_page.models.WebPage.get_by_type')
+    @patch.object(WebPage, 'get_by_type')
     def test_web_page_get_term_of_use(self, mock_get_web_page_by_type):
         # Arrange
         content = "content web page terms"
@@ -32,7 +34,7 @@ class TestsWebPageApiGet(TestCase):
         # Assert
         self.assertEqual("content web page terms", result.content)
 
-    @patch('core_website_app.components.web_page.models.WebPage.get_by_type')
+    @patch.object(WebPage, 'get_by_type')
     def test_web_page_get_help(self, mock_get_web_page_by_type):
         # Arrange
         content = "content web page help"
@@ -42,7 +44,7 @@ class TestsWebPageApiGet(TestCase):
         # Assert
         self.assertEqual("content web page help", result.content)
 
-    @patch('core_website_app.components.web_page.models.WebPage.get_by_type')
+    @patch.object(WebPage, 'get_by_type')
     def test_web_page_get_not_in_database_return_none(self, mock_get_web_page_by_type):
         # Arrange
         mock_get_web_page_by_type.side_effect = WebsiteWebPageDoesNotExistError
@@ -68,7 +70,7 @@ class TestsWebPageApiUpsert(TestCase):
         with self.assertRaises(ApiError):
             web_page_api.upsert(web_page)
 
-    @patch('core_website_app.components.web_page.models.WebPage.save')
+    @patch.object(WebPage, 'save')
     def test_web_page_upsert_type_exist(self, mock_save):
         # Arrange
         web_page_type = WEB_PAGE_TYPES["help"]

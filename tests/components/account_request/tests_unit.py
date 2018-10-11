@@ -1,13 +1,14 @@
+""" Tests of the account request API
 """
-    Tests of the account request API
-"""
-from core_website_app.components.account_request import api as account_request_api
-from core_website_app.components.account_request.models import AccountRequest
-from mock import Mock, patch
 from unittest.case import TestCase
+
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from mock import Mock, patch
+
 from core_main_app.commons.exceptions import ApiError
+from core_website_app.components.account_request import api as account_request_api
+from core_website_app.components.account_request.models import AccountRequest
 
 
 class TestsAccountRequestGet(TestCase):

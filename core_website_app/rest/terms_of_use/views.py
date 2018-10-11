@@ -1,21 +1,24 @@
-""" rest api for the terms of use
+""" Rest api for the terms of use
 """
-from core_main_app.utils.decorators import api_staff_member_required
-from rest_framework.decorators import api_view
+import logging
+
 from rest_framework import status
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from core_website_app.components.web_page.models import WebPage, WEB_PAGE_TYPES
+
 import core_website_app.components.terms_of_use.api as terms_of_use_api
+from core_main_app.components.web_page.models import WebPage, WEB_PAGE_TYPES
+from core_main_app.utils.decorators import api_staff_member_required
 from core_website_app.rest.serializers import WebPageSerializer
 
-import logging
 logger = logging.getLogger("core_website_app.rest.terms_of_use.views")
 
 
 def get():
-    """
-    Get the terms of use
-    :return:
+    """ Get the terms of use
+
+    Returns:
+
     """
     help_page = terms_of_use_api.get()
     serializer = WebPageSerializer(help_page)
@@ -29,10 +32,13 @@ def get():
 
 @api_staff_member_required()
 def post(request):
-    """
-    Post the terms of use
-    :param request:
-    :return:
+    """ Post the terms of use
+
+    Args:
+        request:
+
+    Returns:
+
     """
     try:
         # Get parameters
@@ -68,10 +74,13 @@ def post(request):
 
 @api_view(['GET', 'POST'])
 def terms_of_use(request):
-    """
-    Terms of Use
-    :param request:
-    :return:
+    """ Terms of Use
+
+    Args:
+        request:
+
+    Returns:
+
     """
     if request.method == 'GET':
         return get()

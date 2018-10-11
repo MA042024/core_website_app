@@ -1,21 +1,24 @@
 """ rest api for the privacy policy
 """
-from core_main_app.utils.decorators import api_staff_member_required
-from rest_framework.decorators import api_view
+import logging
+
 from rest_framework import status
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from core_website_app.components.web_page.models import WebPage, WEB_PAGE_TYPES
+
 import core_website_app.components.privacy_policy.api as privacy_policy_api
+from core_main_app.components.web_page.models import WebPage, WEB_PAGE_TYPES
+from core_main_app.utils.decorators import api_staff_member_required
 from core_website_app.rest.serializers import WebPageSerializer
 
-import logging
 logger = logging.getLogger("core_website_app.rest.privacy_policy.views")
 
 
 def get():
-    """
-    Get the privacy policy
-    :return:
+    """ Get the privacy policy
+
+    Returns:
+
     """
     privacy_policy_page = privacy_policy_api.get()
     serializer = WebPageSerializer(privacy_policy_page)
@@ -29,10 +32,13 @@ def get():
 
 @api_staff_member_required()
 def post(request):
-    """
-    Post the privacy policy
-    :param request:
-    :return:
+    """ Post the privacy policy
+
+    Args:
+        request:
+
+    Returns:
+
     """
     try:
         # Get parameters
@@ -68,10 +74,13 @@ def post(request):
 
 @api_view(['GET', 'POST'])
 def privacy_policy(request):
-    """
-    Privacy Policy
-    :param request:
-    :return:
+    """ Privacy Policy
+
+    Args:
+        request:
+
+    Returns:
+
     """
     if request.method == 'GET':
         return get()

@@ -1,11 +1,12 @@
+""" Tests of contact message API
 """
-    Tests of contact message API
-"""
+from unittest.case import TestCase
+
+from mock import Mock, patch
+
+from core_main_app.commons import exceptions
 from core_website_app.components.contact_message import api as contact_message_api
 from core_website_app.components.contact_message.models import ContactMessage
-from unittest.case import TestCase
-from mock import Mock, patch
-from core_main_app.commons import exceptions
 
 
 class TestsContactMessageGet(TestCase):

@@ -1,6 +1,9 @@
 """ Contact messages models
 """
 from django_mongoengine import fields, Document
+from mongoengine import errors as mongoengine_errors
+
+from core_main_app.commons import exceptions
 
 
 class ContactMessage(Document):
@@ -18,7 +21,12 @@ class ContactMessage(Document):
 
         Returns:
         """
-        return ContactMessage.objects().get(pk=str(message_id))
+        try:
+            return ContactMessage.objects().get(pk=str(message_id))
+        except mongoengine_errors.DoesNotExist as e:
+            raise exceptions.DoesNotExist(e.message)
+        except Exception as ex:
+            raise exceptions.ModelError(ex.message)
 
     @staticmethod
     def get_all():

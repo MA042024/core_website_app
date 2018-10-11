@@ -1,18 +1,15 @@
+""" Terms of use api
 """
-    terms of use api
-"""
-import core_website_app.components.web_page.api as web_page_api
+import core_main_app.components.web_page.api as web_page_api
 from core_main_app.commons.exceptions import ApiError
-from core_website_app.components.web_page.models import WebPage
-from core_website_app.components.web_page.enums import WEB_PAGE_TYPES
+from core_website_app.commons.enums import WEB_PAGE_TYPES
 
 TERMS_PAGE_NAME = "terms_of_use"
 TERMS_PAGE_TYPE = WEB_PAGE_TYPES[TERMS_PAGE_NAME]
 
 
 def get():
-    """
-        Get the terms of use if exist
+    """ Get the terms of use if exist
 
         Returns: Terms of use web page
     """
@@ -20,8 +17,7 @@ def get():
 
 
 def upsert(terms_of_use_page):
-    """
-        Post the terms of use
+    """ Post the terms of use
 
         Parameters:
             terms_of_use_page (WebPage): content of the web page

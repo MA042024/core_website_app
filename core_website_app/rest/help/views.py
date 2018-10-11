@@ -1,19 +1,21 @@
 """Rest views for the help page
 """
-from core_main_app.utils.decorators import api_staff_member_required
-from rest_framework.decorators import api_view
-from rest_framework import status
-from rest_framework.response import Response
-from core_website_app.rest.serializers import WebPageSerializer
-from core_website_app.components.web_page.models import WebPage, WEB_PAGE_TYPES
-import core_website_app.components.help.api as help_api
-
 import logging
+
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+import core_website_app.components.help.api as help_api
+from core_main_app.components.web_page.models import WebPage, WEB_PAGE_TYPES
+from core_main_app.utils.decorators import api_staff_member_required
+from core_website_app.rest.serializers import WebPageSerializer
+
 logger = logging.getLogger("core_website_app.rest.help.views")
 
 
 def get():
-    """Get the help
+    """ Get the help
 
         Returns: Http Response
     """
@@ -29,7 +31,7 @@ def get():
 
 @api_staff_member_required()
 def post(request):
-    """Post the help
+    """ Post the help
 
         Parameters:
             request: context
@@ -70,7 +72,7 @@ def post(request):
 
 @api_view(['GET', 'POST'])
 def rest_help_page(request):
-    """Help
+    """ Help
 
         Parameters:
             request:
