@@ -12,6 +12,9 @@ class AccountRequest(Document):
     """ Represents a request sent by an user to get an account
     """
     username = fields.StringField(blank=False)  #: Username associated with the request
+    first_name = fields.StringField(blank=False)
+    last_name = fields.StringField(blank=False)
+    email = fields.StringField(blank=False)
     date = fields.DateTimeField(default=datetime.datetime.now, blank=False)
 
     @staticmethod

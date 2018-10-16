@@ -64,7 +64,10 @@ def insert(user):
         user.save()
 
         # Create the account request and save it
-        account_request = AccountRequest(username=user.username)
+        account_request = AccountRequest(username=user.username,
+                                         first_name=user.first_name,
+                                         last_name=user.last_name,
+                                         email=user.email)
         return account_request.save()
 
 
