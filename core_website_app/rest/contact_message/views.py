@@ -15,10 +15,18 @@ logger = logging.getLogger("core_website_app.rest.contact_message.views")
 @api_view(['GET'])
 @api_staff_member_required()
 def get_all(request):
-    """
-    List all messages
-    :param request:
-    :return:
+    """ Get all messages
+
+    Args:
+
+        request: HTTP request
+
+    Returns:
+
+        - code: 200
+          content: List of contact messages
+        - code: 400
+          content: Validation error
     """
     messages = contact_message_api.get_all()
     serializer = ContactMessageSerializer(messages)
@@ -32,12 +40,27 @@ def get_all(request):
 
 @api_staff_member_required()
 def get(request):
-    """
-    Get a message
-    :param request:
-    :return:
+    """ Get a message
+
+    Parameters:
+
+        {
+            "requestid": "request_id"
+        }
+
+    Args:
+
+        request: HTTP request
+
+    Returns:
+
+        - code: 200
+          content: List of contact messages
+        - code: 400
+          content: Validation error / missing parameters
     """
     try:
+        # FIXME: requestid should be renamed to message_id
         # Get parameters
         message_id = request.DATA['requestid']
 
@@ -62,10 +85,26 @@ def get(request):
 
 
 def post(request):
-    """
-    Post a message
-    :param request:
-    :return:
+    """ Create a message
+
+    Parameters:
+
+        {
+            "name": "name",
+            "message": "message",
+            "email": "email"
+        }
+
+    Args:
+
+        request: HTTP request
+
+    Returns:
+
+        - code: 200
+          content: Contact message
+        - code: 400
+          content: Validation error / missing parameters
     """
     try:
         # Get parameters
@@ -103,10 +142,15 @@ def post(request):
 
 @api_view(['GET', 'POST'])
 def message(request):
-    """
-    Create a message
-    :param request:
-    :return:
+    """ Message redirect to POST or GET methods
+
+    Args:
+
+        request: HTTP request
+
+    Returns:
+
+        Response object
     """
     if request.method == 'GET':
         return get(request)
@@ -116,10 +160,24 @@ def message(request):
 
 @api_view(['POST'])
 def delete(request):
-    """
-    Delete a message
-    :param request:
-    :return:
+    """ Delete a message
+
+    Parameters:
+
+        {
+            "messageid": "message_id"
+        }
+
+    Args:
+
+        request: HTTP request
+
+    Returns:
+
+        - code: 204
+          content: {}
+        - code: 400
+          content: Missing parameters
     """
     try:
         # Get parameters

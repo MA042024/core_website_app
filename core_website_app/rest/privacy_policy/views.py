@@ -19,6 +19,10 @@ def get():
 
     Returns:
 
+        - code: 200
+          content: Privacy policy page
+        - code: 400
+          content: Validation error
     """
     privacy_policy_page = privacy_policy_api.get()
     serializer = WebPageSerializer(privacy_policy_page)
@@ -32,13 +36,20 @@ def get():
 
 @api_staff_member_required()
 def post(request):
-    """ Post the privacy policy
+    """ Create the privacy policy
 
-    Args:
-        request:
+    Parameters:
+
+        {
+            "content": "new_content"
+        }
 
     Returns:
 
+        - code: 200
+          content: Privacy policy page
+        - code: 400
+          content: Validation error
     """
     try:
         # Get parameters
@@ -74,13 +85,15 @@ def post(request):
 
 @api_view(['GET', 'POST'])
 def privacy_policy(request):
-    """ Privacy Policy
+    """ Privacy Policy redirect to POST or GET methods
 
     Args:
-        request:
+
+        request: HTTP request
 
     Returns:
 
+        Response object
     """
     if request.method == 'GET':
         return get()

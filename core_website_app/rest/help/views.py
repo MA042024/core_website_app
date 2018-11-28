@@ -1,4 +1,4 @@
-"""Rest views for the help page
+""" Rest views for the help page
 """
 import logging
 
@@ -15,9 +15,14 @@ logger = logging.getLogger("core_website_app.rest.help.views")
 
 
 def get():
-    """ Get the help
+    """ Get the help page
 
-        Returns: Http Response
+    Returns:
+
+        - code: 200
+          content: Help page
+        - code: 400
+          content: Validation error
     """
     help_page = help_api.get()
     serializer = WebPageSerializer(help_page)
@@ -31,12 +36,20 @@ def get():
 
 @api_staff_member_required()
 def post(request):
-    """ Post the help
+    """ Create the help page
 
-        Parameters:
-            request: context
+    Parameters:
+    
+        {
+            "content": "new_content"
+        }
 
-        Returns: Http Response
+    Returns:
+
+        - code: 200
+          content: Help page
+        - code: 400
+          content: Validation error
     """
     try:
         # Get parameters
@@ -72,12 +85,15 @@ def post(request):
 
 @api_view(['GET', 'POST'])
 def rest_help_page(request):
-    """ Help
+    """ Help redirect to POST or GET methods
 
-        Parameters:
-            request:
+    Args:
 
-        Returns:
+        request: HTTP request
+
+    Returns:
+
+        Response object
     """
     if request.method == 'GET':
         return get()

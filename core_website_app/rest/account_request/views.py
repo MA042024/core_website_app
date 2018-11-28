@@ -15,14 +15,18 @@ logger = logging.getLogger("core_website_app.rest.account_request.views")
 @api_view(['GET'])
 @api_staff_member_required()
 def get_all(request):
-    """
-        List all account requests
+    """ Get all account requests
 
-        Parameters:
-            request (HttpRequest): request
+    Args:
 
-        Returns:
-            Response object
+        request: HTTP request
+
+    Returns:
+
+        - code: 200
+          content: List of account requests
+        - code: 400
+          content: Validation error
     """
     requests = account_request_api.get_all()
     serializer = AccountRequestSerializer(requests)
@@ -36,14 +40,24 @@ def get_all(request):
 
 @api_staff_member_required()
 def get(request):
-    """
-        Get an account request
+    """ Get an account request
 
-        Parameters:
-            request (HttpRequest): request
+    Parameters:
 
-        Returns:
-            Response object
+        {
+            "request_id": "request_id"
+        }
+
+    Args:
+
+        request: HTTP request
+
+    Returns:
+
+        - code: 200
+          content: List of account requests
+        - code: 400
+          content: Validation error / api exceptions / missing parameters
     """
     try:
         # Get parameters
@@ -69,14 +83,28 @@ def get(request):
 
 
 def post(request):
-    """
-        Post a new account request
+    """ Create a new account request
 
-        Parameters:
-            request (HttpRequest): request
+    Parameters:
 
-        Returns:
-            Response object
+        {
+            "username": "username",
+            "firstname": "firstname",
+            "lastname": "lastname",
+            "password": "password",
+            "email": "email"
+        }
+
+    Args:
+
+        request: HTTP request
+
+    Returns:
+
+        - code: 200
+          content: Requested Account
+        - code: 400
+          content: Validation error / missing parameters
     """
     try:
         # Get parameters
@@ -114,14 +142,15 @@ def post(request):
 
 @api_view(['GET', 'POST'])
 def account_request(request):
-    """
-        Account request redirect to POST or GET methods
+    """ Account request redirect to POST or GET methods
 
-        Parameters:
-            request (HttpRequest): request
+    Args:
 
-        Returns:
-            Response object
+        request: HTTP request
+
+    Returns:
+
+        Response object
     """
     if request.method == 'GET':
         return get(request)
@@ -132,14 +161,24 @@ def account_request(request):
 @api_view(['POST'])
 @api_staff_member_required()
 def accept(request):
-    """
-        Accept an account request
+    """ Accept an account request
 
-        Parameters:
-            request (HttpRequest): request
+    Parameters:
 
-        Returns:
-            Response object
+        {
+            "requestid": "request_id"
+        }
+
+    Args:
+
+        request: HTTP request
+
+    Returns:
+
+        - code: 200
+          content: Updated account request
+        - code: 400
+          content: Missing parameters
     """
     try:
         # Get parameters
@@ -169,14 +208,24 @@ def accept(request):
 @api_view(['POST'])
 @api_staff_member_required()
 def deny(request):
-    """
-        Deny an account request
+    """ Deny an account request
 
-        Parameters:
-            request (HttpRequest): request
+    Parameters:
 
-        Returns:
-            Response object
+        {
+            "requestid": "request_id"
+        }
+
+    Args:
+
+        request: HTTP request
+
+    Returns:
+
+        - code: 204
+          content: {}
+        - code: 400
+          content: Missing parameters
     """
     try:
         # Get parameters

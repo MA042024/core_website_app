@@ -19,6 +19,10 @@ def get():
 
     Returns:
 
+        - code: 200
+          content: Terms of use page
+        - code: 400
+          content: Validation error
     """
     help_page = terms_of_use_api.get()
     serializer = WebPageSerializer(help_page)
@@ -32,13 +36,20 @@ def get():
 
 @api_staff_member_required()
 def post(request):
-    """ Post the terms of use
+    """ Create the terms of use
 
-    Args:
-        request:
+    Parameters:
+
+        {
+            "content": "new_content"
+        }
 
     Returns:
 
+        - code: 200
+          content: Terms of use page
+        - code: 400
+          content: Validation error
     """
     try:
         # Get parameters
@@ -74,13 +85,15 @@ def post(request):
 
 @api_view(['GET', 'POST'])
 def terms_of_use(request):
-    """ Terms of Use
+    """ Terms of Use redirect to POST or GET methods
 
     Args:
-        request:
+
+        request: HTTP request
 
     Returns:
 
+        Response object
     """
     if request.method == 'GET':
         return get()
