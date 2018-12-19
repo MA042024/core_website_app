@@ -1,5 +1,4 @@
-"""
-    The API contains the available function to access, create, edit and delete the account requests
+""" The API contains the available function to access, create, edit and delete the account requests
 """
 from core_main_app.utils.notifications.mail import send_mail as common_send_mail
 from core_main_app.commons.exceptions import ApiError
@@ -10,36 +9,35 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 def get_all():
-    """
-        List of opened account requests
+    """ List of opened account requests
 
-        Returns:
-            list: List of all requests
+    Returns:
+
+        List of all requests
     """
-    return AccountRequest.objects()
+    return AccountRequest.get_all()
 
 
 def get_count():
-    """ Count number of account request currently in the database.
+    """ Count number of account request currently in the database
 
     Returns:
-        int: number of account requests
+
+        number of account requests
     """
-    return len(get_all())
+    return get_all().count()
 
 
 def get(account_request_id):
-    """
-        Get an account request given its primary key
+    """ Get an account request given its primary key
 
-        Parameters:
-            account_request_id (str): Primary key of the request
+    Args:
 
-        Returns:
-            :class:`~models.AccountRequest`: The corresponding account request
+        account_request_id: Primary key of the request
 
-        Raises:
-            MDCSError: If no `request_id` does not correspond to any request.
+    Returns:
+
+        Account request
     """
     try:
         return AccountRequest.get_by_id(account_request_id)
@@ -48,13 +46,15 @@ def get(account_request_id):
 
 
 def insert(user):
-    """
-        Create a new request
+    """ Create a new request
 
-        Parameters:
-            user:
+    Args:
 
-        Returns: new account request
+        user: Django User
+
+    Returns:
+
+        New account request
     """
     try:
         # check if a user with the same username exists
@@ -72,18 +72,15 @@ def insert(user):
 
 
 def accept(account_request, send_mail=True):
-    """
-        Accept an account request
+    """ Accept an account request
 
-        Parameters:
-            account_request (obj): Primary key of the request
-            send_mail (bool): send email
+    Args:
 
-        Returns:
-            User object
+        account_request: Primary key of the request
+        send_mail: send email
 
-        Raises:
-            ApiError: If user already exists
+    Returns:
+
     """
     user = None
     try:
@@ -111,11 +108,14 @@ def accept(account_request, send_mail=True):
 
 
 def deny(account_request):
-    """
-        Delete an account request
+    """ Delete an account request
 
-        Parameters:
-            account_request (obj): Primary key of the request
+    Args:
+
+        account_request: Primary key of the request
+
+    Returns:
+
     """
     user = None
     try:
@@ -132,44 +132,47 @@ def deny(account_request):
 
 
 def _get_user_by_username(username):
-    """
-        Returns a user given its username
+    """ Returns a user given its username
 
-        Parameters:
-            username (str): Given username
+    Args:
 
-        Returns:
-            User object
+        username: Given username
+
+    Returns:
+
+        User
     """
     return User.objects.get(username=username)
 
 
 def _get_user_by_id(user_id):
-    """
-        Returns a user given its primary key
+    """ Returns a user given its primary key
 
-        Parameters:
-            user_id (str): Given user id
+    Args:
 
-        Returns:
-            User object
+        user_id: Given user id
+
+    Returns:
+
+        User
     """
     return User.objects.get(pk=user_id)
 
 
 def _create_and_save_user(username, password, first_name, last_name, email):
-    """
-        Save a user with the given parameters
+    """ Save a user with the given parameters
 
-        Parameters:
-            username (str): Given user name
-            password (str): Given password
-            first_name (str): Given first name
-            last_name (str): Given last name
-            email (str): Given email
+    Args:
 
-        Returns:
-            User object
+        username: Given user name
+        password: Given password
+        first_name: Given first name
+        last_name: Given last name
+        email: Given email
+
+    Returns:
+
+        User
     """
     user = User.objects.create_user(username=username,
                                     password=password,

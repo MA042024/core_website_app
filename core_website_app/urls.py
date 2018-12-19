@@ -10,5 +10,5 @@ urlpatterns = [
     url(r'^privacy', user_views.privacy_policy, name='core_website_app_privacy'),
     url(r'^terms', user_views.terms_of_use, name='core_website_app_terms'),
 
-    url(r'^api/', include('core_website_app.rest.urls')),
+    url(r'^website/', include('core_website_app.rest.urls')),
 ]

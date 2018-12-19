@@ -33,3 +33,12 @@ class AccountRequest(Document):
             raise exceptions.DoesNotExist(e.message)
         except Exception as ex:
             raise exceptions.ModelError(ex.message)
+
+    @staticmethod
+    def get_all():
+        """ Get all Account Request
+
+            Returns:
+
+        """
+        return AccountRequest.objects.all()

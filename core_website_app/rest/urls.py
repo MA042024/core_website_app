@@ -1,23 +1,51 @@
 """ Url router for the Rest API
 """
 from django.conf.urls import url
-from .help import views as help_rest_views
-from .privacy_policy import views as privace_policy_rest_views
-from .terms_of_use import views as term_of_use_rest_views
-from .account_request import views as account_request_views
-from .contact_message import views as contact_message_views
+
+import core_main_app.rest.web_page.views as web_page_views
+import core_website_app.rest.contact_message.views as contact_message_views
+import core_website_app.rest.account_request.views as account_request_views
 
 urlpatterns = [
-    url(r'^user-requests$', account_request_views.get_all, name='request_list_rest_views'),
-    url(r'^user-request$', account_request_views.get, name='request_rest_views'),
-    url(r'^user-request/accept$', account_request_views.accept, name='request_accept_rest_views'),
-    url(r'^user-request/deny$', account_request_views.deny, name='request_deny_rest_views'),
+    url(r'^user-requests/$',
+        account_request_views.AccountRequestList.as_view(),
+        name='core_website_app_rest_account_request_list'),
 
-    url(r'^messages$', contact_message_views.get_all, name='message_list_rest_views'),
-    url(r'^message$', contact_message_views.message, name='message_rest_views'),
-    url(r'^message/delete$', contact_message_views.delete, name='message_delete_rest_views'),
+    url(r'^user-requests/(?P<pk>\w+)/$',
+        account_request_views.AccountRequestDetail.as_view(),
+        name='core_website_app_rest_account_request_detail'),
 
-    url(r'^help$', help_rest_views.rest_help_page, name='help_rest_view'),
-    url(r'^privacy_policy$', privace_policy_rest_views.privacy_policy, name='privacy_policy_rest_view'),
-    url(r'^terms_of_use$', term_of_use_rest_views.terms_of_use, name='terms_of_use_rest_views'),
+    url(r'^user-requests/(?P<pk>\w+)/accept/$',
+        account_request_views.AccountRequestAccept.as_view(),
+        name='core_website_app_rest_account_request_accept'),
+
+    url(r'^user-requests/(?P<pk>\w+)/deny/$',
+        account_request_views.AccountRequestDeny.as_view(),
+        name='core_website_app_rest_account_request_deny'),
+
+    url(r'^messages/$',
+        contact_message_views.ContactMessageList.as_view(),
+        name='core_website_app_rest_message_list'),
+
+    url(r'^messages/(?P<pk>\w+)/$',
+        contact_message_views.ContactMessageDetail.as_view(),
+        name='core_website_app_rest_message_detail'),
+
+    url(r'^help/$',
+        web_page_views.WebPageList.as_view(
+            web_page_type="help"
+        ),
+        name='core_website_app_rest_help_list'),
+
+    url(r'^privacy_policy/$',
+        web_page_views.WebPageList.as_view(
+            web_page_type="privacy_policy"
+        ),
+        name='core_website_app_rest_privacy_policy_list'),
+
+    url(r'^terms_of_use/$',
+        web_page_views.WebPageList.as_view(
+            web_page_type="terms_of_use"
+        ),
+        name='core_website_app_rest_terms_of_use_list'),
 ]
