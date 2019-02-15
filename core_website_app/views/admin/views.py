@@ -57,6 +57,9 @@ def contact_messages(request):
                 "is_raw": False
             },
         ],
+        "css": [
+            "core_website_app/admin/css/messages.css"
+        ]
     }
 
     modals = [
