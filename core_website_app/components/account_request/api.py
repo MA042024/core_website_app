@@ -1,6 +1,6 @@
 """ The API contains the available function to access, create, edit and delete the account requests
 """
-from core_main_app.utils.notifications.mail import send_mail as common_send_mail
+import core_main_app.utils.notifications.mail as send_mail_api
 from core_main_app.commons.exceptions import ApiError
 from core_website_app.settings import SERVER_URI
 from core_website_app.components.account_request.models import AccountRequest
@@ -68,6 +68,12 @@ def insert(user):
                                          first_name=user.first_name,
                                          last_name=user.last_name,
                                          email=user.email)
+
+        context = {'URI': SERVER_URI}
+        template_path = 'core_website_app/admin/email/request_account_for_admin.html'
+        send_mail_api.send_mail_to_administrators(subject='New Account Request',
+                                                  path_to_template=template_path,
+                                                  context=context)
         return account_request.save()
 
 
@@ -95,9 +101,9 @@ def accept(account_request, send_mail=True):
                        'firstname': account_request.first_name,
                        'URI': SERVER_URI}
 
-            common_send_mail(subject='Account approved',
-                             path_to_template='core_website_app/admin/email/request_account_approved.html',
-                             context=context, recipient_list=[account_request.email])
+            send_mail_api.send_mail(subject='Account approved',
+                                    path_to_template='core_website_app/admin/email/request_account_approved.html',
+                                    context=context, recipient_list=[account_request.email])
     finally:
         # delete the user request
         account_request.delete()
