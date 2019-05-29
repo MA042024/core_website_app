@@ -1,5 +1,7 @@
 """ Serializers used throughout the Contact Message Rest API
 """
+from builtins import object
+
 from rest_framework_mongoengine.serializers import DocumentSerializer
 
 from core_website_app.components.contact_message.models import ContactMessage
@@ -8,7 +10,7 @@ from core_website_app.components.contact_message.models import ContactMessage
 class ContactMessageSerializer(DocumentSerializer):
     """ Represents the contact message serializer
     """
-    class Meta:
+    class Meta(object):
         model = ContactMessage
         fields = ["id",
                   "name",

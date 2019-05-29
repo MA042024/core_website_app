@@ -14,13 +14,12 @@ from core_main_app.commons import exceptions
 from core_main_app.commons.exceptions import ApiError
 from core_main_app.utils.access_control.exceptions import AccessControlError
 from core_main_app.utils.decorators import api_staff_member_required
+from future.utils import with_metaclass
 
 
-class AbstractActionAccountRequest(APIView):
+class AbstractActionAccountRequest(with_metaclass(ABCMeta, APIView)):
     """ Action Account request
     """
-
-    __metaclass__ = ABCMeta
 
     def get_object(self, pk):
         """ Get AccountRequest from db

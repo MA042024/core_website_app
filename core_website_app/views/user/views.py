@@ -1,25 +1,28 @@
 """
     Views available for the user
 """
+from builtins import str
+
+from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.template.loader import get_template
 from mongoengine.errors import ValidationError
-from core_main_app.commons.exceptions import ApiError
-from core_main_app.utils.rendering import render
-from django.core.urlresolvers import reverse
-from django.shortcuts import redirect
-from django.contrib import messages
-from core_website_app.components.contact_message.models import ContactMessage
-from core_website_app.settings import DISPLAY_NIST_HEADERS
-from core_website_app.utils.markdown_parser import parse
-from .forms import RequestAccountForm, ContactForm
+
 import core_website_app.components.account_request.api as account_request_api
 import core_website_app.components.contact_message.api as contact_message_api
 import core_website_app.components.help.api as help_api
 import core_website_app.components.privacy_policy.api as privacy_policy_api
 import core_website_app.components.terms_of_use.api as terms_of_use_api
+from core_main_app.commons.exceptions import ApiError
+from core_main_app.utils.rendering import render
+from core_website_app.components.contact_message.models import ContactMessage
+from core_website_app.settings import DISPLAY_NIST_HEADERS
+from core_website_app.utils.markdown_parser import parse
+from .forms import RequestAccountForm, ContactForm
 
 
 def request_new_account(request):
@@ -67,7 +70,7 @@ def request_new_account(request):
                               context={'request_form': request_form, 'action_result': error_box})
             except ValidationError as e:
                 error_message = "The following error(s) occurred during validation:"
-                error_items = [str(field).capitalize() + ": " + str(error) for field, error in e.errors.items()]
+                error_items = [str(field).capitalize() + ": " + str(error) for field, error in list(e.errors.items())]
 
                 error_template = get_template("core_website_app/user/request_error.html")
                 error_box = error_template.render({"error_message": error_message, "error_items": error_items})

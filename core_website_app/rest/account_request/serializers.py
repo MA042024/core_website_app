@@ -1,5 +1,7 @@
 """ Serializers used throughout the Account Request Rest API
 """
+from builtins import object
+
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from rest_framework import serializers
@@ -12,7 +14,7 @@ from core_website_app.components.account_request.models import AccountRequest
 class AccountRequestSerializer(DocumentSerializer):
     """ Represents the account request serializer
     """
-    class Meta:
+    class Meta(object):
         model = AccountRequest
         fields = ["id",
                   "username",
@@ -25,7 +27,7 @@ class AccountRequestSerializer(DocumentSerializer):
 class UserSerializer(serializers.ModelSerializer):
     """ Represents the user serializer
     """
-    class Meta:
+    class Meta(object):
         model = User
         fields = ["id",
                   "username",

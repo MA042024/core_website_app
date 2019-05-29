@@ -1,5 +1,7 @@
 """ Contact messages models
 """
+from builtins import str
+
 from django_mongoengine import fields, Document
 from mongoengine import errors as mongoengine_errors
 
