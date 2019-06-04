@@ -21,9 +21,9 @@ def accept_request(request):
         account_request_api.accept(account_request_from_api)
         message = "Request Accepted"
     except main_exceptions.ApiError as error:
-        raise exceptions.WebsiteAjaxError(error.message)
+        raise exceptions.WebsiteAjaxError(str(error))
     except Exception as exception:
-        raise exceptions.WebsiteAjaxError(exception.message)
+        raise exceptions.WebsiteAjaxError(str(exception))
 
     return HttpResponse(json.dumps({"message": message}), content_type='application/json')
 
@@ -41,9 +41,9 @@ def deny_request(request):
         account_request_api.deny(account_request_from_api)
         message = "Request denied"
     except main_exceptions.ApiError as error:
-        raise exceptions.WebsiteAjaxError(error.message)
+        raise exceptions.WebsiteAjaxError(str(error))
     except Exception as exception:
-        raise exceptions.WebsiteAjaxError(exception.message)
+        raise exceptions.WebsiteAjaxError(str(exception))
 
     return HttpResponse(json.dumps({"message": message}), content_type='application/json')
 
@@ -60,9 +60,9 @@ def remove_message(request):
         contact_message_api.delete(contact_message)
         message = "Message deleted"
     except exceptions.WebsiteAjaxError as error:
-        message = error.message
+        message = str(error)
     except Exception as exception:
-        message = exception.message
+        message = str(exception)
 
     return HttpResponse(json.dumps({"message": message}), content_type='application/json')
 

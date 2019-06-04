@@ -60,7 +60,7 @@ def request_new_account(request):
                 messages.add_message(request, messages.INFO, 'User Account Request sent to the administrator.')
                 return redirect(reverse("core_main_app_homepage"))
             except ApiError as e:
-                error_message = e.message
+                error_message = str(e)
 
                 error_template = get_template("core_website_app/user/request_error.html")
                 error_box = error_template.render({"error_message": error_message})

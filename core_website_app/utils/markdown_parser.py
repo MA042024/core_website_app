@@ -18,4 +18,4 @@ def parse(text):
     try:
         return safe_html(md_text)
     except HTMLError as e:
-        return e.message
+        return str(e)
