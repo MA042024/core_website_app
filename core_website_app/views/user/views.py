@@ -1,7 +1,6 @@
 """
     Views available for the user
 """
-from builtins import str
 
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password

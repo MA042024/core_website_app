@@ -14,10 +14,9 @@ from core_main_app.commons import exceptions
 from core_main_app.commons.exceptions import ApiError
 from core_main_app.utils.access_control.exceptions import AccessControlError
 from core_main_app.utils.decorators import api_staff_member_required
-from future.utils import with_metaclass
 
 
-class AbstractActionAccountRequest(with_metaclass(ABCMeta, APIView)):
+class AbstractActionAccountRequest(APIView, metaclass=ABCMeta):
     """ Action Account request
     """
 

@@ -1,6 +1,5 @@
 """ Serializers used throughout the Account Request Rest API
 """
-from builtins import object
 
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
