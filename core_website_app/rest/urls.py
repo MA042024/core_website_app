@@ -3,8 +3,8 @@
 from django.conf.urls import url
 
 import core_main_app.rest.web_page.views as web_page_views
-import core_website_app.rest.contact_message.views as contact_message_views
 import core_website_app.rest.account_request.views as account_request_views
+import core_website_app.rest.contact_message.views as contact_message_views
 
 urlpatterns = [
     url(r'^user-requests/$',

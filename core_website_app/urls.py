@@ -1,6 +1,7 @@
 """ Url router for the main application
 """
 from django.conf.urls import url, include
+
 from core_website_app.views.user import views as user_views
 
 urlpatterns = [

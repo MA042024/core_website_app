@@ -1,12 +1,14 @@
 """
     Ajax views for the admin part
 """
-from django.http import HttpResponse
 import json
-from core_main_app.commons import exceptions as main_exceptions
-from core_website_app.commons import exceptions
+
+from django.http import HttpResponse
+
 import core_website_app.components.account_request.api as account_request_api
 import core_website_app.components.contact_message.api as contact_message_api
+from core_main_app.commons import exceptions as main_exceptions
+from core_website_app.commons import exceptions
 
 
 def accept_request(request):

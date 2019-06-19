@@ -1,6 +1,7 @@
 """ Parser to convert Markdown to HTML in a safe way
 """
 from markdown import markdown
+
 from xml_utils.commons.exceptions import HTMLError
 from xml_utils.html_tree.parser import safe_html
 

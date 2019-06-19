@@ -1,6 +1,7 @@
 """ Form needed for the user part of everything
 """
 from django import forms
+
 from core_main_app.commons.fields import CustomPasswordPoliciesField
 
 

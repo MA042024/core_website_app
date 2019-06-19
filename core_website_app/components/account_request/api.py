@@ -1,11 +1,12 @@
 """ The API contains the available function to access, create, edit and delete the account requests
 """
-import core_main_app.utils.notifications.mail as send_mail_api
-from core_main_app.commons.exceptions import ApiError
-from core_website_app.settings import SERVER_URI
-from core_website_app.components.account_request.models import AccountRequest
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+
+import core_main_app.utils.notifications.mail as send_mail_api
+from core_main_app.commons.exceptions import ApiError
+from core_website_app.components.account_request.models import AccountRequest
+from core_website_app.settings import SERVER_URI
 
 
 def get_all():
