@@ -9,7 +9,6 @@ import core_main_app.components.web_page.api as web_page_api
 from core_main_app.commons.exceptions import ApiError
 from core_main_app.components.web_page.models import WebPage
 from core_website_app.commons.enums import WEB_PAGE_TYPES
-from core_website_app.commons.exceptions import WebsiteWebPageDoesNotExistError
 
 
 class TestsWebPageApiGet(TestCase):
@@ -44,10 +43,7 @@ class TestsWebPageApiGet(TestCase):
         # Assert
         self.assertEqual("content web page help", result.content)
 
-    @patch.object(WebPage, 'get_by_type')
-    def test_web_page_get_not_in_database_return_none(self, mock_get_web_page_by_type):
-        # Arrange
-        mock_get_web_page_by_type.side_effect = WebsiteWebPageDoesNotExistError
+    def test_web_page_get_not_in_database_return_none(self):
         # Act
         result = web_page_api.get("fake_type")
         # Assert
