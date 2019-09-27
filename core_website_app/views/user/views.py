@@ -4,9 +4,9 @@
 
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.urls import reverse
 from django.contrib.auth.password_validation import validate_password, MinimumLengthValidator
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.template.loader import get_template
