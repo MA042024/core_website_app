@@ -3,13 +3,13 @@
 """
 
 from django.contrib import messages
-from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password, MinimumLengthValidator
+from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.template.loader import get_template
-from mongoengine.errors import ValidationError
 
 import core_website_app.components.account_request.api as account_request_api
 import core_website_app.components.contact_message.api as contact_message_api
@@ -47,11 +47,15 @@ def request_new_account(request):
         if request_form.is_valid():
             # Call the API
             try:
-                user = User(username=request.POST['username'],
-                            first_name=request.POST['firstname'],
-                            last_name=request.POST['lastname'],
-                            password=make_password(request.POST['password']),
-                            email=request.POST['email'],
+                #TODO add the missing validators
+                validate_password(request_form.cleaned_data.get('password1'), password_validators=
+                [MinimumLengthValidator()])# throw a ValidationError if at least on validator fail
+
+                user = User(username=request_form.cleaned_data.get('username'),
+                            first_name=request_form.cleaned_data.get('firstname'),
+                            last_name=request_form.cleaned_data.get('lastname'),
+                            password=request_form.cleaned_data.get('password1'),
+                            email=request_form.cleaned_data.get('email'),
                             is_active=False)
 
                 account_request_api.insert(user)
@@ -69,7 +73,7 @@ def request_new_account(request):
                               context={'request_form': request_form, 'action_result': error_box})
             except ValidationError as e:
                 error_message = "The following error(s) occurred during validation:"
-                error_items = [str(field).capitalize() + ": " + str(error) for field, error in list(e.errors.items())]
+                error_items = [str(error) for error in e.messages]
 
                 error_template = get_template("core_website_app/user/request_error.html")
                 error_box = error_template.render({"error_message": error_message, "error_items": error_items})
@@ -80,11 +84,9 @@ def request_new_account(request):
     else:
         request_form = RequestAccountForm()
 
-    context = {
-        "request_form": request_form
-    }
-
-    return render(request, 'core_website_app/user/request_new_account.html', assets=assets, context=context)
+    return render(request, 'core_website_app/user/request_new_account.html',
+                              assets=assets,
+                              context={'request_form': request_form})
 
 
 def contact(request):
