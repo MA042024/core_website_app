@@ -4,7 +4,7 @@
 
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.auth.password_validation import validate_password, MinimumLengthValidator
+from core_main_app.commons.validators import validate_password
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -47,9 +47,7 @@ def request_new_account(request):
         if request_form.is_valid():
             # Call the API
             try:
-                #TODO add the missing validators
-                validate_password(request_form.cleaned_data.get('password1'), password_validators=
-                [MinimumLengthValidator()])# throw a ValidationError if at least on validator fail
+                validate_password(request_form.cleaned_data.get('password1'))
 
                 user = User(username=request_form.cleaned_data.get('username'),
                             first_name=request_form.cleaned_data.get('firstname'),
