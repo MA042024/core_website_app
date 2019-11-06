@@ -6,4 +6,5 @@ WEB_PAGE_TYPES.update({
     "terms_of_use": 0,
     "privacy_policy": 1,
     "help": 2,
+    "rules_of_behavior": 4,
 })

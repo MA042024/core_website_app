@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^help', user_views.help_page, name='core_website_app_help'),
     url(r'^privacy', user_views.privacy_policy, name='core_website_app_privacy'),
     url(r'^terms', user_views.terms_of_use, name='core_website_app_terms'),
+    url(r'^rules-of-behavior', user_views.rules_of_behavior, name='core_website_app_rules_of_behavior'),
 
     url(r'^website/', include('core_website_app.rest.urls')),
 ]

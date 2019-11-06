@@ -61,7 +61,7 @@ class TestsWebPageApiUpsert(TestCase):
 
     def test_web_page_upsert_type_does_not_exist(self):
         # Arrange
-        web_page = WebPage(4, "test")
+        web_page = WebPage(5, "test")
         # Act # Assert
         with self.assertRaises(ApiError):
             web_page_api.upsert(web_page)

@@ -1,0 +1,15 @@
+{% load staticfiles %}
+{% load stripjs %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>Rules of Behavior</h2>
+
+        <div class="left word-wrap">
+            {% if data.rules_of_behavior %}
+                {{ data.rules_of_behavior.content | stripjs }}
+            {% else %}
+                <a href="{% url 'core_website_app_contact' %}">Contact the administrator</a>
+            {% endif %}
+        </div>
+    </div>
+</div>

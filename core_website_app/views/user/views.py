@@ -15,6 +15,7 @@ import core_website_app.components.account_request.api as account_request_api
 import core_website_app.components.contact_message.api as contact_message_api
 import core_website_app.components.help.api as help_api
 import core_website_app.components.privacy_policy.api as privacy_policy_api
+import core_website_app.components.rules_of_behavior.api as rules_of_behavior_api
 import core_website_app.components.terms_of_use.api as terms_of_use_api
 from core_main_app.commons.exceptions import ApiError
 from core_main_app.utils.rendering import render
@@ -167,3 +168,20 @@ def terms_of_use(request):
         terms.content = parse(terms.content)
 
     return render(request, 'core_website_app/user/terms-of-use.html', context={'terms': terms})
+
+
+def rules_of_behavior(request):
+    """Page that provides the rules of behavior
+
+        Parameters:
+            request:
+
+        Returns: Http Response
+    """
+
+    # Call the API
+    rules_of_behavior = rules_of_behavior_api.get()
+    if rules_of_behavior is not None:
+        rules_of_behavior.content = parse(rules_of_behavior.content)
+
+    return render(request, 'core_website_app/user/rules_of_behavior.html', context={'rules_of_behavior': rules_of_behavior})

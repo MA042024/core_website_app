@@ -18,11 +18,16 @@ Menu.add_item(
     "footer", MenuItem("Help", reverse("core_website_app_help"), icon="question-circle", weight=1004)
 )
 
+Menu.add_item(
+    "footer", MenuItem("Rules of Behavior", reverse("core_website_app_rules_of_behavior"), icon="balance-scale", weight=1004)
+)
+
 # Admin menus for website app
 website_children = (
     MenuItem("Privacy Policy", reverse("admin:core_website_app_privacy"), icon="user-secret"),
     MenuItem("Terms of Use", reverse("admin:core_website_app_terms"), icon="file-text-o"),
     MenuItem("Help Page", reverse("admin:core_website_app_help"), icon="question-circle-o"),
+    MenuItem("Rules of Behavior", reverse("admin:core_website_app_rules_of_behavior"), icon="balance-scale"),
 
     MenuItem("User requests", reverse("admin:core_website_app_user_requests"), icon="user-plus",
              item_count_url="admin:core_website_app_request_count"),

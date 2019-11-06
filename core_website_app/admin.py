@@ -6,6 +6,7 @@ from django.contrib import admin
 import core_website_app.components.help.api as help_api
 import core_website_app.components.privacy_policy.api as privacy_policy_api
 import core_website_app.components.terms_of_use.api as terms_of_use_api
+import core_website_app.components.rules_of_behavior.api as rules_of_behavior_api
 from core_main_app.components.web_page.models import WEB_PAGE_TYPES
 from core_main_app.views.admin.views import WebPageView
 from core_website_app.views.admin import views as admin_views, ajax as admin_ajax
@@ -40,6 +41,13 @@ admin_urls = [
                             post_redirect='admin:core_website_app_help',
                             web_page_type=WEB_PAGE_TYPES["help"]),
         name='core_website_app_help'),
+
+    url(r'^rules_of_behavior$',
+        WebPageView.as_view(api=rules_of_behavior_api,
+                            get_redirect='core_website_app/admin/rules_of_behavior.html',
+                            post_redirect='admin:core_website_app_rules_of_behavior',
+                            web_page_type=WEB_PAGE_TYPES["rules_of_behavior"]),
+        name='core_website_app_rules_of_behavior'),
 ]
 
 urls = admin.site.get_urls()
