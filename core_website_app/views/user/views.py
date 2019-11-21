@@ -3,6 +3,7 @@
 """
 
 from django.contrib import messages
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from core_main_app.commons.validators import validate_password
 from django.core.exceptions import ValidationError
@@ -53,7 +54,7 @@ def request_new_account(request):
                 user = User(username=request_form.cleaned_data.get('username'),
                             first_name=request_form.cleaned_data.get('firstname'),
                             last_name=request_form.cleaned_data.get('lastname'),
-                            password=request_form.cleaned_data.get('password1'),
+                            password=make_password(request_form.cleaned_data.get('password1')),
                             email=request_form.cleaned_data.get('email'),
                             is_active=False)
 
