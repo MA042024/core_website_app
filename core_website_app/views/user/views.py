@@ -184,9 +184,6 @@ def terms_of_use(request):
 
         Returns: Http Response
     """
-    if DISPLAY_NIST_HEADERS:
-        return HttpResponseRedirect("https://www.nist.gov/privacy-policy")
-
     # Call the API
     terms = terms_of_use_api.get()
     if terms is not None:
@@ -204,7 +201,6 @@ def rules_of_behavior(request):
 
         Returns: Http Response
     """
-
     # Call the API
     rules_of_behavior_object = rules_of_behavior_api.get()
     if rules_of_behavior_object is not None:

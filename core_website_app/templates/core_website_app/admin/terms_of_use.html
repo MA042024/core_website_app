@@ -1,7 +1,3 @@
 {% with webpage_name="terms of use" webpage_url="admin:core_website_app_terms" %}
-    {% if DISPLAY_NIST_HEADERS %}
-        {% include 'core_main_app/admin/web_page/web_page_unavailable.html' %}
-    {% else %}
-        {% include 'core_main_app/admin/web_page/web_page.html' %}
-    {% endif %}
+    {% include 'core_main_app/admin/web_page/web_page.html' %}
 {% endwith %}
