@@ -25,8 +25,8 @@ Menu.add_item(
 # Admin menus for website app
 website_children = (
     MenuItem("Privacy Policy", reverse("admin:core_website_app_privacy"), icon="user-secret"),
-    MenuItem("Terms of Use", reverse("admin:core_website_app_terms"), icon="file-text-o"),
-    MenuItem("Help Page", reverse("admin:core_website_app_help"), icon="question-circle-o"),
+    MenuItem("Terms of Use", reverse("admin:core_website_app_terms"), icon="file-alt"),
+    MenuItem("Help Page", reverse("admin:core_website_app_help"), icon="question-circle"),
     MenuItem("Rules of Behavior", reverse("admin:core_website_app_rules_of_behavior"), icon="balance-scale"),
 
     MenuItem("User requests", reverse("admin:core_website_app_user_requests"), icon="user-plus",
