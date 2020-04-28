@@ -10,3 +10,20 @@ INSTALLED_APPS = (
 )
 
 DISPLAY_NIST_HEADERS = getattr(settings, 'DISPLAY_NIST_HEADERS', False)
+""" boolean: display the NIST header
+"""
+DISPLAY_PRIVACY_POLICY_FOOTER = getattr(settings, 'DISPLAY_PRIVACY_POLICY_FOOTER', False)
+""" boolean: display the privacy policy link in the footer
+"""
+DISPLAY_TERMS_OF_USE_FOOTER = getattr(settings, 'DISPLAY_TERMS_OF_USE_FOOTER', False)
+""" boolean: display the terms of use link in the footer
+"""
+DISPLAY_CONTACT_FOOTER = getattr(settings, 'DISPLAY_CONTACT_FOOTER', False)
+""" boolean: display the contact link in the footer
+"""
+DISPLAY_HELP_FOOTER = getattr(settings, 'DISPLAY_HELP_FOOTER', False)
+""" boolean: display the help link in the footer
+"""
+DISPLAY_RULES_OF_BEHAVIOR_FOOTER = getattr(settings, 'DISPLAY_RULES_OF_BEHAVIOR_FOOTER', False)
+""" boolean: display the rules of behavior link in the footer
+"""
