@@ -6,7 +6,8 @@ from django.core.exceptions import ObjectDoesNotExist
 import core_main_app.utils.notifications.mail as send_mail_api
 from core_main_app.commons.exceptions import ApiError
 from core_website_app.components.account_request.models import AccountRequest
-from core_website_app.settings import SERVER_URI
+from core_website_app.settings import SERVER_URI, SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_DENIED, \
+    SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_ACCEPTED
 
 
 def get_all():
@@ -78,13 +79,12 @@ def insert(user):
         return account_request.save()
 
 
-def accept(account_request, send_mail=True):
+def accept(account_request):
     """ Accept an account request
 
     Args:
 
         account_request: Primary key of the request
-        send_mail: send email
 
     Returns:
 
@@ -96,7 +96,7 @@ def accept(account_request, send_mail=True):
         user.is_active = True
         user.save()
 
-        if send_mail:
+        if SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_ACCEPTED:
             # FIXME send_mail should use a User object
             context = {'lastname': account_request.last_name,
                        'firstname': account_request.first_name,
@@ -132,6 +132,19 @@ def deny(account_request):
     finally:
         # delete the user request
         account_request.delete()
+
+        if SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_DENIED:
+            # create the context for the email
+            account_request_email = account_request.email
+            context = {'lastname': account_request.last_name,
+                        'firstname': account_request.first_name,
+                        'URI': SERVER_URI
+                      }
+
+            send_mail_api.send_mail(subject='Account request denied',
+                                    recipient_list=[account_request_email],
+                                    path_to_template='core_website_app/admin/email/request_account_denied.html',
+                                    context=context)
         if user is not None:
             return
         else:

@@ -182,4 +182,4 @@ class AccountRequestAccept(AbstractActionAccountRequest):
 
             account_request_object: account_request
         """
-        account_request_api.accept(account_request_object, send_mail=False)
+        account_request_api.accept(account_request_object)

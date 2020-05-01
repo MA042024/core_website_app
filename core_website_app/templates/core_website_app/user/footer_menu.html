@@ -1,0 +1,12 @@
+{% load menu %}
+
+{% block footer_menu %}
+    {% generate_menu %}
+    <ul class="menu">
+        {% for item in menus.footer %}
+            <li>
+                <a class="small" href="{{ item.url }}">{{ item.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

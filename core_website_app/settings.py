@@ -27,3 +27,9 @@ DISPLAY_HELP_FOOTER = getattr(settings, 'DISPLAY_HELP_FOOTER', False)
 DISPLAY_RULES_OF_BEHAVIOR_FOOTER = getattr(settings, 'DISPLAY_RULES_OF_BEHAVIOR_FOOTER', False)
 """ boolean: display the rules of behavior link in the footer
 """
+SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_ACCEPTED = getattr(settings, 'SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_ACCEPTED', False)
+""" boolean: send an email when an account is accepted
+"""
+SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_DENIED = getattr(settings, 'SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_DENIED', False)
+""" boolean: send an email when an account is denied
+"""

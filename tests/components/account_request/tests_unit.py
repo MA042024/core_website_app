@@ -46,7 +46,7 @@ class TestsAccountRequestAccept(TestCase):
 
         # Act # Assert
         with self.assertRaises(ApiError):
-            account_request_api.accept(self.account_request, False)
+            account_request_api.accept(self.account_request)
 
     @patch('core_website_app.components.account_request.models.AccountRequest.delete')
     @patch('core_website_app.components.account_request.api._create_and_save_user')
@@ -60,7 +60,7 @@ class TestsAccountRequestAccept(TestCase):
         mock_delete.return_value = None
 
         # Act
-        result = account_request_api.accept(self.account_request, False)
+        result = account_request_api.accept(self.account_request)
 
         #  Assert
         self.assertIsInstance(result, User)
