@@ -6,8 +6,11 @@ from django.core.exceptions import ObjectDoesNotExist
 import core_main_app.utils.notifications.mail as send_mail_api
 from core_main_app.commons.exceptions import ApiError
 from core_website_app.components.account_request.models import AccountRequest
-from core_website_app.settings import SERVER_URI, SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_DENIED, \
-    SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_ACCEPTED
+from core_website_app.settings import (
+    SERVER_URI,
+    SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_DENIED,
+    SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_ACCEPTED,
+)
 
 
 def get_all():
@@ -44,7 +47,7 @@ def get(account_request_id):
     try:
         return AccountRequest.get_by_id(account_request_id)
     except:
-        raise ApiError('No request could be found with the given id.')
+        raise ApiError("No request could be found with the given id.")
 
 
 def insert(user):
@@ -61,21 +64,25 @@ def insert(user):
     try:
         # check if a user with the same username exists
         _get_user_by_username(user.username)
-        raise ApiError('A user with the same username already exists.')
+        raise ApiError("A user with the same username already exists.")
     except ObjectDoesNotExist:
         user.save()
 
         # Create the account request and save it
-        account_request = AccountRequest(username=user.username,
-                                         first_name=user.first_name,
-                                         last_name=user.last_name,
-                                         email=user.email)
+        account_request = AccountRequest(
+            username=user.username,
+            first_name=user.first_name,
+            last_name=user.last_name,
+            email=user.email,
+        )
 
-        context = {'URI': SERVER_URI}
-        template_path = 'core_website_app/admin/email/request_account_for_admin.html'
-        send_mail_api.send_mail_to_administrators(subject='New Account Request',
-                                                  path_to_template=template_path,
-                                                  context=context)
+        context = {"URI": SERVER_URI}
+        template_path = "core_website_app/admin/email/request_account_for_admin.html"
+        send_mail_api.send_mail_to_administrators(
+            subject="New Account Request",
+            path_to_template=template_path,
+            context=context,
+        )
         return account_request.save()
 
 
@@ -98,13 +105,18 @@ def accept(account_request):
 
         if SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_ACCEPTED:
             # FIXME send_mail should use a User object
-            context = {'lastname': account_request.last_name,
-                       'firstname': account_request.first_name,
-                       'URI': SERVER_URI}
+            context = {
+                "lastname": account_request.last_name,
+                "firstname": account_request.first_name,
+                "URI": SERVER_URI,
+            }
 
-            send_mail_api.send_mail(subject='Account approved',
-                                    path_to_template='core_website_app/admin/email/request_account_approved.html',
-                                    context=context, recipient_list=[account_request.email])
+            send_mail_api.send_mail(
+                subject="Account approved",
+                path_to_template="core_website_app/admin/email/request_account_approved.html",
+                context=context,
+                recipient_list=[account_request.email],
+            )
     finally:
         # delete the user request
         account_request.delete()
@@ -136,15 +148,18 @@ def deny(account_request):
         if SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_DENIED:
             # create the context for the email
             account_request_email = account_request.email
-            context = {'lastname': account_request.last_name,
-                        'firstname': account_request.first_name,
-                        'URI': SERVER_URI
-                      }
+            context = {
+                "lastname": account_request.last_name,
+                "firstname": account_request.first_name,
+                "URI": SERVER_URI,
+            }
 
-            send_mail_api.send_mail(subject='Account request denied',
-                                    recipient_list=[account_request_email],
-                                    path_to_template='core_website_app/admin/email/request_account_denied.html',
-                                    context=context)
+            send_mail_api.send_mail(
+                subject="Account request denied",
+                recipient_list=[account_request_email],
+                path_to_template="core_website_app/admin/email/request_account_denied.html",
+                context=context,
+            )
         if user is not None:
             return
         else:
@@ -194,11 +209,13 @@ def _create_and_save_user(username, password, first_name, last_name, email):
 
         User
     """
-    user = User.objects.create_user(username=username,
-                                    password=password,
-                                    first_name=first_name,
-                                    last_name=last_name,
-                                    email=email)
+    user = User.objects.create_user(
+        username=username,
+        password=password,
+        first_name=first_name,
+        last_name=last_name,
+        email=email,
+    )
     # Have to be called separately because save from django object return nothing
     user.save()
     return user

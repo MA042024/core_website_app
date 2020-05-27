@@ -45,7 +45,7 @@ class ContactMessageList(APIView):
             # Return response
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as api_exception:
-            content = {'message': str(api_exception)}
+            content = {"message": str(api_exception)}
             return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request):
@@ -85,10 +85,10 @@ class ContactMessageList(APIView):
             # Return the serialized message
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except ValidationError as validation_exception:
-            content = {'message': validation_exception.detail}
+            content = {"message": validation_exception.detail}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         except Exception as api_exception:
-            content = {'message': str(api_exception)}
+            content = {"message": str(api_exception)}
             return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -146,10 +146,10 @@ class ContactMessageDetail(APIView):
             # Return response
             return Response(serializer.data)
         except Http404:
-            content = {'message': 'Contact message not found.'}
+            content = {"message": "Contact message not found."}
             return Response(content, status=status.HTTP_404_NOT_FOUND)
         except Exception as api_exception:
-            content = {'message': str(api_exception)}
+            content = {"message": str(api_exception)}
             return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @method_decorator(api_staff_member_required())
@@ -186,8 +186,8 @@ class ContactMessageDetail(APIView):
             # Return response
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Http404:
-            content = {'message': 'Data not found.'}
+            content = {"message": "Data not found."}
             return Response(content, status=status.HTTP_404_NOT_FOUND)
         except Exception as api_exception:
-            content = {'message': str(api_exception)}
+            content = {"message": str(api_exception)}
             return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

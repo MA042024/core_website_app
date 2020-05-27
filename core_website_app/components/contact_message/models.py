@@ -9,6 +9,7 @@ from core_main_app.commons import exceptions
 
 class ContactMessage(Document):
     """Represents a message sent via the Contact form"""
+
     name = fields.StringField(max_length=100)
     email = fields.EmailField()
     content = fields.StringField()

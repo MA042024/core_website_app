@@ -13,8 +13,7 @@ import core_website_app.components.account_request.api as account_request_api
 import core_website_app.components.contact_message.api as contact_message_api
 import core_website_app.components.help.api as help_api
 import core_website_app.components.privacy_policy.api as privacy_policy_api
-import core_website_app.components.rules_of_behavior.api as \
-    rules_of_behavior_api
+import core_website_app.components.rules_of_behavior.api as rules_of_behavior_api
 import core_website_app.components.terms_of_use.api as terms_of_use_api
 from core_main_app.commons.exceptions import ApiError
 from core_main_app.commons.validators import validate_password
@@ -35,12 +34,9 @@ def request_new_account(request):
     """
     assets = {
         "js": [
-            {
-                "path": "core_website_app/user/js/user_account_req.js",
-                "is_raw": False
-            }
+            {"path": "core_website_app/user/js/user_account_req.js", "is_raw": False}
         ],
-        "css": ["core_website_app/user/css/list.css"]
+        "css": ["core_website_app/user/css/list.css"],
     }
 
     if request.method == "POST":
@@ -51,20 +47,21 @@ def request_new_account(request):
                 request_form_data = request_form.cleaned_data
                 validate_password(request_form_data.get("password1"))
 
-                user = User(username=request_form_data.get("username"),
-                            first_name=request_form_data.get("firstname"),
-                            last_name=request_form_data.get("lastname"),
-                            password=make_password(
-                                request_form_data.get("password1")
-                            ),
-                            email=request_form_data.get("email"),
-                            is_active=False)
+                user = User(
+                    username=request_form_data.get("username"),
+                    first_name=request_form_data.get("firstname"),
+                    last_name=request_form_data.get("lastname"),
+                    password=make_password(request_form_data.get("password1")),
+                    email=request_form_data.get("email"),
+                    is_active=False,
+                )
 
                 account_request_api.insert(user)
 
                 messages.add_message(
-                    request, messages.INFO,
-                    "User Account Request sent to the administrator."
+                    request,
+                    messages.INFO,
+                    "User Account Request sent to the administrator.",
                 )
                 return redirect(reverse("core_main_app_homepage"))
             except ApiError as e:
@@ -73,18 +70,16 @@ def request_new_account(request):
                 error_template = get_template(
                     "core_website_app/user/request_error.html"
                 )
-                error_box = error_template.render(
-                    {"error_message": error_message}
-                )
+                error_box = error_template.render({"error_message": error_message})
 
-                return render(request,
-                              "core_website_app/user/request_new_account.html",
-                              assets=assets,
-                              context={"request_form": request_form,
-                                       "action_result": error_box})
+                return render(
+                    request,
+                    "core_website_app/user/request_new_account.html",
+                    assets=assets,
+                    context={"request_form": request_form, "action_result": error_box},
+                )
             except ValidationError as e:
-                error_message = "The following error(s) occurred during " \
-                                "validation:"
+                error_message = "The following error(s) occurred during " "validation:"
                 error_items = [str(error) for error in e.messages]
 
                 error_template = get_template(
@@ -94,17 +89,21 @@ def request_new_account(request):
                     {"error_message": error_message, "error_items": error_items}
                 )
 
-                return render(request,
-                              "core_website_app/user/request_new_account.html",
-                              assets=assets,
-                              context={"request_form": request_form,
-                                       "action_result": error_box})
+                return render(
+                    request,
+                    "core_website_app/user/request_new_account.html",
+                    assets=assets,
+                    context={"request_form": request_form, "action_result": error_box},
+                )
     else:
         request_form = RequestAccountForm()
 
-    return render(request, "core_website_app/user/request_new_account.html",
-                  assets=assets,
-                  context={"request_form": request_form})
+    return render(
+        request,
+        "core_website_app/user/request_new_account.html",
+        assets=assets,
+        context={"request_form": request_form},
+    )
 
 
 def contact(request):
@@ -128,15 +127,19 @@ def contact(request):
 
             contact_message_api.upsert(contact_message)
             messages.add_message(
-                request, messages.INFO,
-                "Your message has been sent to the administrator."
+                request,
+                messages.INFO,
+                "Your message has been sent to the administrator.",
             )
             return redirect(reverse("core_main_app_homepage"))
     else:
         contact_form = ContactForm()
 
-    return render(request, "core_website_app/user/contact.html",
-                  context={"contact_form": contact_form})
+    return render(
+        request,
+        "core_website_app/user/contact.html",
+        context={"contact_form": contact_form},
+    )
 
 
 def help_page(request):
@@ -152,8 +155,9 @@ def help_page(request):
     if help_page_object is not None:
         help_page_object.content = parse(help_page_object.content)
 
-    return render(request, "core_website_app/user/help.html",
-                  context={"help": help_page_object})
+    return render(
+        request, "core_website_app/user/help.html", context={"help": help_page_object}
+    )
 
 
 def privacy_policy(request):
@@ -172,8 +176,9 @@ def privacy_policy(request):
     if policy is not None:
         policy.content = parse(policy.content)
 
-    return render(request, "core_website_app/user/privacy-policy.html",
-                  context={"policy": policy})
+    return render(
+        request, "core_website_app/user/privacy-policy.html", context={"policy": policy}
+    )
 
 
 def terms_of_use(request):
@@ -189,8 +194,9 @@ def terms_of_use(request):
     if terms is not None:
         terms.content = parse(terms.content)
 
-    return render(request, "core_website_app/user/terms-of-use.html",
-                  context={"terms": terms})
+    return render(
+        request, "core_website_app/user/terms-of-use.html", context={"terms": terms}
+    )
 
 
 def rules_of_behavior(request):
@@ -204,9 +210,10 @@ def rules_of_behavior(request):
     # Call the API
     rules_of_behavior_object = rules_of_behavior_api.get()
     if rules_of_behavior_object is not None:
-        rules_of_behavior_object.content = parse(
-            rules_of_behavior_object.content
-        )
+        rules_of_behavior_object.content = parse(rules_of_behavior_object.content)
 
-    return render(request, "core_website_app/user/rules_of_behavior.html",
-                  context={"rules_of_behavior": rules_of_behavior_object})
+    return render(
+        request,
+        "core_website_app/user/rules_of_behavior.html",
+        context={"rules_of_behavior": rules_of_behavior_object},
+    )

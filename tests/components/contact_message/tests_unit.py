@@ -16,7 +16,9 @@ class TestsContactMessageGet(TestCase):
     def setUp(self):
         self.message_id = 1
 
-    @patch('core_website_app.components.contact_message.models.ContactMessage.get_by_id')
+    @patch(
+        "core_website_app.components.contact_message.models.ContactMessage.get_by_id"
+    )
     def test_contact_message_get_by_id_return_object(self, mock_get_by_id):
         # Arrange
         mock_message = _create_mock_contact_message()
@@ -28,7 +30,9 @@ class TestsContactMessageGet(TestCase):
         # Assert
         self.assertIsInstance(result, ContactMessage)
 
-    @patch('core_website_app.components.contact_message.models.ContactMessage.get_by_id')
+    @patch(
+        "core_website_app.components.contact_message.models.ContactMessage.get_by_id"
+    )
     def test_contact_message_get_raise_api_error_if_not_found(self, mock_get_by_id):
         # Arrange
         mock_get_by_id.side_effect = Exception()
@@ -39,13 +43,16 @@ class TestsContactMessageGet(TestCase):
 
 
 class TestContactMessageGetAll(TestCase):
-
-    @patch('core_website_app.components.contact_message.models.ContactMessage.get_all')
+    @patch("core_website_app.components.contact_message.models.ContactMessage.get_all")
     def test_contact_message_get_all_contains_contact_message_only(self, mock_get_all):
         # Arrange
         mock_message_1 = _create_mock_contact_message()
-        mock_message_2 = _create_mock_contact_message(mock_pk=2, mock_name="message name 2", mock_email="e2@mail.com",
-                                                      mock_content="content message 2")
+        mock_message_2 = _create_mock_contact_message(
+            mock_pk=2,
+            mock_name="message name 2",
+            mock_email="e2@mail.com",
+            mock_content="content message 2",
+        )
 
         mock_get_all.return_value = [mock_message_1, mock_message_2]
 
@@ -57,9 +64,10 @@ class TestContactMessageGetAll(TestCase):
 
 
 class TestsContactMessageDelete(TestCase):
-
-    @patch('core_website_app.components.contact_message.models.ContactMessage.delete')
-    def test_message_delete_raise_api_error_if_message_does_not_exist(self, mock_message_delete):
+    @patch("core_website_app.components.contact_message.models.ContactMessage.delete")
+    def test_message_delete_raise_api_error_if_message_does_not_exist(
+        self, mock_message_delete
+    ):
         # Arrange
         mock_message = _create_contact_message()
         mock_message_delete.side_effect = Exception()
@@ -70,11 +78,10 @@ class TestsContactMessageDelete(TestCase):
 
 
 class TestsContactMessageUpsert(TestCase):
-
     def setUp(self):
         self.mock_message = _create_contact_message()
 
-    @patch('core_website_app.components.contact_message.models.ContactMessage.save')
+    @patch("core_website_app.components.contact_message.models.ContactMessage.save")
     def test_message_upsert_return_message(self, mock_save):
         # Arrange
         mock_save.return_value = self.mock_message
@@ -85,7 +92,7 @@ class TestsContactMessageUpsert(TestCase):
         # Assert
         self.assertIsInstance(result, ContactMessage)
 
-    @patch('core_website_app.components.contact_message.models.ContactMessage.save')
+    @patch("core_website_app.components.contact_message.models.ContactMessage.save")
     def test_message_upsert_raise_api_error_if_save_failed(self, mock_save):
         # Arrange
         mock_save.side_effect = Exception()
@@ -95,8 +102,12 @@ class TestsContactMessageUpsert(TestCase):
             contact_message_api.upsert(self.mock_message)
 
 
-def _create_mock_contact_message(mock_pk=1, mock_name="message name", mock_email="sender@mail.com",
-                                 mock_content="lorem ipsum dolor sit amet "):
+def _create_mock_contact_message(
+    mock_pk=1,
+    mock_name="message name",
+    mock_email="sender@mail.com",
+    mock_content="lorem ipsum dolor sit amet ",
+):
     """
 
     :param mock_pk:
@@ -115,8 +126,12 @@ def _create_mock_contact_message(mock_pk=1, mock_name="message name", mock_email
     return mock_message
 
 
-def _create_contact_message(pk=1, name="message name", email="sender@mail.com",
-                            content="lorem ipsum dolor sit amet "):
+def _create_contact_message(
+    pk=1,
+    name="message name",
+    email="sender@mail.com",
+    content="lorem ipsum dolor sit amet ",
+):
     """
 
     :param pk:
@@ -127,9 +142,4 @@ def _create_contact_message(pk=1, name="message name", email="sender@mail.com",
     :return:
     """
 
-    return ContactMessage(
-        pk=pk,
-        name=name,
-        email=email,
-        content=content
-    )
+    return ContactMessage(pk=pk, name=name, email=email, content=content)

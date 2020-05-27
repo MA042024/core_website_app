@@ -73,17 +73,17 @@ class AbstractActionAccountRequest(APIView, metaclass=ABCMeta):
 
             return Response(status=status.HTTP_200_OK)
         except Http404:
-            content = {'message': 'Account Request not found.'}
+            content = {"message": "Account Request not found."}
             return Response(content, status=status.HTTP_404_NOT_FOUND)
         except AccessControlError as access_error:
-            content = {'message': str(access_error)}
+            content = {"message": str(access_error)}
             return Response(content, status=status.HTTP_403_FORBIDDEN)
         except ValidationError as validation_exception:
-            content = {'message': validation_exception.detail}
+            content = {"message": validation_exception.detail}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         except ApiError as api_error:
-            content = {'message': str(api_error)}
+            content = {"message": str(api_error)}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         except Exception as api_exception:
-            content = {'message': str(api_exception)}
+            content = {"message": str(api_exception)}
             return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

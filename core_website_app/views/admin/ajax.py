@@ -18,7 +18,7 @@ def accept_request(request):
     :return:
     """
     try:
-        request_id = request.POST['requestid']
+        request_id = request.POST["requestid"]
         account_request_from_api = account_request_api.get(request_id)
         account_request_api.accept(account_request_from_api)
         message = "Request Accepted"
@@ -27,7 +27,9 @@ def accept_request(request):
     except Exception as exception:
         raise exceptions.WebsiteAjaxError(str(exception))
 
-    return HttpResponse(json.dumps({"message": message}), content_type='application/json')
+    return HttpResponse(
+        json.dumps({"message": message}), content_type="application/json"
+    )
 
 
 def deny_request(request):
@@ -38,7 +40,7 @@ def deny_request(request):
     """
 
     try:
-        request_id = request.POST['requestid']
+        request_id = request.POST["requestid"]
         account_request_from_api = account_request_api.get(request_id)
         account_request_api.deny(account_request_from_api)
         message = "Request denied"
@@ -47,7 +49,9 @@ def deny_request(request):
     except Exception as exception:
         raise exceptions.WebsiteAjaxError(str(exception))
 
-    return HttpResponse(json.dumps({"message": message}), content_type='application/json')
+    return HttpResponse(
+        json.dumps({"message": message}), content_type="application/json"
+    )
 
 
 def remove_message(request):
@@ -58,7 +62,7 @@ def remove_message(request):
     """
 
     try:
-        contact_message = contact_message_api.get(request.POST['messageid'])
+        contact_message = contact_message_api.get(request.POST["messageid"])
         contact_message_api.delete(contact_message)
         message = "Message deleted"
     except exceptions.WebsiteAjaxError as error:
@@ -66,7 +70,9 @@ def remove_message(request):
     except Exception as exception:
         message = str(exception)
 
-    return HttpResponse(json.dumps({"message": message}), content_type='application/json')
+    return HttpResponse(
+        json.dumps({"message": message}), content_type="application/json"
+    )
 
 
 def account_request_count(request):
@@ -76,8 +82,14 @@ def account_request_count(request):
     Returns:
 
     """
-    return HttpResponse(json.dumps({"count": account_request_api.get_count()}), content_type='application/json')
+    return HttpResponse(
+        json.dumps({"count": account_request_api.get_count()}),
+        content_type="application/json",
+    )
 
 
 def contact_message_count(request):
-    return HttpResponse(json.dumps({"count": contact_message_api.get_count()}), content_type='application/json')
+    return HttpResponse(
+        json.dumps({"count": contact_message_api.get_count()}),
+        content_type="application/json",
+    )

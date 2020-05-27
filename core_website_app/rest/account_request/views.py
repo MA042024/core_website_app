@@ -12,8 +12,13 @@ from rest_framework.views import APIView
 import core_website_app.components.account_request.api as account_request_api
 from core_main_app.commons import exceptions
 from core_main_app.utils.decorators import api_staff_member_required
-from core_website_app.rest.account_request.abstract_views import AbstractActionAccountRequest
-from core_website_app.rest.account_request.serializers import AccountRequestSerializer, UserSerializer
+from core_website_app.rest.account_request.abstract_views import (
+    AbstractActionAccountRequest,
+)
+from core_website_app.rest.account_request.serializers import (
+    AccountRequestSerializer,
+    UserSerializer,
+)
 
 logger = logging.getLogger("core_website_app.rest.account_request.views")
 
@@ -46,7 +51,7 @@ class AccountRequestList(APIView):
             # Return response
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as api_exception:
-            content = {'message': str(api_exception)}
+            content = {"message": str(api_exception)}
             return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request):
@@ -87,12 +92,14 @@ class AccountRequestList(APIView):
             account_request_serializer = AccountRequestSerializer(account_request)
 
             # Return the serialized user request
-            return Response(account_request_serializer.data, status=status.HTTP_201_CREATED)
+            return Response(
+                account_request_serializer.data, status=status.HTTP_201_CREATED
+            )
         except ValidationError as validation_exception:
-            content = {'message': validation_exception.detail}
+            content = {"message": validation_exception.detail}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         except Exception as api_exception:
-            content = {'message': str(api_exception)}
+            content = {"message": str(api_exception)}
             return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -150,10 +157,10 @@ class AccountRequestDetail(APIView):
             # Return response
             return Response(serializer.data)
         except Http404:
-            content = {'message': 'Account request not found.'}
+            content = {"message": "Account request not found."}
             return Response(content, status=status.HTTP_404_NOT_FOUND)
         except Exception as api_exception:
-            content = {'message': str(api_exception)}
+            content = {"message": str(api_exception)}
             return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 

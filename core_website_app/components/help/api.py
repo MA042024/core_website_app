@@ -27,7 +27,8 @@ def upsert(help_page):
     """
     if help_page.type != HELP_PAGE_TYPE:
         raise ApiError(
-            "Webpage type not coherent (expected: %s; actual %s" % (str(HELP_PAGE_TYPE), str(help_page.type))
+            "Webpage type not coherent (expected: %s; actual %s"
+            % (str(HELP_PAGE_TYPE), str(help_page.type))
         )
 
     return web_page_api.upsert(help_page)

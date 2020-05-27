@@ -27,8 +27,8 @@ def upsert(privacy_policy_page):
     """
     if privacy_policy_page.type != PRIVACY_PAGE_TYPE:
         raise ApiError(
-            "Webpage type not coherent (expected: %s; actual %s" % (str(PRIVACY_PAGE_TYPE),
-                                                                    str(privacy_policy_page.type))
+            "Webpage type not coherent (expected: %s; actual %s"
+            % (str(PRIVACY_PAGE_TYPE), str(privacy_policy_page.type))
         )
 
     return web_page_api.upsert(privacy_policy_page)

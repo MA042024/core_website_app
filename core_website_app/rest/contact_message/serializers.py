@@ -9,10 +9,8 @@ from core_website_app.components.contact_message.models import ContactMessage
 class ContactMessageSerializer(DocumentSerializer):
     """ Represents the contact message serializer
     """
+
     class Meta(object):
         model = ContactMessage
-        fields = ["id",
-                  "name",
-                  "email",
-                  "content"]
-        read_only_fields = ('id', )
+        fields = ["id", "name", "email", "content"]
+        read_only_fields = ("id",)

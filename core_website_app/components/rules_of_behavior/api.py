@@ -27,7 +27,8 @@ def upsert(rules_of_behavior_page):
     """
     if rules_of_behavior_page.type != RULES_OF_BEHAVIOR_PAGE_TYPE:
         raise ApiError(
-            "Webpage type not coherent (expected: %s; actual %s" % (str(RULES_OF_BEHAVIOR_PAGE_TYPE), str(rules_of_behavior_page.type))
+            "Webpage type not coherent (expected: %s; actual %s"
+            % (str(RULES_OF_BEHAVIOR_PAGE_TYPE), str(rules_of_behavior_page.type))
         )
 
     return web_page_api.upsert(rules_of_behavior_page)

@@ -21,20 +21,21 @@ def user_requests(request):
 
     assets = {
         "js": [
-            {
-                "path": 'core_website_app/admin/js/user_requests.js',
-                "is_raw": False
-            },
+            {"path": "core_website_app/admin/js/user_requests.js", "is_raw": False},
         ],
     }
 
     modals = [
-        'core_website_app/admin/account_requests/modals/deny_request.html',
+        "core_website_app/admin/account_requests/modals/deny_request.html",
     ]
 
-    return render(request, 'core_website_app/admin/user_requests.html',
-                  assets=assets, modals=modals,
-                  context={'requests': requests})
+    return render(
+        request,
+        "core_website_app/admin/user_requests.html",
+        assets=assets,
+        modals=modals,
+        context={"requests": requests},
+    )
 
 
 @staff_member_required
@@ -51,21 +52,18 @@ def contact_messages(request):
     messages_contact = contact_message_api.get_all()
 
     assets = {
-        "js": [
-            {
-                "path": 'core_website_app/admin/js/messages.js',
-                "is_raw": False
-            },
-        ],
-        "css": [
-            "core_website_app/admin/css/messages.css"
-        ]
+        "js": [{"path": "core_website_app/admin/js/messages.js", "is_raw": False},],
+        "css": ["core_website_app/admin/css/messages.css"],
     }
 
     modals = [
-        'core_website_app/admin/contact_messages/modals/delete_message.html',
+        "core_website_app/admin/contact_messages/modals/delete_message.html",
     ]
 
-    return render(request, 'core_website_app/admin/contact_messages.html',
-                  assets=assets, modals=modals,
-                  context={'contacts': messages_contact})
+    return render(
+        request,
+        "core_website_app/admin/contact_messages.html",
+        assets=assets,
+        modals=modals,
+        context={"contacts": messages_contact},
+    )

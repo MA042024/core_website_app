@@ -27,8 +27,8 @@ def upsert(terms_of_use_page):
     """
     if terms_of_use_page.type != TERMS_PAGE_TYPE:
         raise ApiError(
-            "Webpage type not coherent (expected: %s; entered: %s)" % (str(TERMS_PAGE_TYPE),
-                                                                       str(terms_of_use_page.type))
+            "Webpage type not coherent (expected: %s; entered: %s)"
+            % (str(TERMS_PAGE_TYPE), str(terms_of_use_page.type))
         )
 
     return web_page_api.upsert(terms_of_use_page)

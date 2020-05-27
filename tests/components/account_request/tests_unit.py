@@ -12,8 +12,9 @@ from core_website_app.components.account_request.models import AccountRequest
 
 
 class TestsAccountRequestGet(TestCase):
-
-    @patch('core_website_app.components.account_request.models.AccountRequest.get_by_id')
+    @patch(
+        "core_website_app.components.account_request.models.AccountRequest.get_by_id"
+    )
     def test_account_request_get_return_request_object(self, mock_get_by_id):
         # Arrange
         request_id = "1"
@@ -23,8 +24,12 @@ class TestsAccountRequestGet(TestCase):
         # Assert
         self.assertIsInstance(result, AccountRequest)
 
-    @patch('core_website_app.components.account_request.models.AccountRequest.get_by_id')
-    def test_account_request_get_raise_ApiError_if_request_not_found(self, mock_get_by_id):
+    @patch(
+        "core_website_app.components.account_request.models.AccountRequest.get_by_id"
+    )
+    def test_account_request_get_raise_ApiError_if_request_not_found(
+        self, mock_get_by_id
+    ):
         # Arrange
         request_id = "1"
         mock_get_by_id.side_effect = Exception()
@@ -34,13 +39,14 @@ class TestsAccountRequestGet(TestCase):
 
 
 class TestsAccountRequestAccept(TestCase):
-
     def setUp(self):
         self.account_request = _create_account_request()
 
-    @patch('core_website_app.components.account_request.models.AccountRequest.delete')
-    @patch('core_website_app.components.account_request.api._get_user_by_username')
-    def test_account_request_accept_raise_ApiError_if_user_does_not_exist(self, mock_get_user_by_username, mock_delete):
+    @patch("core_website_app.components.account_request.models.AccountRequest.delete")
+    @patch("core_website_app.components.account_request.api._get_user_by_username")
+    def test_account_request_accept_raise_ApiError_if_user_does_not_exist(
+        self, mock_get_user_by_username, mock_delete
+    ):
         # Arrange
         mock_get_user_by_username.side_effect = ObjectDoesNotExist()
 
@@ -48,10 +54,12 @@ class TestsAccountRequestAccept(TestCase):
         with self.assertRaises(ApiError):
             account_request_api.accept(self.account_request)
 
-    @patch('core_website_app.components.account_request.models.AccountRequest.delete')
-    @patch('core_website_app.components.account_request.api._create_and_save_user')
-    @patch('core_website_app.components.account_request.api._get_user_by_username')
-    def test_account_request_accept_return_user(self, mock_get_by_username, mock_create_and_save, mock_delete):
+    @patch("core_website_app.components.account_request.models.AccountRequest.delete")
+    @patch("core_website_app.components.account_request.api._create_and_save_user")
+    @patch("core_website_app.components.account_request.api._get_user_by_username")
+    def test_account_request_accept_return_user(
+        self, mock_get_by_username, mock_create_and_save, mock_delete
+    ):
         # Arrange
         mock_user = Mock(spec=User)
         mock_user.id = 1
@@ -67,12 +75,13 @@ class TestsAccountRequestAccept(TestCase):
 
 
 class TestsAccountRequestInsert(TestCase):
-
     def setUp(self):
         self.mock_account_request = _create_account_request()
 
-    @patch('core_website_app.components.account_request.api._get_user_by_username')
-    def test_account_request_insert_raise_ApiError_if_username_already_exist(self, mock_get_user_by_username):
+    @patch("core_website_app.components.account_request.api._get_user_by_username")
+    def test_account_request_insert_raise_ApiError_if_username_already_exist(
+        self, mock_get_user_by_username
+    ):
         # Arrange
         mock_user = Mock(spec=User)
         mock_user.username = "username"
@@ -82,9 +91,11 @@ class TestsAccountRequestInsert(TestCase):
         with self.assertRaises(ApiError):
             account_request_api.insert(mock_user)
 
-    @patch('core_website_app.components.account_request.models.AccountRequest.save')
-    @patch('core_website_app.components.account_request.api._get_user_by_username')
-    def test_account_request_insert_return_request(self, mock_get_user_by_username, mock_save):
+    @patch("core_website_app.components.account_request.models.AccountRequest.save")
+    @patch("core_website_app.components.account_request.api._get_user_by_username")
+    def test_account_request_insert_return_request(
+        self, mock_get_user_by_username, mock_save
+    ):
         # Arrange
         mock_user = Mock(spec=User)
         mock_user.username = "username"

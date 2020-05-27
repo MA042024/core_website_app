@@ -39,7 +39,7 @@ def get(message_id):
         return ContactMessage.get_by_id(message_id)
     except Exception as e:
         logger.error(str(e))
-        raise exceptions.ApiError('No message could be found with the given id.')
+        raise exceptions.ApiError("No message could be found with the given id.")
 
 
 def upsert(contact_message):
@@ -56,7 +56,7 @@ def upsert(contact_message):
         return contact_message.save()
     except Exception as e:
         logger.error(str(e))
-        raise exceptions.ApiError('Save message failed')
+        raise exceptions.ApiError("Save message failed")
 
 
 def delete(contact_message):
