@@ -3,6 +3,7 @@
 """
 import json
 
+from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse
 
 import core_website_app.components.account_request.api as account_request_api
@@ -11,6 +12,7 @@ from core_main_app.commons import exceptions as main_exceptions
 from core_website_app.commons import exceptions
 
 
+@staff_member_required
 def accept_request(request):
     """
     Accepts a request and creates the user account
@@ -32,6 +34,7 @@ def accept_request(request):
     )
 
 
+@staff_member_required
 def deny_request(request):
     """
     Denies an account request
@@ -54,6 +57,7 @@ def deny_request(request):
     )
 
 
+@staff_member_required
 def remove_message(request):
     """
     Remove a message from the list of messages
@@ -75,6 +79,7 @@ def remove_message(request):
     )
 
 
+@staff_member_required
 def account_request_count(request):
     """
 
@@ -88,6 +93,7 @@ def account_request_count(request):
     )
 
 
+@staff_member_required
 def contact_message_count(request):
     return HttpResponse(
         json.dumps({"count": contact_message_api.get_count()}),

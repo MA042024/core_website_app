@@ -1,6 +1,7 @@
 """ Url router for the administration site
 """
 from django.contrib import admin
+from django.contrib.admin.views.decorators import staff_member_required
 from django.urls import re_path
 
 import core_website_app.components.help.api as help_api
@@ -49,41 +50,49 @@ admin_urls = [
     ),
     re_path(
         r"^privacy-policy$",
-        WebPageView.as_view(
-            api=privacy_policy_api,
-            get_redirect="core_website_app/admin/privacy_policy.html",
-            post_redirect="admin:core_website_app_privacy",
-            web_page_type=WEB_PAGE_TYPES["privacy_policy"],
+        staff_member_required(
+            WebPageView.as_view(
+                api=privacy_policy_api,
+                get_redirect="core_website_app/admin/privacy_policy.html",
+                post_redirect="admin:core_website_app_privacy",
+                web_page_type=WEB_PAGE_TYPES["privacy_policy"],
+            )
         ),
         name="core_website_app_privacy",
     ),
     re_path(
         r"^terms-of-use$",
-        WebPageView.as_view(
-            api=terms_of_use_api,
-            get_redirect="core_website_app/admin/terms_of_use.html",
-            post_redirect="admin:core_website_app_terms",
-            web_page_type=WEB_PAGE_TYPES["terms_of_use"],
+        staff_member_required(
+            WebPageView.as_view(
+                api=terms_of_use_api,
+                get_redirect="core_website_app/admin/terms_of_use.html",
+                post_redirect="admin:core_website_app_terms",
+                web_page_type=WEB_PAGE_TYPES["terms_of_use"],
+            )
         ),
         name="core_website_app_terms",
     ),
     re_path(
         r"^help$",
-        WebPageView.as_view(
-            api=help_api,
-            get_redirect="core_website_app/admin/help.html",
-            post_redirect="admin:core_website_app_help",
-            web_page_type=WEB_PAGE_TYPES["help"],
+        staff_member_required(
+            WebPageView.as_view(
+                api=help_api,
+                get_redirect="core_website_app/admin/help.html",
+                post_redirect="admin:core_website_app_help",
+                web_page_type=WEB_PAGE_TYPES["help"],
+            )
         ),
         name="core_website_app_help",
     ),
     re_path(
         r"^rules_of_behavior$",
-        WebPageView.as_view(
-            api=rules_of_behavior_api,
-            get_redirect="core_website_app/admin/rules_of_behavior.html",
-            post_redirect="admin:core_website_app_rules_of_behavior",
-            web_page_type=WEB_PAGE_TYPES["rules_of_behavior"],
+        staff_member_required(
+            WebPageView.as_view(
+                api=rules_of_behavior_api,
+                get_redirect="core_website_app/admin/rules_of_behavior.html",
+                post_redirect="admin:core_website_app_rules_of_behavior",
+                web_page_type=WEB_PAGE_TYPES["rules_of_behavior"],
+            )
         ),
         name="core_website_app_rules_of_behavior",
     ),
