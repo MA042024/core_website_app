@@ -7,8 +7,7 @@ from core_website_app.components.contact_message.models import ContactMessage
 
 
 class ContactMessageSerializer(DocumentSerializer):
-    """ Represents the contact message serializer
-    """
+    """Represents the contact message serializer"""
 
     class Meta(object):
         model = ContactMessage

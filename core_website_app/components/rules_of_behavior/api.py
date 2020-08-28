@@ -10,20 +10,20 @@ RULES_OF_BEHAVIOR_PAGE_TYPE = WEB_PAGE_TYPES[RULES_OF_BEHAVIOR_PAGE_NAME]
 
 
 def get():
-    """ Get the help if exist
+    """Get the help if exist
 
-        Returns: rules of behavior web page
+    Returns: rules of behavior web page
     """
     return web_page_api.get(RULES_OF_BEHAVIOR_PAGE_NAME)
 
 
 def upsert(rules_of_behavior_page):
-    """ Post the rules of behavior
+    """Post the rules of behavior
 
-        Parameters:
-            rules_of_behavior_page (WebPage): Webpage for the rules of behavior
+    Parameters:
+        rules_of_behavior_page (WebPage): Webpage for the rules of behavior
 
-        Returns: rules_of_behavior_page web page
+    Returns: rules_of_behavior_page web page
     """
     if rules_of_behavior_page.type != RULES_OF_BEHAVIOR_PAGE_TYPE:
         raise ApiError(

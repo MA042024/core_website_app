@@ -24,12 +24,11 @@ logger = logging.getLogger("core_website_app.rest.account_request.views")
 
 
 class AccountRequestList(APIView):
-    """ Create or get all Account Request
-    """
+    """Create or get all Account Request"""
 
     @method_decorator(api_staff_member_required())
     def get(self, request):
-        """ Get all account requests
+        """Get all account requests
 
         Args:
 
@@ -55,7 +54,7 @@ class AccountRequestList(APIView):
             return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request):
-        """ Create a new account request
+        """Create a new account request
 
         Parameters:
 
@@ -104,11 +103,10 @@ class AccountRequestList(APIView):
 
 
 class AccountRequestDetail(APIView):
-    """ Get an Account Request
-    """
+    """Get an Account Request"""
 
     def get_object(self, pk):
-        """ Get Account Request from db
+        """Get Account Request from db
 
         Args:
 
@@ -125,7 +123,7 @@ class AccountRequestDetail(APIView):
 
     @method_decorator(api_staff_member_required())
     def get(self, request, pk):
-        """ Retrieve a Account Request
+        """Retrieve a Account Request
 
         Parameters:
 
@@ -165,11 +163,10 @@ class AccountRequestDetail(APIView):
 
 
 class AccountRequestDeny(AbstractActionAccountRequest):
-    """ Deny an Account Request
-    """
+    """Deny an Account Request"""
 
     def perform(self, account_request_object):
-        """ Deny an Account Request
+        """Deny an Account Request
 
         Args:
 
@@ -179,11 +176,10 @@ class AccountRequestDeny(AbstractActionAccountRequest):
 
 
 class AccountRequestAccept(AbstractActionAccountRequest):
-    """ Accept an Account Request
-    """
+    """Accept an Account Request"""
 
     def perform(self, account_request_object):
-        """ Accept an Account Request
+        """Accept an Account Request
 
         Args:
 

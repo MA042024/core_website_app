@@ -10,20 +10,20 @@ PRIVACY_PAGE_TYPE = WEB_PAGE_TYPES[PRIVACY_PAGE_NAME]
 
 
 def get():
-    """ Get the privacy policy if exist
+    """Get the privacy policy if exist
 
-        Returns: privacy policy web page
+    Returns: privacy policy web page
     """
     return web_page_api.get(PRIVACY_PAGE_NAME)
 
 
 def upsert(privacy_policy_page):
-    """ Post the privacy policy
+    """Post the privacy policy
 
-        Parameters:
-            privacy_policy_page (WebPage): WebPage for the privacy policy
+    Parameters:
+        privacy_policy_page (WebPage): WebPage for the privacy policy
 
-        Returns: privacy policy web page
+    Returns: privacy policy web page
     """
     if privacy_policy_page.type != PRIVACY_PAGE_TYPE:
         raise ApiError(

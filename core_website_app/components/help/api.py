@@ -10,20 +10,20 @@ HELP_PAGE_TYPE = WEB_PAGE_TYPES[HELP_PAGE_NAME]
 
 
 def get():
-    """ Get the help if exist
+    """Get the help if exist
 
-        Returns: help web page
+    Returns: help web page
     """
     return web_page_api.get(HELP_PAGE_NAME)
 
 
 def upsert(help_page):
-    """ Post the help
+    """Post the help
 
-        Parameters:
-            help_page (WebPage): Webpage for the help
+    Parameters:
+        help_page (WebPage): Webpage for the help
 
-        Returns: help web page
+    Returns: help web page
     """
     if help_page.type != HELP_PAGE_TYPE:
         raise ApiError(

@@ -11,8 +11,7 @@ from core_website_app.components.account_request.models import AccountRequest
 
 
 class AccountRequestSerializer(DocumentSerializer):
-    """ Represents the account request serializer
-    """
+    """Represents the account request serializer"""
 
     class Meta(object):
         model = AccountRequest
@@ -24,8 +23,7 @@ class AccountRequestSerializer(DocumentSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """ Represents the user serializer
-    """
+    """Represents the user serializer"""
 
     class Meta(object):
         model = User
@@ -33,8 +31,7 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ("id",)
 
     def create(self, validated_data):
-        """ Create and return a new `AccountRequest` instance, given the validated data.
-        """
+        """Create and return a new `AccountRequest` instance, given the validated data."""
         user = User(
             username=validated_data["username"],
             first_name=validated_data["first_name"],

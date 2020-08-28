@@ -10,20 +10,20 @@ TERMS_PAGE_TYPE = WEB_PAGE_TYPES[TERMS_PAGE_NAME]
 
 
 def get():
-    """ Get the terms of use if exist
+    """Get the terms of use if exist
 
-        Returns: Terms of use web page
+    Returns: Terms of use web page
     """
     return web_page_api.get(TERMS_PAGE_NAME)
 
 
 def upsert(terms_of_use_page):
-    """ Post the terms of use
+    """Post the terms of use
 
-        Parameters:
-            terms_of_use_page (WebPage): content of the web page
+    Parameters:
+        terms_of_use_page (WebPage): content of the web page
 
-        Returns: Terms of use web page
+    Returns: Terms of use web page
     """
     if terms_of_use_page.type != TERMS_PAGE_TYPE:
         raise ApiError(

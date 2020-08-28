@@ -18,12 +18,11 @@ logger = logging.getLogger("core_website_app.rest.contact_message.views")
 
 
 class ContactMessageList(APIView):
-    """ Create or get all Contact Message
-    """
+    """Create or get all Contact Message"""
 
     @method_decorator(api_staff_member_required())
     def get(self, request):
-        """ Get all Contact Message
+        """Get all Contact Message
 
         Args:
 
@@ -49,7 +48,7 @@ class ContactMessageList(APIView):
             return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request):
-        """ Create a message
+        """Create a message
 
         Parameters:
 
@@ -93,11 +92,10 @@ class ContactMessageList(APIView):
 
 
 class ContactMessageDetail(APIView):
-    """ Get or delete a Contact Message
-    """
+    """Get or delete a Contact Message"""
 
     def get_object(self, pk):
-        """ Get Contact Message from db
+        """Get Contact Message from db
 
         Args:
 
@@ -114,7 +112,7 @@ class ContactMessageDetail(APIView):
 
     @method_decorator(api_staff_member_required())
     def get(self, request, pk):
-        """ Retrieve a Contact Message
+        """Retrieve a Contact Message
 
         Parameters:
 
@@ -154,7 +152,7 @@ class ContactMessageDetail(APIView):
 
     @method_decorator(api_staff_member_required())
     def delete(self, request, pk):
-        """ Delete a Contact Message
+        """Delete a Contact Message
 
         Parameters:
 

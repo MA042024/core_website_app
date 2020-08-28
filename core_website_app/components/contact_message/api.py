@@ -9,7 +9,7 @@ logger = logging.getLogger("core_website_app.components.contact_message.api")
 
 
 def get_all():
-    """ List all messages
+    """List all messages
 
     Returns:
 
@@ -18,7 +18,7 @@ def get_all():
 
 
 def get_count():
-    """ Count number of contact messages currently in the database.
+    """Count number of contact messages currently in the database.
 
     Returns:
         int: number of contact messages
@@ -27,7 +27,7 @@ def get_count():
 
 
 def get(message_id):
-    """ Get a message
+    """Get a message
 
     Args:
         message_id:
@@ -43,7 +43,7 @@ def get(message_id):
 
 
 def upsert(contact_message):
-    """ Insert or update a given message
+    """Insert or update a given message
 
     Args:
         contact_message:
@@ -60,7 +60,7 @@ def upsert(contact_message):
 
 
 def delete(contact_message):
-    """ Delete a message
+    """Delete a message
 
     Args:
         contact_message:

@@ -13,9 +13,18 @@ INSTALLED_APPS = [
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": True,
-    "handlers": {"null": {"level": "DEBUG", "class": "logging.NullHandler",},},
+    "handlers": {
+        "null": {
+            "level": "DEBUG",
+            "class": "logging.NullHandler",
+        },
+    },
     "loggers": {
-        "django": {"handlers": ["null"], "propagate": True, "level": "WARN",},
+        "django": {
+            "handlers": ["null"],
+            "propagate": True,
+            "level": "WARN",
+        },
         "django.db.backends": {
             "handlers": ["null"],
             "level": "DEBUG",

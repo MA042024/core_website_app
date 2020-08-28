@@ -9,12 +9,12 @@ from core_main_app.utils.rendering import admin_render as render
 
 @staff_member_required
 def user_requests(request):
-    """ Page that allows to accept or deny user requests
+    """Page that allows to accept or deny user requests
 
-        Args:
-            request:
+    Args:
+        request:
 
-        Returns:
+    Returns:
     """
     # Call the API
     requests = account_request_api.get_all()
@@ -40,19 +40,21 @@ def user_requests(request):
 
 @staff_member_required
 def contact_messages(request):
-    """ List messages from the contact page
+    """List messages from the contact page
 
-        Args:
-            request:
+    Args:
+        request:
 
-        Returns:
+    Returns:
     """
 
     # Call the API
     messages_contact = contact_message_api.get_all()
 
     assets = {
-        "js": [{"path": "core_website_app/admin/js/messages.js", "is_raw": False},],
+        "js": [
+            {"path": "core_website_app/admin/js/messages.js", "is_raw": False},
+        ],
         "css": ["core_website_app/admin/css/messages.css"],
     }
 

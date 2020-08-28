@@ -17,11 +17,10 @@ from core_main_app.utils.decorators import api_staff_member_required
 
 
 class AbstractActionAccountRequest(APIView, metaclass=ABCMeta):
-    """ Action Account request
-    """
+    """Action Account request"""
 
     def get_object(self, pk):
-        """ Get AccountRequest from db
+        """Get AccountRequest from db
 
         Args:
 
@@ -38,13 +37,12 @@ class AbstractActionAccountRequest(APIView, metaclass=ABCMeta):
 
     @abstractmethod
     def perform(self, account_request_object):
-        """ Perform an action on the account request
-        """
+        """Perform an action on the account request"""
         raise NotImplementedError("action method is not implemented.")
 
     @method_decorator(api_staff_member_required())
     def patch(self, request, pk):
-        """ Deny or Accept
+        """Deny or Accept
 
         Args:
 

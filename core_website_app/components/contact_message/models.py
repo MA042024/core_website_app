@@ -16,10 +16,10 @@ class ContactMessage(Document):
 
     @staticmethod
     def get_by_id(message_id):
-        """ Get a message using its primary key
+        """Get a message using its primary key
 
         Args:
-            message_id: 
+            message_id:
 
         Returns:
         """
@@ -32,7 +32,7 @@ class ContactMessage(Document):
 
     @staticmethod
     def get_all():
-        """ Get all messages
+        """Get all messages
 
         Returns:
         """

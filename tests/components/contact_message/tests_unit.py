@@ -10,8 +10,7 @@ from core_website_app.components.contact_message.models import ContactMessage
 
 
 class TestsContactMessageGet(TestCase):
-    """
-    """
+    """"""
 
     def setUp(self):
         self.message_id = 1

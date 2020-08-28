@@ -14,7 +14,7 @@ from core_website_app.settings import (
 
 
 def get_all():
-    """ List of opened account requests
+    """List of opened account requests
 
     Returns:
 
@@ -24,7 +24,7 @@ def get_all():
 
 
 def get_count():
-    """ Count number of account request currently in the database
+    """Count number of account request currently in the database
 
     Returns:
 
@@ -34,7 +34,7 @@ def get_count():
 
 
 def get(account_request_id):
-    """ Get an account request given its primary key
+    """Get an account request given its primary key
 
     Args:
 
@@ -51,7 +51,7 @@ def get(account_request_id):
 
 
 def insert(user):
-    """ Create a new request
+    """Create a new request
 
     Args:
 
@@ -87,7 +87,7 @@ def insert(user):
 
 
 def accept(account_request):
-    """ Accept an account request
+    """Accept an account request
 
     Args:
 
@@ -127,7 +127,7 @@ def accept(account_request):
 
 
 def deny(account_request):
-    """ Delete an account request
+    """Delete an account request
 
     Args:
 
@@ -167,7 +167,7 @@ def deny(account_request):
 
 
 def _get_user_by_username(username):
-    """ Returns a user given its username
+    """Returns a user given its username
 
     Args:
 
@@ -181,7 +181,7 @@ def _get_user_by_username(username):
 
 
 def _get_user_by_id(user_id):
-    """ Returns a user given its primary key
+    """Returns a user given its primary key
 
     Args:
 
@@ -195,7 +195,7 @@ def _get_user_by_id(user_id):
 
 
 def _create_and_save_user(username, password, first_name, last_name, email):
-    """ Save a user with the given parameters
+    """Save a user with the given parameters
 
     Args:
 

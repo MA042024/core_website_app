@@ -25,12 +25,12 @@ from .forms import RequestAccountForm, ContactForm
 
 
 def request_new_account(request):
-    """ Page that allows to request a user account
+    """Page that allows to request a user account
 
-        Parameters:
-            request:
+    Parameters:
+        request:
 
-        Returns: Http response
+    Returns: Http response
     """
     assets = {
         "js": [
@@ -109,10 +109,10 @@ def request_new_account(request):
 def contact(request):
     """Contact form
 
-        Parameters:
-            request:
+    Parameters:
+        request:
 
-        Returns: Http response
+    Returns: Http response
     """
 
     if request.method == "POST":
@@ -145,10 +145,10 @@ def contact(request):
 def help_page(request):
     """Page that provides FAQ
 
-        Parameters:
-            request: Http response
+    Parameters:
+        request: Http response
 
-        Returns:
+    Returns:
     """
     # Call the API
     help_page_object = help_api.get()
@@ -163,10 +163,10 @@ def help_page(request):
 def privacy_policy(request):
     """Page that provides privacy policy
 
-        Parameters:
-            request:
+    Parameters:
+        request:
 
-        Returns: Http response
+    Returns: Http response
     """
     if DISPLAY_NIST_HEADERS:
         return HttpResponseRedirect("https://www.nist.gov/privacy-policy")
@@ -184,10 +184,10 @@ def privacy_policy(request):
 def terms_of_use(request):
     """Page that provides terms of use
 
-        Parameters:
-            request:
+    Parameters:
+        request:
 
-        Returns: Http Response
+    Returns: Http Response
     """
     # Call the API
     terms = terms_of_use_api.get()
@@ -202,10 +202,10 @@ def terms_of_use(request):
 def rules_of_behavior(request):
     """Page that provides the rules of behavior
 
-        Parameters:
-            request:
+    Parameters:
+        request:
 
-        Returns: Http Response
+    Returns: Http Response
     """
     # Call the API
     rules_of_behavior_object = rules_of_behavior_api.get()

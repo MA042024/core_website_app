@@ -111,12 +111,12 @@ class TestsAccountRequestInsert(TestCase):
 
 def _create_account_request(username="username"):
     """
-        Create an AccountRequest object using default parameters
+    Create an AccountRequest object using default parameters
 
-        Parameters:
-            username (str):
+    Parameters:
+        username (str):
 
-        Returns:
-            AccountRequest object
+    Returns:
+        AccountRequest object
     """
     return AccountRequest(username)

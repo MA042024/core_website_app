@@ -9,8 +9,7 @@ from core_main_app.commons import exceptions
 
 
 class AccountRequest(Document):
-    """ Represents a request sent by an user to get an account
-    """
+    """Represents a request sent by an user to get an account"""
 
     username = fields.StringField(blank=False)  #: Username associated with the request
     first_name = fields.StringField(blank=False)
@@ -20,13 +19,13 @@ class AccountRequest(Document):
 
     @staticmethod
     def get_by_id(request_id):
-        """ Get a request given its primary key
+        """Get a request given its primary key
 
-            Parameters:
-                request_id (str): Primary key of the request
+        Parameters:
+            request_id (str): Primary key of the request
 
-            Returns:
-                Request object corresponding to the given id
+        Returns:
+            Request object corresponding to the given id
         """
         try:
             return AccountRequest.objects().get(pk=str(request_id))
@@ -37,9 +36,9 @@ class AccountRequest(Document):
 
     @staticmethod
     def get_all():
-        """ Get all Account Request
+        """Get all Account Request
 
-            Returns:
+        Returns:
 
         """
         return AccountRequest.objects.all()
