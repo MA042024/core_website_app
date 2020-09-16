@@ -8,8 +8,8 @@ from core_main_app.commons.exceptions import ApiError
 from core_website_app.components.account_request.models import AccountRequest
 from core_website_app.settings import (
     SERVER_URI,
-    SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_DENIED,
     SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_ACCEPTED,
+    EMAIL_DENY_SUBJECT,
 )
 
 
@@ -111,7 +111,7 @@ def accept(account_request):
                 "URI": SERVER_URI,
             }
 
-            send_mail_api.send_mail(
+            send_mail_api.send_mail_from_template(
                 subject="Account approved",
                 path_to_template="core_website_app/admin/email/request_account_approved.html",
                 context=context,
@@ -126,12 +126,14 @@ def accept(account_request):
             raise ApiError("User does not exist")
 
 
-def deny(account_request):
+def deny(account_request, send_email=True, email_params=None):
     """Delete an account request
 
     Args:
 
         account_request: Primary key of the request
+        send_email: boolean to indicate if we have to send an email
+        email_params: { subject: <email subject>, body: <email body> }
 
     Returns:
 
@@ -145,7 +147,7 @@ def deny(account_request):
         # delete the user request
         account_request.delete()
 
-        if SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_DENIED:
+        if send_email:
             # create the context for the email
             account_request_email = account_request.email
             context = {
@@ -154,12 +156,21 @@ def deny(account_request):
                 "URI": SERVER_URI,
             }
 
-            send_mail_api.send_mail(
-                subject="Account request denied",
-                recipient_list=[account_request_email],
-                path_to_template="core_website_app/admin/email/request_account_denied.html",
-                context=context,
-            )
+            inline_template = email_params.get("body", None)
+
+            if inline_template:
+                send_mail_api.send_mail(
+                    recipient_list=[account_request_email],
+                    subject=email_params.get("subject", EMAIL_DENY_SUBJECT),
+                    body=inline_template,
+                )
+            else:
+                send_mail_api.send_mail_from_template(
+                    subject=email_params.get("subject", EMAIL_DENY_SUBJECT),
+                    recipient_list=[account_request_email],
+                    path_to_template="core_website_app/admin/email/request_account_denied.html",
+                    context=context,
+                )
         if user is not None:
             return
         else:

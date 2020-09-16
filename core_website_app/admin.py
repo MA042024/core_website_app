@@ -29,6 +29,11 @@ admin_urls = [
         name="core_website_app_deny_user_request",
     ),
     re_path(
+        r"^get_deny_email_template",
+        admin_ajax.get_deny_email_template,
+        name="core_website_app_get_deny_email_template",
+    ),
+    re_path(
         r"^request_count",
         admin_ajax.account_request_count,
         name="core_website_app_request_count",

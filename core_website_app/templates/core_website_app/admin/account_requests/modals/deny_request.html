@@ -4,11 +4,40 @@
 {% block modal_title %}Deny user requests{% endblock %}
 
 {% block modal_body %}
+
+    <div class="error-container alert alert-danger hidden">
+        <i class="fa fa-times-circle"></i>
+        <span id="error-text"></span>
+    </div>
+
     Are you sure you want to deny this request? The user will be deleted and unable to access the platform.
     <input type="hidden" id="deny-request-id" value=""/>
+    {% if data.send_email_when_account_request_is_denied %}
+        <p class="mt-3"><strong>Default email below (HTML or plain text):</strong></p>
+        <div class="form-group">
+            <label for="custom-email-subject">Subject</label>
+            <input type="text" class="form-control" id="custom-email-subject" value="{{data.default_email_subject}}" required>
+            <label for="custom-email-textarea">Write your custom email:</label>
+            <textarea class="form-control" id="custom-email-textarea" rows="6" required>Loading ...</textarea>
+        </div>
+    {% endif %}
 {% endblock %}
-
 {% block modal_footer %}
-<button class="btn btn-secondary pull-left" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
-<button id="btn-deny-request" class="btn btn-danger"><i class="fa fa-trash"></i> Confirm</button>
+        <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">
+            <i class="fa fa-times"></i> Cancel
+        </button>
+        <div class="confirm-btn-group">
+            <button type="button" id="btn-deny-request" class="ml-3 btn btn-danger">
+                <i class="fa fa-user-times"></i>
+            {% if data.send_email_when_account_request_is_denied %}
+                    Deny without email
+            </button>
+            <button type="button" id="btn-deny-request-email" class="btn btn-danger">
+                <i class="fa fa-paper-plane"></i> Deny and send email
+            </button>
+            {% else %}
+                    Deny
+            </button>
+            {% endif %}
+        </div>
 {% endblock %}

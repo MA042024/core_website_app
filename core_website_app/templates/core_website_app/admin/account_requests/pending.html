@@ -16,16 +16,16 @@
     {% for request in data.requests %}
         <tr id="{{ request.id }}">
             {# FIXME add link to /admin/auth/user #}
-            <td>{{ request.username }}</td>
-            <td>{{ request.first_name }}</td>
-            <td>{{ request.last_name }}</td>
-            <td>{{ request.email }}</td>
+            <td class="username">{{ request.username }}</td>
+            <td class="first_name">{{ request.first_name }}</td>
+            <td class="last_name">{{ request.last_name }}</td>
+            <td class="email">{{ request.email }}</td>
             <td>{{ request.date|print_datetime_utc_unaware }}</td>
             <td>
                 <div class="btn btn-success accept_request">
                     <i class="fa fa-check"></i> Accept
                 </div>
-                <div class="btn btn-danger deny_request">
+                <div class="btn btn-danger deny_request" data-toggle="popover" data-trigger="manual">
                     <i class="fa fa-times"></i> Deny
                 </div>
             </td>
