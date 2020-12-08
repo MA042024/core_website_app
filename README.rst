@@ -23,3 +23,9 @@ Quickstart
 .. code:: python
 
     url(r'^website/', include('core_website_app.urls')),
+
+
+3. Install and configure Captcha
+--------------------------------
+
+See instructions: https://django-simple-captcha.readthedocs.io/en/latest/usage.html#installation

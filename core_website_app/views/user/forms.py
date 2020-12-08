@@ -3,6 +3,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from captcha.fields import CaptchaField
 
 
 class RequestAccountForm(UserCreationForm):
@@ -14,6 +15,7 @@ class RequestAccountForm(UserCreationForm):
     firstname = forms.CharField(label="First Name", max_length=100, required=True)
     lastname = forms.CharField(label="Last Name", max_length=100, required=True)
     email = forms.EmailField(label="Email Address", max_length=100, required=True)
+    captcha = CaptchaField()
 
     class Meta:
         model = User
@@ -39,3 +41,4 @@ class ContactForm(forms.Form):
         widget=forms.Textarea(attrs={"class": "textarea_lock_h"}),
         required=True,
     )
+    captcha = CaptchaField()

@@ -6,6 +6,7 @@ from django.urls import re_path
 from core_website_app.views.user import views as user_views
 
 urlpatterns = [
+    re_path("captcha/", include("captcha.urls")),
     re_path(
         r"^account-request",
         user_views.request_new_account,
