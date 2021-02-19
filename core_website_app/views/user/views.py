@@ -16,7 +16,6 @@ import core_website_app.components.privacy_policy.api as privacy_policy_api
 import core_website_app.components.rules_of_behavior.api as rules_of_behavior_api
 import core_website_app.components.terms_of_use.api as terms_of_use_api
 from core_main_app.commons.exceptions import ApiError
-from core_main_app.commons.validators import validate_password
 from core_main_app.utils.markdown_parser import parse
 from core_main_app.utils.rendering import render
 from core_website_app.components.contact_message.models import ContactMessage
@@ -45,7 +44,6 @@ def request_new_account(request):
             # Call the API
             try:
                 request_form_data = request_form.cleaned_data
-                validate_password(request_form_data.get("password1"))
 
                 user = User(
                     username=request_form_data.get("username"),
