@@ -65,7 +65,7 @@ class TestsWebPageApiGet(TestCase):
 class TestsWebPageApiUpsert(TestCase):
     def test_web_page_upsert_type_does_not_exist(self):
         # Arrange
-        web_page = WebPage(5, "test")
+        web_page = WebPage(type=5, content="test")
         # Act # Assert
         with self.assertRaises(ApiError):
             web_page_api.upsert(web_page)
@@ -75,8 +75,8 @@ class TestsWebPageApiUpsert(TestCase):
         # Arrange
         web_page_type = WEB_PAGE_TYPES["help"]
         content = "content"
-        web_page = WebPage(web_page_type, content)
-        mock_save.return_value = WebPage(web_page_type, content)
+        web_page = WebPage(type=web_page_type, content=content)
+        mock_save.return_value = WebPage(type=web_page_type, content=content)
         # Act
         result = web_page_api.upsert(web_page)
         # Assert

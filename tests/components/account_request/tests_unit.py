@@ -119,4 +119,4 @@ def _create_account_request(username="username"):
     Returns:
         AccountRequest object
     """
-    return AccountRequest(username)
+    return AccountRequest(username=username)
