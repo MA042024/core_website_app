@@ -6,7 +6,7 @@
 {% block modal_body %}
 
     <div class="error-container alert alert-danger hidden">
-        <i class="fa fa-times-circle"></i>
+        <i class="fas fa-times-circle"></i>
         <span id="error-text"></span>
     </div>
 
@@ -24,16 +24,16 @@
 {% endblock %}
 {% block modal_footer %}
         <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">
-            <i class="fa fa-times"></i> Cancel
+            <i class="fas fa-times"></i> Cancel
         </button>
         <div class="confirm-btn-group">
             <button type="button" id="btn-deny-request" class="ml-3 btn btn-danger">
-                <i class="fa fa-user-times"></i>
+                <i class="fas fa-user-times"></i>
             {% if data.send_email_when_account_request_is_denied %}
                     Deny without email
             </button>
             <button type="button" id="btn-deny-request-email" class="btn btn-danger">
-                <i class="fa fa-paper-plane"></i> Deny and send email
+                <i class="fas fa-paper-plane"></i> Deny and send email
             </button>
             {% else %}
                     Deny
