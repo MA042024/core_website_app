@@ -11,6 +11,8 @@ from core_main_app.commons import exceptions
 class AccountRequest(Document):
     """Represents a request sent by an user to get an account"""
 
+    meta = {"allow_inheritance": True}
+
     username = fields.StringField(blank=False)  #: Username associated with the request
     first_name = fields.StringField(blank=False)
     last_name = fields.StringField(blank=False)
