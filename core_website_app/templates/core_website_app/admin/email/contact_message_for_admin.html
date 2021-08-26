@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Message Received</title>
+</head>
+<body>
+
+    Dear Administrator,
+    <br><br>
+
+    A new message on {{URI}} has been received.<br>
+    Please login to the application to read this message: <a href="{{URI}}{% url 'admin:core_website_app_contact_messages' %}"> Go to contact message </a>.
+    <br><br>
+
+    Thank you,
+    <br><br>
+</body>
+</html>

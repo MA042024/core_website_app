@@ -4,6 +4,12 @@ import logging
 
 from core_main_app.commons import exceptions
 from core_website_app.components.contact_message.models import ContactMessage
+import core_main_app.utils.notifications.mail as send_mail_api
+from core_website_app.settings import (
+    SERVER_URI,
+    SEND_EMAIL_WHEN_CONTACT_MESSAGE_IS_RECEIVED,
+)
+
 
 logger = logging.getLogger("core_website_app.components.contact_message.api")
 
@@ -52,6 +58,20 @@ def upsert(contact_message):
 
     """
     try:
+        # Check if new contact message
+        if contact_message.id is None:
+            if SEND_EMAIL_WHEN_CONTACT_MESSAGE_IS_RECEIVED:
+                context = {"URI": SERVER_URI}
+                template_path = (
+                    "core_website_app/admin/email/contact_message_for_admin.html"
+                )
+
+                send_mail_api.send_mail_to_administrators(
+                    subject="New Contact Message",
+                    path_to_template=template_path,
+                    context=context,
+                )
+
         # save method return self
         return contact_message.save()
     except Exception as e:

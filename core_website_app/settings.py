@@ -47,3 +47,8 @@ SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_DENIED = getattr(
 EMAIL_DENY_SUBJECT = getattr(settings, "EMAIL_DENY_SUBJECT", "Account request denied")
 """ boolean: subject of deny email
 """
+SEND_EMAIL_WHEN_CONTACT_MESSAGE_IS_RECEIVED = getattr(
+    settings, "SEND_EMAIL_WHEN_CONTACT_MESSAGE_IS_RECEIVED", False
+)
+""" boolean: send an email when a contact message is received
+"""
