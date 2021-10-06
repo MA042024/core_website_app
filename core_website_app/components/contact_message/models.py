@@ -1,18 +1,17 @@
 """ Contact messages models
 """
-
-from django_mongoengine import fields, Document
-from mongoengine import errors as mongoengine_errors
+from django.core.exceptions import ObjectDoesNotExist
+from django.db import models
 
 from core_main_app.commons import exceptions
 
 
-class ContactMessage(Document):
+class ContactMessage(models.Model):
     """Represents a message sent via the Contact form"""
 
-    name = fields.StringField(max_length=100)
-    email = fields.EmailField()
-    content = fields.StringField()
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    content = models.TextField()
 
     @staticmethod
     def get_by_id(message_id):
@@ -24,8 +23,8 @@ class ContactMessage(Document):
         Returns:
         """
         try:
-            return ContactMessage.objects().get(pk=str(message_id))
-        except mongoengine_errors.DoesNotExist as e:
+            return ContactMessage.objects.get(pk=str(message_id))
+        except ObjectDoesNotExist as e:
             raise exceptions.DoesNotExist(str(e))
         except Exception as ex:
             raise exceptions.ModelError(str(ex))

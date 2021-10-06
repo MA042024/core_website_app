@@ -83,7 +83,8 @@ def insert(user):
             path_to_template=template_path,
             context=context,
         )
-        return account_request.save()
+        account_request.save()
+        return account_request
 
 
 def accept(account_request):

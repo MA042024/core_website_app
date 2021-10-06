@@ -1,9 +1,9 @@
 """ Form needed for the user part of everything
 """
+from captcha.fields import CaptchaField
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from captcha.fields import CaptchaField
 
 
 class RequestAccountForm(UserCreationForm):

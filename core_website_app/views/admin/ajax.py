@@ -6,18 +6,18 @@ import json
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
+
+import core_website_app.components.account_request.api as account_request_api
+import core_website_app.components.contact_message.api as contact_message_api
+from core_main_app.commons import exceptions as main_exceptions
+from core_main_app.templatetags.stripjs import stripjs
+from core_website_app.commons import exceptions
 from core_website_app.settings import (
     SERVER_URI,
     SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_DENIED,
 )
 from xml_utils.commons.exceptions import HTMLError
-
-import core_website_app.components.account_request.api as account_request_api
-import core_website_app.components.contact_message.api as contact_message_api
-from core_main_app.commons import exceptions as main_exceptions
-from core_website_app.commons import exceptions
 from xml_utils.html_tree.parser import parse_html
-from core_main_app.templatetags.stripjs import stripjs
 
 
 @staff_member_required

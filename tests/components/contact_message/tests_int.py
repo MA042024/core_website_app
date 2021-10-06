@@ -3,9 +3,10 @@
 
 from django.core import mail
 from django.test import TestCase
+from mock import patch
+
 import core_website_app.components.contact_message.api as contact_message_api
 from core_website_app.components.contact_message.models import ContactMessage
-from mock import patch
 
 
 class TestSendEmailContactMessage(TestCase):
