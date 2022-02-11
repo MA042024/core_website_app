@@ -6,6 +6,8 @@ import json
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
+from django.views.decorators.http import require_http_methods
+
 from core_website_app.settings import (
     SERVER_URI,
     SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_DENIED,
@@ -140,13 +142,9 @@ def get_deny_email_template(request):
 
 
 @staff_member_required
+@require_http_methods(["POST"])
 def account_request_count(request):
-    """
-
-
-    Returns:
-
-    """
+    """Account request count"""
     return HttpResponse(
         json.dumps({"count": account_request_api.get_count()}),
         content_type="application/json",
@@ -154,7 +152,9 @@ def account_request_count(request):
 
 
 @staff_member_required
+@require_http_methods(["POST"])
 def contact_message_count(request):
+    """Contact message count"""
     return HttpResponse(
         json.dumps({"count": contact_message_api.get_count()}),
         content_type="application/json",
