@@ -81,7 +81,7 @@ def deny_request(request):
         account_request_api.deny(account_request_from_api, send_email, email_params)
         message = "Request denied"
 
-    except HTMLError as e:
+    except HTMLError:
         return HttpResponseBadRequest("HTML is not generated properly.")
     except main_exceptions.ApiError as error:
         raise exceptions.WebsiteAjaxError(str(error))
