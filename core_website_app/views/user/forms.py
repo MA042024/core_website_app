@@ -18,6 +18,8 @@ class RequestAccountForm(UserCreationForm):
     captcha = CaptchaField()
 
     class Meta:
+        """Meta"""
+
         model = User
         fields = (
             "username",

@@ -10,15 +10,19 @@ from core_website_app.components.contact_message.models import ContactMessage
 
 
 class TestsContactMessageGet(TestCase):
-    """"""
+    """Tests Contact Message Get"""
 
     def setUp(self):
+        """setUp"""
+
         self.message_id = 1
 
     @patch(
         "core_website_app.components.contact_message.models.ContactMessage.get_by_id"
     )
     def test_contact_message_get_by_id_return_object(self, mock_get_by_id):
+        """test_contact_message_get_by_id_return_object"""
+
         # Arrange
         mock_message = _create_mock_contact_message()
         mock_get_by_id.return_value = mock_message
@@ -33,6 +37,8 @@ class TestsContactMessageGet(TestCase):
         "core_website_app.components.contact_message.models.ContactMessage.get_by_id"
     )
     def test_contact_message_get_raise_api_error_if_not_found(self, mock_get_by_id):
+        """test_contact_message_get_raise_api_error_if_not_found"""
+
         # Arrange
         mock_get_by_id.side_effect = Exception()
 
@@ -42,8 +48,12 @@ class TestsContactMessageGet(TestCase):
 
 
 class TestContactMessageGetAll(TestCase):
+    """Test Contact Message Get All"""
+
     @patch("core_website_app.components.contact_message.models.ContactMessage.get_all")
     def test_contact_message_get_all_contains_contact_message_only(self, mock_get_all):
+        """test_contact_message_get_all_contains_contact_message_only"""
+
         # Arrange
         mock_message_1 = _create_mock_contact_message()
         mock_message_2 = _create_mock_contact_message(
@@ -63,10 +73,14 @@ class TestContactMessageGetAll(TestCase):
 
 
 class TestsContactMessageDelete(TestCase):
+    """Tests Contact Message Delete"""
+
     @patch("core_website_app.components.contact_message.models.ContactMessage.delete")
     def test_message_delete_raise_api_error_if_message_does_not_exist(
         self, mock_message_delete
     ):
+        """test_message_delete_raise_api_error_if_message_does_not_exist"""
+
         # Arrange
         mock_message = _create_contact_message()
         mock_message_delete.side_effect = Exception()
@@ -77,11 +91,17 @@ class TestsContactMessageDelete(TestCase):
 
 
 class TestsContactMessageUpsert(TestCase):
+    """Tests Contact Message Upsert"""
+
     def setUp(self):
+        """setUp"""
+
         self.mock_message = _create_contact_message()
 
     @patch("core_website_app.components.contact_message.models.ContactMessage.save")
     def test_message_upsert_return_message(self, mock_save):
+        """test_message_upsert_return_message"""
+
         # Arrange
         mock_save.return_value = self.mock_message
 
@@ -93,6 +113,8 @@ class TestsContactMessageUpsert(TestCase):
 
     @patch("core_website_app.components.contact_message.models.ContactMessage.save")
     def test_message_upsert_raise_api_error_if_save_failed(self, mock_save):
+        """test_message_upsert_raise_api_error_if_save_failed"""
+
         # Arrange
         mock_save.side_effect = Exception()
 

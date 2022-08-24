@@ -5,15 +5,20 @@ from django.test import SimpleTestCase
 from mock.mock import patch
 from rest_framework import status
 
-import core_website_app.rest.contact_message.views as contact_message_views
+
 from core_main_app.utils.tests_tools.MockUser import create_mock_user
 from core_main_app.utils.tests_tools.RequestMock import RequestMock
 from core_website_app.components.contact_message.models import ContactMessage
 from core_website_app.rest.contact_message.serializers import ContactMessageSerializer
+import core_website_app.rest.contact_message.views as contact_message_views
 
 
 class TestContactMessageListGetPermission(SimpleTestCase):
+    """Test Contact Message List Get Permission"""
+
     def test_anonymous_returns_http_403(self):
+        """test_anonymous_returns_http_403"""
+
         response = RequestMock.do_request_get(
             contact_message_views.ContactMessageList.as_view(),
             create_mock_user("1", is_anonymous=True),
@@ -22,6 +27,8 @@ class TestContactMessageListGetPermission(SimpleTestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_is_authenticated_returns_http_403(self):
+        """test_is_authenticated_returns_http_403"""
+
         response = RequestMock.do_request_get(
             contact_message_views.ContactMessageList.as_view(),
             create_mock_user("1", is_anonymous=False),
@@ -32,6 +39,8 @@ class TestContactMessageListGetPermission(SimpleTestCase):
     @patch.object(ContactMessage, "get_all")
     @patch.object(ContactMessageSerializer, "data")
     def test_is_staff_returns_http_200(self, account_serializer_data, account_get_all):
+        """test_is_staff_returns_http_200"""
+
         account_get_all.return_value = {}
         account_serializer_data.return_value = True
 
@@ -44,7 +53,11 @@ class TestContactMessageListGetPermission(SimpleTestCase):
 
 
 class TestContactMessageListPostPermission(SimpleTestCase):
+    """Test Contact Message List Post Permission"""
+
     def setUp(self):
+        """setUp"""
+
         self.mock_account_request = ContactMessage(
             name="mock", content="mock", email="mock@mock.com"
         )
@@ -59,6 +72,8 @@ class TestContactMessageListPostPermission(SimpleTestCase):
         contact_serializer_save,
         contact_serializer_is_valid,
     ):
+        """test_anonymous_returns_http_201"""
+
         response = RequestMock.do_request_post(
             contact_message_views.ContactMessageList.as_view(),
             create_mock_user("1", is_anonymous=True),
@@ -76,6 +91,8 @@ class TestContactMessageListPostPermission(SimpleTestCase):
         contact_serializer_save,
         contact_serializer_is_valid,
     ):
+        """test_is_authenticated_returns_http_201"""
+
         response = RequestMock.do_request_post(
             contact_message_views.ContactMessageList.as_view(),
             create_mock_user("1", is_anonymous=False),
@@ -93,6 +110,8 @@ class TestContactMessageListPostPermission(SimpleTestCase):
         contact_serializer_save,
         contact_serializer_is_valid,
     ):
+        """test_is_staff_returns_http_201"""
+
         response = RequestMock.do_request_post(
             contact_message_views.ContactMessageList.as_view(),
             create_mock_user("1", is_staff=True),
@@ -102,11 +121,17 @@ class TestContactMessageListPostPermission(SimpleTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
-class TestAContactMessageDetailGetPermission(SimpleTestCase):
+class TestContactMessageDetailGetPermission(SimpleTestCase):
+    """Test Contact Message Detail Get Permission"""
+
     def setUp(self):
+        """setUp"""
+
         self.fake_id = "507f1f77bcf86cd799439011"
 
     def test_anonymous_returns_http_403(self):
+        """test_anonymous_returns_http_403"""
+
         response = RequestMock.do_request_get(
             contact_message_views.ContactMessageDetail.as_view(),
             create_mock_user("1", is_anonymous=True),
@@ -115,6 +140,8 @@ class TestAContactMessageDetailGetPermission(SimpleTestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_is_authenticated_returns_http_403(self):
+        """test_is_authenticated_returns_http_403"""
+
         response = RequestMock.do_request_get(
             contact_message_views.ContactMessageDetail.as_view(),
             create_mock_user("1", is_anonymous=False),
@@ -127,6 +154,8 @@ class TestAContactMessageDetailGetPermission(SimpleTestCase):
     def test_is_staff_returns_http_200(
         self, contact_serializer_data, contact_get_by_id
     ):
+        """test_is_staff_returns_http_200"""
+
         response = RequestMock.do_request_get(
             contact_message_views.ContactMessageDetail.as_view(),
             create_mock_user("1", is_staff=True),
@@ -136,11 +165,17 @@ class TestAContactMessageDetailGetPermission(SimpleTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
-class TestAContactMessageDetailDeletePermission(SimpleTestCase):
+class TestContactMessageDetailDeletePermission(SimpleTestCase):
+    """Test Contact Message Detail Delete Permission"""
+
     def setUp(self):
+        """setUp"""
+
         self.fake_id = "507f1f77bcf86cd799439011"
 
     def test_anonymous_returns_http_403(self):
+        """test_anonymous_returns_http_403"""
+
         response = RequestMock.do_request_delete(
             contact_message_views.ContactMessageDetail.as_view(),
             create_mock_user("1", is_anonymous=True),
@@ -149,6 +184,8 @@ class TestAContactMessageDetailDeletePermission(SimpleTestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_is_authenticated_returns_http_403(self):
+        """test_is_authenticated_returns_http_403"""
+
         response = RequestMock.do_request_delete(
             contact_message_views.ContactMessageDetail.as_view(),
             create_mock_user("1", is_anonymous=False),
@@ -162,6 +199,8 @@ class TestAContactMessageDetailDeletePermission(SimpleTestCase):
     def test_is_staff_returns_http_200(
         self, contact_api, contact_serializer_data, contact_get_by_id
     ):
+        """test_is_staff_returns_http_200"""
+
         response = RequestMock.do_request_delete(
             contact_message_views.ContactMessageDetail.as_view(),
             create_mock_user("1", is_staff=True),

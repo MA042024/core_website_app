@@ -9,15 +9,16 @@ from django.shortcuts import redirect
 from django.template.loader import get_template
 from django.urls import reverse
 
+from core_main_app.commons.exceptions import ApiError
+from core_main_app.utils.markdown_parser import parse
+from core_main_app.utils.rendering import render
 import core_website_app.components.account_request.api as account_request_api
 import core_website_app.components.contact_message.api as contact_message_api
 import core_website_app.components.help.api as help_api
 import core_website_app.components.privacy_policy.api as privacy_policy_api
 import core_website_app.components.rules_of_behavior.api as rules_of_behavior_api
 import core_website_app.components.terms_of_use.api as terms_of_use_api
-from core_main_app.commons.exceptions import ApiError
-from core_main_app.utils.markdown_parser import parse
-from core_main_app.utils.rendering import render
+
 from core_website_app.components.contact_message.models import ContactMessage
 from core_website_app.settings import DISPLAY_NIST_HEADERS
 from .forms import RequestAccountForm, ContactForm
@@ -62,8 +63,8 @@ def request_new_account(request):
                     "User Account Request sent to the administrator.",
                 )
                 return redirect(reverse("core_main_app_homepage"))
-            except ApiError as e:
-                error_message = str(e)
+            except ApiError as exception:
+                error_message = str(exception)
 
                 error_template = get_template(
                     "core_website_app/user/request_error.html"
@@ -76,9 +77,9 @@ def request_new_account(request):
                     assets=assets,
                     context={"request_form": request_form, "action_result": error_box},
                 )
-            except ValidationError as e:
+            except ValidationError as exception:
                 error_message = "The following error(s) occurred during " "validation:"
-                error_items = [str(error) for error in e.messages]
+                error_items = [str(error) for error in exception.messages]
 
                 error_template = get_template(
                     "core_website_app/user/request_error.html"

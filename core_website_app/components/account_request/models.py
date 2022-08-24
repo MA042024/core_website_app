@@ -31,8 +31,8 @@ class AccountRequest(models.Model):
         """
         try:
             return AccountRequest.objects.get(pk=str(request_id))
-        except ObjectDoesNotExist as e:
-            raise exceptions.DoesNotExist(str(e))
+        except ObjectDoesNotExist as exception:
+            raise exceptions.DoesNotExist(str(exception))
         except Exception as ex:
             raise exceptions.ModelError(str(ex))
 

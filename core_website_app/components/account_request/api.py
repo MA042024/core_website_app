@@ -123,8 +123,8 @@ def accept(account_request):
         account_request.delete()
         if user is not None:
             return user
-        else:
-            raise ApiError("User does not exist")
+
+        raise ApiError("User does not exist")
 
 
 def deny(account_request, send_email=True, email_params=None):
@@ -174,8 +174,8 @@ def deny(account_request, send_email=True, email_params=None):
                 )
         if user is not None:
             return
-        else:
-            raise ApiError("User does not exist")
+
+        raise ApiError("User does not exist")
 
 
 def _get_user_by_username(username):

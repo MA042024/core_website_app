@@ -12,7 +12,9 @@ from core_website_app.components.account_request.models import AccountRequest
 class AccountRequestSerializer(ModelSerializer):
     """Represents the account request serializer"""
 
-    class Meta(object):
+    class Meta:
+        """Meta"""
+
         model = AccountRequest
         fields = ["id", "username", "first_name", "email", "date"]
         read_only_fields = (
@@ -24,7 +26,9 @@ class AccountRequestSerializer(ModelSerializer):
 class UserSerializer(ModelSerializer):
     """Represents the user serializer"""
 
-    class Meta(object):
+    class Meta:
+        """Meta"""
+
         model = User
         fields = ["id", "username", "first_name", "last_name", "email", "password"]
         read_only_fields = ("id",)

@@ -1,3 +1,6 @@
+"""  Test settings
+"""
+
 from django.conf import settings
 
 SECRET_KEY = "fake-key"

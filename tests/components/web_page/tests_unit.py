@@ -12,8 +12,12 @@ from core_website_app.commons.enums import WEB_PAGE_TYPES
 
 
 class TestsWebPageApiGet(TestCase):
+    """Tests Web Page Api Get"""
+
     @patch.object(WebPage, "get_by_type")
     def test_web_page_get_policy_privacy(self, mock_get_web_page_by_type):
+        """test_web_page_get_policy_privacy"""
+
         # Arrange
         content = "content web page privacy"
         mock_get_web_page_by_type.return_value = _create_mock_web_page(
@@ -26,6 +30,8 @@ class TestsWebPageApiGet(TestCase):
 
     @patch.object(WebPage, "get_by_type")
     def test_web_page_get_term_of_use(self, mock_get_web_page_by_type):
+        """test_web_page_get_term_of_use"""
+
         # Arrange
         content = "content web page terms"
         mock_get_web_page_by_type.return_value = _create_mock_web_page(
@@ -38,6 +44,8 @@ class TestsWebPageApiGet(TestCase):
 
     @patch.object(WebPage, "get_by_type")
     def test_web_page_get_help(self, mock_get_web_page_by_type):
+        """test_web_page_get_help"""
+
         # Arrange
         content = "content web page help"
         mock_get_web_page_by_type.return_value = _create_mock_web_page(
@@ -49,12 +57,16 @@ class TestsWebPageApiGet(TestCase):
         self.assertEqual("content web page help", result.content)
 
     def test_web_page_get_not_in_database_return_none(self):
+        """test_web_page_get_not_in_database_return_none"""
+
         # Act
         result = web_page_api.get("fake_type")
         # Assert
         self.assertEqual(None, result)
 
     def test_web_page_get_with_wrong_type_return_none(self):
+        """test_web_page_get_with_wrong_type_return_none"""
+
         # Arrange
         # Act
         page = web_page_api.get("wrong_type")
@@ -63,7 +75,11 @@ class TestsWebPageApiGet(TestCase):
 
 
 class TestsWebPageApiUpsert(TestCase):
+    """Tests Web Page Api Upsert"""
+
     def test_web_page_upsert_type_does_not_exist(self):
+        """test_web_page_upsert_type_does_not_exist"""
+
         # Arrange
         web_page = WebPage(type=5, content="test")
         # Act # Assert
@@ -72,6 +88,8 @@ class TestsWebPageApiUpsert(TestCase):
 
     @patch.object(WebPage, "save")
     def test_web_page_upsert_type_exist(self, mock_save):
+        """test_web_page_upsert_type_exist"""
+
         # Arrange
         web_page_type = WEB_PAGE_TYPES["help"]
         content = "content"
@@ -80,10 +98,18 @@ class TestsWebPageApiUpsert(TestCase):
         # Act
         result = web_page_api.upsert(web_page)
         # Assert
-        self.assertEquals(content, result.content)
+        self.assertEqual(content, result.content)
 
 
 def _create_mock_web_page(page_type=-1, content="content"):
+    """_create_mock_web_page
+
+    Args:
+        page_type:
+        content:
+
+    Returns:
+    """
     mock_web_page = Mock(spec=WebPage)
     mock_web_page.type = page_type
     mock_web_page.content = content

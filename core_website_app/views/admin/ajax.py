@@ -8,17 +8,17 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
 from django.views.decorators.http import require_http_methods
 
-import core_website_app.components.account_request.api as account_request_api
-import core_website_app.components.contact_message.api as contact_message_api
+from xml_utils.commons.exceptions import HTMLError
+from xml_utils.html_tree.parser import parse_html
 from core_main_app.commons import exceptions as main_exceptions
 from core_main_app.templatetags.stripjs import stripjs
+import core_website_app.components.account_request.api as account_request_api
+import core_website_app.components.contact_message.api as contact_message_api
 from core_website_app.commons import exceptions
 from core_website_app.settings import (
     SERVER_URI,
     SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_DENIED,
 )
-from xml_utils.commons.exceptions import HTMLError
-from xml_utils.html_tree.parser import parse_html
 
 
 @staff_member_required
@@ -117,27 +117,35 @@ def remove_message(request):
 
 @staff_member_required
 def get_deny_email_template(request):
+    """get_deny_email_template
+
+    Args:
+        request:
+
+    Returns:
+
+    """
     request_id = request.GET.get("requestid")
 
-    if request_id:
-        account_request = account_request_api.get(request_id)
-
-        context = {
-            "lastname": account_request.last_name,
-            "firstname": account_request.first_name,
-            "URI": SERVER_URI,
-        }
-
-        template = loader.get_template(
-            "core_website_app/admin/email/request_account_denied.html"
-        )
-        content = template.render(context)
-
-        return HttpResponse(
-            json.dumps({"template": content}), content_type="application/json"
-        )
-    else:
+    if not request_id:
         return HttpResponseBadRequest("Missing account request id.")
+
+    account_request = account_request_api.get(request_id)
+
+    context = {
+        "lastname": account_request.last_name,
+        "firstname": account_request.first_name,
+        "URI": SERVER_URI,
+    }
+
+    template = loader.get_template(
+        "core_website_app/admin/email/request_account_denied.html"
+    )
+    content = template.render(context)
+
+    return HttpResponse(
+        json.dumps({"template": content}), content_type="application/json"
+    )
 
 
 @staff_member_required

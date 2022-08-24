@@ -9,9 +9,9 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-import core_website_app.components.account_request.api as account_request_api
 from core_main_app.commons import exceptions
 from core_main_app.utils.decorators import api_staff_member_required
+import core_website_app.components.account_request.api as account_request_api
 from core_website_app.rest.account_request.abstract_views import (
     AbstractActionAccountRequest,
 )

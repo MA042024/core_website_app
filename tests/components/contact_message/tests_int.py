@@ -10,12 +10,16 @@ from core_website_app.components.contact_message.models import ContactMessage
 
 
 class TestSendEmailContactMessage(TestCase):
+    """Test Send Email Contact Message"""
+
     def setUp(self):
+        """setUp"""
 
         self.contact_message = _create_contact_message()
 
     @patch("core_website_app.components.contact_message.models.ContactMessage.save")
     def test_contact_message_send_mail(self, mock_save):
+        """test_contact_message_send_mail"""
 
         # Arrange
         mock_save.return_value = self.contact_message
@@ -29,6 +33,8 @@ class TestSendEmailContactMessage(TestCase):
 
     @patch("core_website_app.components.contact_message.models.ContactMessage.save")
     def test_contact_message_send_mail_admins(self, mock_save):
+        """test_contact_message_send_mail_admins"""
+
         # Arrange
         mock_save.return_value = self.contact_message
 
