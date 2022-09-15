@@ -1,15 +1,15 @@
 """ Url router for the administration site
 """
-from django.contrib import admin
 from django.contrib.admin.views.decorators import staff_member_required
 from django.urls import re_path
 
-import core_website_app.components.help.api as help_api
-import core_website_app.components.privacy_policy.api as privacy_policy_api
-import core_website_app.components.terms_of_use.api as terms_of_use_api
-import core_website_app.components.rules_of_behavior.api as rules_of_behavior_api
+from core_main_app.admin import core_admin_site
 from core_main_app.components.web_page.models import WEB_PAGE_TYPES
 from core_main_app.views.admin.views import WebPageView
+import core_website_app.components.help.api as help_api
+import core_website_app.components.privacy_policy.api as privacy_policy_api
+import core_website_app.components.rules_of_behavior.api as rules_of_behavior_api
+import core_website_app.components.terms_of_use.api as terms_of_use_api
 from core_website_app.views.admin import views as admin_views, ajax as admin_ajax
 
 admin_urls = [
@@ -59,7 +59,7 @@ admin_urls = [
             WebPageView.as_view(
                 api=privacy_policy_api,
                 get_redirect="core_website_app/admin/privacy_policy.html",
-                post_redirect="admin:core_website_app_privacy",
+                post_redirect="core-admin:core_website_app_privacy",
                 web_page_type=WEB_PAGE_TYPES["privacy_policy"],
             )
         ),
@@ -71,7 +71,7 @@ admin_urls = [
             WebPageView.as_view(
                 api=terms_of_use_api,
                 get_redirect="core_website_app/admin/terms_of_use.html",
-                post_redirect="admin:core_website_app_terms",
+                post_redirect="core-admin:core_website_app_terms",
                 web_page_type=WEB_PAGE_TYPES["terms_of_use"],
             )
         ),
@@ -83,7 +83,7 @@ admin_urls = [
             WebPageView.as_view(
                 api=help_api,
                 get_redirect="core_website_app/admin/help.html",
-                post_redirect="admin:core_website_app_help",
+                post_redirect="core-admin:core_website_app_help",
                 web_page_type=WEB_PAGE_TYPES["help"],
             )
         ),
@@ -95,7 +95,7 @@ admin_urls = [
             WebPageView.as_view(
                 api=rules_of_behavior_api,
                 get_redirect="core_website_app/admin/rules_of_behavior.html",
-                post_redirect="admin:core_website_app_rules_of_behavior",
+                post_redirect="core-admin:core_website_app_rules_of_behavior",
                 web_page_type=WEB_PAGE_TYPES["rules_of_behavior"],
             )
         ),
@@ -103,5 +103,5 @@ admin_urls = [
     ),
 ]
 
-urls = admin.site.get_urls()
-admin.site.get_urls = lambda: admin_urls + urls
+urls = core_admin_site.get_urls()
+core_admin_site.get_urls = lambda: admin_urls + urls

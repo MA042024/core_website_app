@@ -1,11 +1,10 @@
 """ Admin views
 """
 from django.contrib.admin.views.decorators import staff_member_required
-from django.template import loader
 
+from core_main_app.utils.rendering import admin_render as render
 import core_website_app.components.account_request.api as account_request_api
 import core_website_app.components.contact_message.api as contact_message_api
-from core_main_app.utils.rendering import admin_render as render
 from core_website_app.settings import (
     EMAIL_DENY_SUBJECT,
     SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_DENIED,

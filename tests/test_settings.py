@@ -1,3 +1,6 @@
+"""  Test settings
+"""
+
 from django.conf import settings
 
 SECRET_KEY = "fake-key"
@@ -11,6 +14,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     # Local app
     "tests",
+    "core_main_app",
+    "core_website_app",
 ]
 
 LOGGING = {
@@ -65,3 +70,6 @@ SEND_EMAIL_WHEN_CONTACT_MESSAGE_IS_RECEIVED = getattr(
 )
 """ boolean: send an email when a contact message is received
 """
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+CELERYBEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"

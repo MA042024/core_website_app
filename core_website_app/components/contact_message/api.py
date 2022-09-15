@@ -2,14 +2,13 @@
 """
 import logging
 
+import core_main_app.utils.notifications.mail as send_mail_api
 from core_main_app.commons import exceptions
 from core_website_app.components.contact_message.models import ContactMessage
-import core_main_app.utils.notifications.mail as send_mail_api
 from core_website_app.settings import (
     SERVER_URI,
     SEND_EMAIL_WHEN_CONTACT_MESSAGE_IS_RECEIVED,
 )
-
 
 logger = logging.getLogger("core_website_app.components.contact_message.api")
 
@@ -43,8 +42,8 @@ def get(message_id):
     """
     try:
         return ContactMessage.get_by_id(message_id)
-    except Exception as e:
-        logger.error(str(e))
+    except Exception as exception:
+        logger.error(str(exception))
         raise exceptions.ApiError("No message could be found with the given id.")
 
 
@@ -74,8 +73,8 @@ def upsert(contact_message):
 
         # save method return self
         return contact_message.save()
-    except Exception as e:
-        logger.error(str(e))
+    except Exception as exception:
+        logger.error(str(exception))
         raise exceptions.ApiError("Save message failed")
 
 
@@ -90,6 +89,6 @@ def delete(contact_message):
     """
     try:
         contact_message.delete()
-    except Exception as e:
-        logger.error(str(e))
+    except Exception as exception:
+        logger.error(str(exception))
         raise exceptions.ApiError("Impossible to delete contact message.")

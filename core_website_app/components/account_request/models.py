@@ -2,22 +2,22 @@
 """
 import datetime
 
-from django_mongoengine import fields, Document
-from mongoengine import errors as mongoengine_errors
+from django.core.exceptions import ObjectDoesNotExist
+from django.db import models
 
 from core_main_app.commons import exceptions
 
 
-class AccountRequest(Document):
+class AccountRequest(models.Model):
     """Represents a request sent by an user to get an account"""
 
-    meta = {"allow_inheritance": True}
-
-    username = fields.StringField(blank=False)  #: Username associated with the request
-    first_name = fields.StringField(blank=False)
-    last_name = fields.StringField(blank=False)
-    email = fields.StringField(blank=False)
-    date = fields.DateTimeField(default=datetime.datetime.now, blank=False)
+    username = models.CharField(
+        blank=False, max_length=200
+    )  #: Username associated with the request
+    first_name = models.CharField(blank=False, max_length=200)
+    last_name = models.CharField(blank=False, max_length=200)
+    email = models.CharField(blank=False, max_length=200)
+    date = models.DateTimeField(default=datetime.datetime.now, blank=False)
 
     @staticmethod
     def get_by_id(request_id):
@@ -30,9 +30,9 @@ class AccountRequest(Document):
             Request object corresponding to the given id
         """
         try:
-            return AccountRequest.objects().get(pk=str(request_id))
-        except mongoengine_errors.DoesNotExist as e:
-            raise exceptions.DoesNotExist(str(e))
+            return AccountRequest.objects.get(pk=str(request_id))
+        except ObjectDoesNotExist as exception:
+            raise exceptions.DoesNotExist(str(exception))
         except Exception as ex:
             raise exceptions.ModelError(str(ex))
 

@@ -3,17 +3,18 @@
 
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
-from rest_framework import serializers
-from rest_framework_mongoengine.serializers import DocumentSerializer
+from rest_framework.serializers import ModelSerializer
 
 import core_website_app.components.account_request.api as account_request_api
 from core_website_app.components.account_request.models import AccountRequest
 
 
-class AccountRequestSerializer(DocumentSerializer):
+class AccountRequestSerializer(ModelSerializer):
     """Represents the account request serializer"""
 
-    class Meta(object):
+    class Meta:
+        """Meta"""
+
         model = AccountRequest
         fields = ["id", "username", "first_name", "email", "date"]
         read_only_fields = (
@@ -22,10 +23,12 @@ class AccountRequestSerializer(DocumentSerializer):
         )
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(ModelSerializer):
     """Represents the user serializer"""
 
-    class Meta(object):
+    class Meta:
+        """Meta"""
+
         model = User
         fields = ["id", "username", "first_name", "last_name", "email", "password"]
         read_only_fields = ("id",)
@@ -41,4 +44,5 @@ class UserSerializer(serializers.ModelSerializer):
             is_active=False,
         )
 
-        return account_request_api.insert(user)
+        account_request_api.insert(user)
+        return user
