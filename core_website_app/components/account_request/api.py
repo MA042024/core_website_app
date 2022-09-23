@@ -46,7 +46,7 @@ def get(account_request_id):
     """
     try:
         return AccountRequest.get_by_id(account_request_id)
-    except:
+    except Exception:
         raise ApiError("No request could be found with the given id.")
 
 
