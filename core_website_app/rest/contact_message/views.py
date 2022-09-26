@@ -12,7 +12,9 @@ from rest_framework.views import APIView
 from core_main_app.commons import exceptions
 from core_main_app.utils.decorators import api_staff_member_required
 import core_website_app.components.contact_message.api as contact_message_api
-from core_website_app.rest.contact_message.serializers import ContactMessageSerializer
+from core_website_app.rest.contact_message.serializers import (
+    ContactMessageSerializer,
+)
 
 logger = logging.getLogger("core_website_app.rest.contact_message.views")
 
@@ -39,13 +41,17 @@ class ContactMessageList(APIView):
             contact_message_list = contact_message_api.get_all()
 
             # Serialize object
-            serializer = ContactMessageSerializer(contact_message_list, many=True)
+            serializer = ContactMessageSerializer(
+                contact_message_list, many=True
+            )
 
             # Return response
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as api_exception:
             content = {"message": str(api_exception)}
-            return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                content, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
     def post(self, request):
         """Create a message
@@ -88,7 +94,9 @@ class ContactMessageList(APIView):
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         except Exception as api_exception:
             content = {"message": str(api_exception)}
-            return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                content, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 class ContactMessageDetail(APIView):
@@ -148,7 +156,9 @@ class ContactMessageDetail(APIView):
             return Response(content, status=status.HTTP_404_NOT_FOUND)
         except Exception as api_exception:
             content = {"message": str(api_exception)}
-            return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                content, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
     @method_decorator(api_staff_member_required())
     def delete(self, request, pk):
@@ -188,4 +198,6 @@ class ContactMessageDetail(APIView):
             return Response(content, status=status.HTTP_404_NOT_FOUND)
         except Exception as api_exception:
             content = {"message": str(api_exception)}
-            return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                content, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

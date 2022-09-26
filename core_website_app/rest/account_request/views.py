@@ -45,13 +45,17 @@ class AccountRequestList(APIView):
             account_request_list = account_request_api.get_all()
 
             # Serialize object
-            serializer = AccountRequestSerializer(account_request_list, many=True)
+            serializer = AccountRequestSerializer(
+                account_request_list, many=True
+            )
 
             # Return response
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as api_exception:
             content = {"message": str(api_exception)}
-            return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                content, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
     def post(self, request):
         """Create a new account request
@@ -88,7 +92,9 @@ class AccountRequestList(APIView):
             account_request = serializer.save()
 
             # Account request serializer
-            account_request_serializer = AccountRequestSerializer(account_request)
+            account_request_serializer = AccountRequestSerializer(
+                account_request
+            )
 
             # Return the serialized user request
             return Response(
@@ -99,7 +105,9 @@ class AccountRequestList(APIView):
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         except Exception as api_exception:
             content = {"message": str(api_exception)}
-            return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                content, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 class AccountRequestDetail(APIView):
@@ -159,7 +167,9 @@ class AccountRequestDetail(APIView):
             return Response(content, status=status.HTTP_404_NOT_FOUND)
         except Exception as api_exception:
             content = {"message": str(api_exception)}
-            return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                content, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 class AccountRequestDeny(AbstractActionAccountRequest):

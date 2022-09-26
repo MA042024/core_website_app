@@ -12,9 +12,15 @@ class RequestAccountForm(UserCreationForm):
     """
 
     username = forms.CharField(label="Username", max_length=100, required=True)
-    firstname = forms.CharField(label="First Name", max_length=100, required=True)
-    lastname = forms.CharField(label="Last Name", max_length=100, required=True)
-    email = forms.EmailField(label="Email Address", max_length=100, required=True)
+    firstname = forms.CharField(
+        label="First Name", max_length=100, required=True
+    )
+    lastname = forms.CharField(
+        label="Last Name", max_length=100, required=True
+    )
+    email = forms.EmailField(
+        label="Email Address", max_length=100, required=True
+    )
     captcha = CaptchaField()
 
     class Meta:
@@ -37,7 +43,9 @@ class ContactForm(forms.Form):
     """
 
     name = forms.CharField(label="Name", max_length=100, required=True)
-    email = forms.EmailField(label="Email Address", max_length=100, required=True)
+    email = forms.EmailField(
+        label="Email Address", max_length=100, required=True
+    )
     message = forms.CharField(
         label="Message",
         widget=forms.Textarea(attrs={"class": "textarea_lock_h"}),

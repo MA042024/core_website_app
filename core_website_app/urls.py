@@ -12,10 +12,18 @@ urlpatterns = [
         user_views.request_new_account,
         name="core_website_app_account_request",
     ),
-    re_path(r"^contact/$", user_views.contact, name="core_website_app_contact"),
+    re_path(
+        r"^contact/$", user_views.contact, name="core_website_app_contact"
+    ),
     re_path(r"^help/$", user_views.help_page, name="core_website_app_help"),
-    re_path(r"^privacy/$", user_views.privacy_policy, name="core_website_app_privacy"),
-    re_path(r"^terms/$", user_views.terms_of_use, name="core_website_app_terms"),
+    re_path(
+        r"^privacy/$",
+        user_views.privacy_policy,
+        name="core_website_app_privacy",
+    ),
+    re_path(
+        r"^terms/$", user_views.terms_of_use, name="core_website_app_terms"
+    ),
     re_path(
         r"^rules-of-behavior/$",
         user_views.rules_of_behavior,

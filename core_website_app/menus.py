@@ -15,18 +15,25 @@ from core_website_app.settings import (
 if DISPLAY_PRIVACY_POLICY_FOOTER:
     Menu.add_item(
         "footer",
-        MenuItem("Privacy policy", reverse("core_website_app_privacy"), weight=1001),
+        MenuItem(
+            "Privacy policy", reverse("core_website_app_privacy"), weight=1001
+        ),
     )
 if DISPLAY_TERMS_OF_USE_FOOTER:
     Menu.add_item(
         "footer",
-        MenuItem("Terms of use", reverse("core_website_app_terms"), weight=1002),
+        MenuItem(
+            "Terms of use", reverse("core_website_app_terms"), weight=1002
+        ),
     )
 if DISPLAY_CONTACT_FOOTER:
     Menu.add_item(
         "footer",
         MenuItem(
-            "Contact", reverse("core_website_app_contact"), icon="envelope", weight=1003
+            "Contact",
+            reverse("core_website_app_contact"),
+            icon="envelope",
+            weight=1003,
         ),
     )
 if DISPLAY_HELP_FOOTER:
@@ -58,10 +65,14 @@ website_children = (
         icon="user-secret",
     ),
     MenuItem(
-        "Terms of Use", reverse("core-admin:core_website_app_terms"), icon="file-alt"
+        "Terms of Use",
+        reverse("core-admin:core_website_app_terms"),
+        icon="file-alt",
     ),
     MenuItem(
-        "Help Page", reverse("core-admin:core_website_app_help"), icon="question-circle"
+        "Help Page",
+        reverse("core-admin:core_website_app_help"),
+        icon="question-circle",
     ),
     MenuItem(
         "Rules of Behavior",
@@ -83,5 +94,6 @@ website_children = (
 )
 
 Menu.add_item(
-    "admin", MenuItem("WEBSITE", None, children=website_children, weight=-10000)
+    "admin",
+    MenuItem("WEBSITE", None, children=website_children, weight=-10000),
 )

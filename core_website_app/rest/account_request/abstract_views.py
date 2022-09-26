@@ -84,4 +84,6 @@ class AbstractActionAccountRequest(APIView, metaclass=ABCMeta):
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         except Exception as api_exception:
             content = {"message": str(api_exception)}
-            return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                content, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

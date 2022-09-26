@@ -78,7 +78,9 @@ def deny_request(request):
             raise ("Wrong parameters.")
 
         account_request_from_api = account_request_api.get(request_id)
-        account_request_api.deny(account_request_from_api, send_email, email_params)
+        account_request_api.deny(
+            account_request_from_api, send_email, email_params
+        )
         message = "Request denied"
 
     except HTMLError:

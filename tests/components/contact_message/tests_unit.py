@@ -5,7 +5,9 @@ from unittest.case import TestCase
 from unittest.mock import Mock, patch
 
 from core_main_app.commons import exceptions
-from core_website_app.components.contact_message import api as contact_message_api
+from core_website_app.components.contact_message import (
+    api as contact_message_api,
+)
 from core_website_app.components.contact_message.models import ContactMessage
 
 
@@ -36,7 +38,9 @@ class TestsContactMessageGet(TestCase):
     @patch(
         "core_website_app.components.contact_message.models.ContactMessage.get_by_id"
     )
-    def test_contact_message_get_raise_api_error_if_not_found(self, mock_get_by_id):
+    def test_contact_message_get_raise_api_error_if_not_found(
+        self, mock_get_by_id
+    ):
         """test_contact_message_get_raise_api_error_if_not_found"""
 
         # Arrange
@@ -50,8 +54,12 @@ class TestsContactMessageGet(TestCase):
 class TestContactMessageGetAll(TestCase):
     """Test Contact Message Get All"""
 
-    @patch("core_website_app.components.contact_message.models.ContactMessage.get_all")
-    def test_contact_message_get_all_contains_contact_message_only(self, mock_get_all):
+    @patch(
+        "core_website_app.components.contact_message.models.ContactMessage.get_all"
+    )
+    def test_contact_message_get_all_contains_contact_message_only(
+        self, mock_get_all
+    ):
         """test_contact_message_get_all_contains_contact_message_only"""
 
         # Arrange
@@ -69,13 +77,17 @@ class TestContactMessageGetAll(TestCase):
         result = contact_message_api.get_all()
 
         # Assert
-        self.assertTrue(all(isinstance(item, ContactMessage) for item in result))
+        self.assertTrue(
+            all(isinstance(item, ContactMessage) for item in result)
+        )
 
 
 class TestsContactMessageDelete(TestCase):
     """Tests Contact Message Delete"""
 
-    @patch("core_website_app.components.contact_message.models.ContactMessage.delete")
+    @patch(
+        "core_website_app.components.contact_message.models.ContactMessage.delete"
+    )
     def test_message_delete_raise_api_error_if_message_does_not_exist(
         self, mock_message_delete
     ):
@@ -98,7 +110,9 @@ class TestsContactMessageUpsert(TestCase):
 
         self.mock_message = _create_contact_message()
 
-    @patch("core_website_app.components.contact_message.models.ContactMessage.save")
+    @patch(
+        "core_website_app.components.contact_message.models.ContactMessage.save"
+    )
     def test_message_upsert_return_message(self, mock_save):
         """test_message_upsert_return_message"""
 
@@ -111,7 +125,9 @@ class TestsContactMessageUpsert(TestCase):
         # Assert
         self.assertIsInstance(result, ContactMessage)
 
-    @patch("core_website_app.components.contact_message.models.ContactMessage.save")
+    @patch(
+        "core_website_app.components.contact_message.models.ContactMessage.save"
+    )
     def test_message_upsert_raise_api_error_if_save_failed(self, mock_save):
         """test_message_upsert_raise_api_error_if_save_failed"""
 

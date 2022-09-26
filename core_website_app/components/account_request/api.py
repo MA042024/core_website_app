@@ -77,7 +77,9 @@ def insert(user):
         )
 
         context = {"URI": SERVER_URI}
-        template_path = "core_website_app/admin/email/request_account_for_admin.html"
+        template_path = (
+            "core_website_app/admin/email/request_account_for_admin.html"
+        )
         send_mail_api.send_mail_to_administrators(
             subject="New Account Request",
             path_to_template=template_path,

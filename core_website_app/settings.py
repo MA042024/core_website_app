@@ -20,7 +20,9 @@ DISPLAY_PRIVACY_POLICY_FOOTER = getattr(
 )
 """ boolean: display the privacy policy link in the footer
 """
-DISPLAY_TERMS_OF_USE_FOOTER = getattr(settings, "DISPLAY_TERMS_OF_USE_FOOTER", False)
+DISPLAY_TERMS_OF_USE_FOOTER = getattr(
+    settings, "DISPLAY_TERMS_OF_USE_FOOTER", False
+)
 """ boolean: display the terms of use link in the footer
 """
 DISPLAY_CONTACT_FOOTER = getattr(settings, "DISPLAY_CONTACT_FOOTER", False)
@@ -44,7 +46,9 @@ SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_DENIED = getattr(
 )
 """ boolean: send an email when an account is denied
 """
-EMAIL_DENY_SUBJECT = getattr(settings, "EMAIL_DENY_SUBJECT", "Account request denied")
+EMAIL_DENY_SUBJECT = getattr(
+    settings, "EMAIL_DENY_SUBJECT", "Account request denied"
+)
 """ boolean: subject of deny email
 """
 SEND_EMAIL_WHEN_CONTACT_MESSAGE_IS_RECEIVED = getattr(

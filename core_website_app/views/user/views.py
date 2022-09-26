@@ -34,7 +34,10 @@ def request_new_account(request):
     """
     assets = {
         "js": [
-            {"path": "core_website_app/user/js/user_account_req.js", "is_raw": False}
+            {
+                "path": "core_website_app/user/js/user_account_req.js",
+                "is_raw": False,
+            }
         ],
         "css": ["core_website_app/user/css/list.css"],
     }
@@ -69,30 +72,43 @@ def request_new_account(request):
                 error_template = get_template(
                     "core_website_app/user/request_error.html"
                 )
-                error_box = error_template.render({"error_message": error_message})
+                error_box = error_template.render(
+                    {"error_message": error_message}
+                )
 
                 return render(
                     request,
                     "core_website_app/user/request_new_account.html",
                     assets=assets,
-                    context={"request_form": request_form, "action_result": error_box},
+                    context={
+                        "request_form": request_form,
+                        "action_result": error_box,
+                    },
                 )
             except ValidationError as exception:
-                error_message = "The following error(s) occurred during " "validation:"
+                error_message = (
+                    "The following error(s) occurred during " "validation:"
+                )
                 error_items = [str(error) for error in exception.messages]
 
                 error_template = get_template(
                     "core_website_app/user/request_error.html"
                 )
                 error_box = error_template.render(
-                    {"error_message": error_message, "error_items": error_items}
+                    {
+                        "error_message": error_message,
+                        "error_items": error_items,
+                    }
                 )
 
                 return render(
                     request,
                     "core_website_app/user/request_new_account.html",
                     assets=assets,
-                    context={"request_form": request_form, "action_result": error_box},
+                    context={
+                        "request_form": request_form,
+                        "action_result": error_box,
+                    },
                 )
     else:
         request_form = RequestAccountForm()
@@ -155,7 +171,9 @@ def help_page(request):
         help_page_object.content = parse(help_page_object.content)
 
     return render(
-        request, "core_website_app/user/help.html", context={"help": help_page_object}
+        request,
+        "core_website_app/user/help.html",
+        context={"help": help_page_object},
     )
 
 
@@ -176,7 +194,9 @@ def privacy_policy(request):
         policy.content = parse(policy.content)
 
     return render(
-        request, "core_website_app/user/privacy-policy.html", context={"policy": policy}
+        request,
+        "core_website_app/user/privacy-policy.html",
+        context={"policy": policy},
     )
 
 
@@ -194,7 +214,9 @@ def terms_of_use(request):
         terms.content = parse(terms.content)
 
     return render(
-        request, "core_website_app/user/terms-of-use.html", context={"terms": terms}
+        request,
+        "core_website_app/user/terms-of-use.html",
+        context={"terms": terms},
     )
 
 
@@ -209,7 +231,9 @@ def rules_of_behavior(request):
     # Call the API
     rules_of_behavior_object = rules_of_behavior_api.get()
     if rules_of_behavior_object is not None:
-        rules_of_behavior_object.content = parse(rules_of_behavior_object.content)
+        rules_of_behavior_object.content = parse(
+            rules_of_behavior_object.content
+        )
 
     return render(
         request,

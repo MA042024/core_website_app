@@ -44,7 +44,9 @@ def get(message_id):
         return ContactMessage.get_by_id(message_id)
     except Exception as exception:
         logger.error(str(exception))
-        raise exceptions.ApiError("No message could be found with the given id.")
+        raise exceptions.ApiError(
+            "No message could be found with the given id."
+        )
 
 
 def upsert(contact_message):
@@ -61,9 +63,7 @@ def upsert(contact_message):
         if contact_message.id is None:
             if SEND_EMAIL_WHEN_CONTACT_MESSAGE_IS_RECEIVED:
                 context = {"URI": SERVER_URI}
-                template_path = (
-                    "core_website_app/admin/email/contact_message_for_admin.html"
-                )
+                template_path = "core_website_app/admin/email/contact_message_for_admin.html"
 
                 send_mail_api.send_mail_to_administrators(
                     subject="New Contact Message",

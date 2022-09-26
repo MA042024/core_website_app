@@ -25,7 +25,10 @@ def user_requests(request):
 
     assets = {
         "js": [
-            {"path": "core_website_app/admin/js/user_requests.js", "is_raw": False},
+            {
+                "path": "core_website_app/admin/js/user_requests.js",
+                "is_raw": False,
+            },
         ],
     }
 

@@ -41,7 +41,9 @@ class TestAccountRequestListGetPermission(SimpleTestCase):
 
     @patch.object(AccountRequest, "get_all")
     @patch.object(AccountRequestSerializer, "data")
-    def test_is_staff_returns_http_200(self, account_serializer_data, account_get_all):
+    def test_is_staff_returns_http_200(
+        self, account_serializer_data, account_get_all
+    ):
         """test_is_staff_returns_http_200"""
 
         response = RequestMock.do_request_get(

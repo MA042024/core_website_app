@@ -17,7 +17,9 @@ class TestSendEmailContactMessage(TestCase):
 
         self.contact_message = _create_contact_message()
 
-    @patch("core_website_app.components.contact_message.models.ContactMessage.save")
+    @patch(
+        "core_website_app.components.contact_message.models.ContactMessage.save"
+    )
     def test_contact_message_send_mail(self, mock_save):
         """test_contact_message_send_mail"""
 
@@ -29,9 +31,13 @@ class TestSendEmailContactMessage(TestCase):
 
         # Assert
         self.assertEqual(len(mail.outbox), 1)
-        self.assertEqual(mail.outbox[0].subject, "[Django] New Contact Message")
+        self.assertEqual(
+            mail.outbox[0].subject, "[Django] New Contact Message"
+        )
 
-    @patch("core_website_app.components.contact_message.models.ContactMessage.save")
+    @patch(
+        "core_website_app.components.contact_message.models.ContactMessage.save"
+    )
     def test_contact_message_send_mail_admins(self, mock_save):
         """test_contact_message_send_mail_admins"""
 
@@ -43,7 +49,9 @@ class TestSendEmailContactMessage(TestCase):
 
         # Assert
         self.assertEqual(len(mail.outbox[0].to), 2)
-        self.assertEqual(mail.outbox[0].to, ["admin1@test.com", "admin2@test.com"])
+        self.assertEqual(
+            mail.outbox[0].to, ["admin1@test.com", "admin2@test.com"]
+        )
 
 
 def _create_contact_message(

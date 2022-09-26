@@ -9,7 +9,9 @@ from rest_framework import status
 from core_main_app.utils.tests_tools.MockUser import create_mock_user
 from core_main_app.utils.tests_tools.RequestMock import RequestMock
 from core_website_app.components.contact_message.models import ContactMessage
-from core_website_app.rest.contact_message.serializers import ContactMessageSerializer
+from core_website_app.rest.contact_message.serializers import (
+    ContactMessageSerializer,
+)
 import core_website_app.rest.contact_message.views as contact_message_views
 
 
@@ -38,7 +40,9 @@ class TestContactMessageListGetPermission(SimpleTestCase):
 
     @patch.object(ContactMessage, "get_all")
     @patch.object(ContactMessageSerializer, "data")
-    def test_is_staff_returns_http_200(self, account_serializer_data, account_get_all):
+    def test_is_staff_returns_http_200(
+        self, account_serializer_data, account_get_all
+    ):
         """test_is_staff_returns_http_200"""
 
         account_get_all.return_value = {}
@@ -61,7 +65,11 @@ class TestContactMessageListPostPermission(SimpleTestCase):
         self.mock_account_request = ContactMessage(
             name="mock", content="mock", email="mock@mock.com"
         )
-        self.mock_data = {"name": "name", "content": "message", "email": "email"}
+        self.mock_data = {
+            "name": "name",
+            "content": "message",
+            "email": "email",
+        }
 
     @patch.object(ContactMessageSerializer, "is_valid")
     @patch.object(ContactMessageSerializer, "save")
