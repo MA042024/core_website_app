@@ -2,7 +2,7 @@
 """
 from unittest.case import TestCase
 
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 
 from core_main_app.commons import exceptions
 from core_website_app.components.contact_message import api as contact_message_api

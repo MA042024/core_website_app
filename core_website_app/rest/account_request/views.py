@@ -82,7 +82,7 @@ class AccountRequestList(APIView):
             serializer = UserSerializer(data=request.data)
 
             # Validate request
-            serializer.is_valid(True)
+            serializer.is_valid(raise_exception=True)
 
             # Save request
             account_request = serializer.save()

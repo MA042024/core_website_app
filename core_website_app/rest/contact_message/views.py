@@ -76,7 +76,7 @@ class ContactMessageList(APIView):
             serializer = ContactMessageSerializer(data=request.data)
 
             # Validate message
-            serializer.is_valid(True)
+            serializer.is_valid(raise_exception=True)
 
             # Save message
             serializer.save()
