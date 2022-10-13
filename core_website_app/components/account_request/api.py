@@ -1,14 +1,13 @@
-""" The API contains the available function to access, create, edit and delete the account requests
+""" Account request API
 """
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.conf import settings
 import core_main_app.utils.notifications.mail as send_mail_api
 from core_main_app.commons.exceptions import ApiError
 from core_website_app.components.account_request.models import AccountRequest
 from core_website_app.settings import (
     SERVER_URI,
-    SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_ACCEPTED,
     EMAIL_DENY_SUBJECT,
 )
 
@@ -106,7 +105,7 @@ def accept(account_request):
         user.is_active = True
         user.save()
 
-        if SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_ACCEPTED:
+        if settings.SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_ACCEPTED:
             # FIXME send_mail should use a User object
             context = {
                 "lastname": account_request.last_name,
@@ -159,17 +158,23 @@ def deny(account_request, send_email=True, email_params=None):
                 "URI": SERVER_URI,
             }
 
-            inline_template = email_params.get("body", None)
+            inline_template = (
+                email_params.get("body") if email_params else None
+            )
 
             if inline_template:
                 send_mail_api.send_mail(
                     recipient_list=[account_request_email],
-                    subject=email_params.get("subject", EMAIL_DENY_SUBJECT),
+                    subject=email_params.get("subject")
+                    if email_params
+                    else EMAIL_DENY_SUBJECT,
                     body=inline_template,
                 )
             else:
                 send_mail_api.send_mail_from_template(
-                    subject=email_params.get("subject", EMAIL_DENY_SUBJECT),
+                    subject=email_params.get("subject")
+                    if email_params
+                    else EMAIL_DENY_SUBJECT,
                     recipient_list=[account_request_email],
                     path_to_template="core_website_app/admin/email/request_account_denied.html",
                     context=context,
@@ -230,6 +235,7 @@ def _create_and_save_user(username, password, first_name, last_name, email):
         last_name=last_name,
         email=email,
     )
-    # Have to be called separately because save from django object return nothing
+    # Have to be called separately because save from django
+    # object return nothing
     user.save()
     return user

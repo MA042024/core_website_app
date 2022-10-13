@@ -16,7 +16,9 @@ import core_website_app.components.account_request.api as account_request_api
 import core_website_app.components.contact_message.api as contact_message_api
 import core_website_app.components.help.api as help_api
 import core_website_app.components.privacy_policy.api as privacy_policy_api
-import core_website_app.components.rules_of_behavior.api as rules_of_behavior_api
+from core_website_app.components.rules_of_behavior import (
+    api as rules_of_behavior_api,
+)
 import core_website_app.components.terms_of_use.api as terms_of_use_api
 
 from core_website_app.components.contact_message.models import ContactMessage

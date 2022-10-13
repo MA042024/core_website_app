@@ -41,7 +41,8 @@ class UserSerializer(ModelSerializer):
         read_only_fields = ("id",)
 
     def create(self, validated_data):
-        """Create and return a new `AccountRequest` instance, given the validated data."""
+        """Create and return a new `AccountRequest` instance,
+        given the validated data."""
         user = User(
             username=validated_data["username"],
             first_name=validated_data["first_name"],

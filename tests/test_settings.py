@@ -12,6 +12,8 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sites",
     "django.contrib.sessions",
+    # Extra apps
+    "captcha",
     # Local app
     "tests",
     "core_main_app",
@@ -73,3 +75,15 @@ SEND_EMAIL_WHEN_CONTACT_MESSAGE_IS_RECEIVED = getattr(
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CELERYBEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+
+SEND_EMAIL_WHEN_CONTACT_MESSAGE_IS_RECEIVED = getattr(
+    settings, "SEND_EMAIL_WHEN_CONTACT_MESSAGE_IS_RECEIVED", True
+)
+
+SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_ACCEPTED = getattr(
+    settings, "SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_ACCEPTED", False
+)
+SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_DENIED = getattr(
+    settings, "SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_DENIED", False
+)
+ROOT_URLCONF = "core_website_app.urls"

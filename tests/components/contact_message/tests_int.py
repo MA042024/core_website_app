@@ -2,7 +2,7 @@
 """
 
 from django.core import mail
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from unittest.mock import patch
 
 import core_website_app.components.contact_message.api as contact_message_api
@@ -17,8 +17,10 @@ class TestSendEmailContactMessage(TestCase):
 
         self.contact_message = _create_contact_message()
 
+    @override_settings(SEND_EMAIL_WHEN_CONTACT_MESSAGE_IS_RECEIVED=True)
     @patch(
-        "core_website_app.components.contact_message.models.ContactMessage.save"
+        "core_website_app.components.contact_message.models"
+        ".ContactMessage.save"
     )
     def test_contact_message_send_mail(self, mock_save):
         """test_contact_message_send_mail"""
@@ -35,8 +37,10 @@ class TestSendEmailContactMessage(TestCase):
             mail.outbox[0].subject, "[Django] New Contact Message"
         )
 
+    @override_settings(SEND_EMAIL_WHEN_CONTACT_MESSAGE_IS_RECEIVED=True)
     @patch(
-        "core_website_app.components.contact_message.models.ContactMessage.save"
+        "core_website_app.components.contact_message.models"
+        ".ContactMessage.save"
     )
     def test_contact_message_send_mail_admins(self, mock_save):
         """test_contact_message_send_mail_admins"""
@@ -52,6 +56,20 @@ class TestSendEmailContactMessage(TestCase):
         self.assertEqual(
             mail.outbox[0].to, ["admin1@test.com", "admin2@test.com"]
         )
+
+    @override_settings(SEND_EMAIL_WHEN_CONTACT_MESSAGE_IS_RECEIVED=False)
+    @patch(
+        "core_website_app.components.contact_message.models"
+        ".ContactMessage.save"
+    )
+    def test_contact_message_send_mail_when_disabled(self, mock_save):
+        # Arrange
+        mock_save.return_value = self.contact_message
+
+        # Act
+        contact_message_api.upsert(self.contact_message)
+        # Assert
+        self.assertEqual(len(mail.outbox), 0)
 
 
 def _create_contact_message(

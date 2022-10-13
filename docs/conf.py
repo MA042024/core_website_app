@@ -161,8 +161,8 @@ html_theme_options = {"display_version": True}
 # html_logo = None
 
 # The name of an image file (relative to this directory) to use as a favicon of
-# the docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
-# pixels large.
+# the docs.  This file should be a Windows icon file (.ico) being 16x16 or
+# 32x32 pixels large.
 #
 # html_favicon = None
 
@@ -281,8 +281,8 @@ htmlhelp_basename = "core_website_appdoc"
 #      u'NIST', 'manual'),
 # ]
 #
-# # The name of an image file (relative to this directory) to place at the top of
-# # the title page.
+# # The name of an image file (relative to this directory)
+# # to place at the top of the title page.
 # #
 # # latex_logo = None
 #
@@ -304,8 +304,8 @@ htmlhelp_basename = "core_website_appdoc"
 # # latex_appendices = []
 #
 # # It false, will not define \strong, \code, 	itleref, \crossref ... but only
-# # \sphinxstrong, ..., \sphinxtitleref, ... To help avoid clash with user added
-# # packages.
+# # \sphinxstrong, ..., \sphinxtitleref, ... To help avoid clash with user
+# # added packages.
 # #
 # # latex_keep_old_macro_names = True
 #

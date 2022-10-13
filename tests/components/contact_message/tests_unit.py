@@ -20,7 +20,8 @@ class TestsContactMessageGet(TestCase):
         self.message_id = 1
 
     @patch(
-        "core_website_app.components.contact_message.models.ContactMessage.get_by_id"
+        "core_website_app.components.contact_message.models.ContactMessage"
+        ".get_by_id"
     )
     def test_contact_message_get_by_id_return_object(self, mock_get_by_id):
         """test_contact_message_get_by_id_return_object"""
@@ -36,7 +37,8 @@ class TestsContactMessageGet(TestCase):
         self.assertIsInstance(result, ContactMessage)
 
     @patch(
-        "core_website_app.components.contact_message.models.ContactMessage.get_by_id"
+        "core_website_app.components.contact_message.models"
+        ".ContactMessage.get_by_id"
     )
     def test_contact_message_get_raise_api_error_if_not_found(
         self, mock_get_by_id
@@ -55,7 +57,8 @@ class TestContactMessageGetAll(TestCase):
     """Test Contact Message Get All"""
 
     @patch(
-        "core_website_app.components.contact_message.models.ContactMessage.get_all"
+        "core_website_app.components.contact_message.models"
+        ".ContactMessage.get_all"
     )
     def test_contact_message_get_all_contains_contact_message_only(
         self, mock_get_all
@@ -86,7 +89,8 @@ class TestsContactMessageDelete(TestCase):
     """Tests Contact Message Delete"""
 
     @patch(
-        "core_website_app.components.contact_message.models.ContactMessage.delete"
+        "core_website_app.components.contact_message.models"
+        ".ContactMessage.delete"
     )
     def test_message_delete_raise_api_error_if_message_does_not_exist(
         self, mock_message_delete
@@ -111,7 +115,8 @@ class TestsContactMessageUpsert(TestCase):
         self.mock_message = _create_contact_message()
 
     @patch(
-        "core_website_app.components.contact_message.models.ContactMessage.save"
+        "core_website_app.components.contact_message.models"
+        ".ContactMessage.save"
     )
     def test_message_upsert_return_message(self, mock_save):
         """test_message_upsert_return_message"""
@@ -126,7 +131,8 @@ class TestsContactMessageUpsert(TestCase):
         self.assertIsInstance(result, ContactMessage)
 
     @patch(
-        "core_website_app.components.contact_message.models.ContactMessage.save"
+        "core_website_app.components.contact_message.models"
+        ".ContactMessage.save"
     )
     def test_message_upsert_raise_api_error_if_save_failed(self, mock_save):
         """test_message_upsert_raise_api_error_if_save_failed"""
@@ -137,6 +143,18 @@ class TestsContactMessageUpsert(TestCase):
         # Act # Assert
         with self.assertRaises(exceptions.ApiError):
             contact_message_api.upsert(self.mock_message)
+
+
+class TestsContactMessageGetCount(TestCase):
+    """Tests Contact Message Get Count"""
+
+    def test_contact_message_get_count_returns_count(self):
+        """test_contact_message_get_count_return_count"""
+
+        # Act
+        result = contact_message_api.get_count()
+        # Assert
+        self.assertEqual(result, 0)
 
 
 def _create_mock_contact_message(
