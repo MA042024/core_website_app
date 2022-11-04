@@ -2,9 +2,9 @@
 """
 from django.contrib.admin.views.decorators import staff_member_required
 
-from core_main_app.utils.rendering import admin_render as render
 import core_website_app.components.account_request.api as account_request_api
 import core_website_app.components.contact_message.api as contact_message_api
+from core_main_app.utils.rendering import admin_render
 from core_website_app.settings import (
     EMAIL_DENY_SUBJECT,
     SEND_EMAIL_WHEN_ACCOUNT_REQUEST_IS_DENIED,
@@ -36,7 +36,7 @@ def user_requests(request):
         "core_website_app/admin/account_requests/modals/deny_request.html",
     ]
 
-    return render(
+    return admin_render(
         request,
         "core_website_app/admin/user_requests.html",
         assets=assets,
@@ -73,7 +73,7 @@ def contact_messages(request):
         "core_website_app/admin/contact_messages/modals/delete_message.html",
     ]
 
-    return render(
+    return admin_render(
         request,
         "core_website_app/admin/contact_messages.html",
         assets=assets,

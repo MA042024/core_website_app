@@ -85,6 +85,7 @@ def request_new_account(request):
                     context={
                         "request_form": request_form,
                         "action_result": error_box,
+                        "page_title": "Account Request",
                     },
                 )
             except ValidationError as exception:
@@ -110,6 +111,7 @@ def request_new_account(request):
                     context={
                         "request_form": request_form,
                         "action_result": error_box,
+                        "page_title": "Account Request",
                     },
                 )
     else:
@@ -119,7 +121,10 @@ def request_new_account(request):
         request,
         "core_website_app/user/request_new_account.html",
         assets=assets,
-        context={"request_form": request_form},
+        context={
+            "request_form": request_form,
+            "page_title": "Account Request",
+        },
     )
 
 
@@ -155,7 +160,7 @@ def contact(request):
     return render(
         request,
         "core_website_app/user/contact.html",
-        context={"contact_form": contact_form},
+        context={"contact_form": contact_form, "page_title": "Contact"},
     )
 
 
@@ -175,7 +180,7 @@ def help_page(request):
     return render(
         request,
         "core_website_app/user/help.html",
-        context={"help": help_page_object},
+        context={"help": help_page_object, "page_title": "Help"},
     )
 
 
@@ -198,7 +203,7 @@ def privacy_policy(request):
     return render(
         request,
         "core_website_app/user/privacy-policy.html",
-        context={"policy": policy},
+        context={"policy": policy, "page_title": "Privacy Policy"},
     )
 
 
@@ -218,7 +223,7 @@ def terms_of_use(request):
     return render(
         request,
         "core_website_app/user/terms-of-use.html",
-        context={"terms": terms},
+        context={"terms": terms, "page_title": "Terms of Use"},
     )
 
 
@@ -240,5 +245,8 @@ def rules_of_behavior(request):
     return render(
         request,
         "core_website_app/user/rules_of_behavior.html",
-        context={"rules_of_behavior": rules_of_behavior_object},
+        context={
+            "rules_of_behavior": rules_of_behavior_object,
+            "page_title": "Rules of Behavior",
+        },
     )
