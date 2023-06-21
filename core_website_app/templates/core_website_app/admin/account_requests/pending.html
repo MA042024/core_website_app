@@ -1,5 +1,6 @@
 {% extends 'core_main_app/_render/admin/theme/tools/box.html' %}
 {% load timestamptags %}
+{% load tz %}
 
 {% block box_title %}Pending requests{% endblock %}
 
@@ -20,7 +21,7 @@
             <td class="first_name">{{ request.first_name }}</td>
             <td class="last_name">{{ request.last_name }}</td>
             <td class="email">{{ request.email }}</td>
-            <td>{{ request.date|print_datetime_utc_unaware }}</td>
+            <td>{{ request.date|localtime }}</td>
             <td>
                 <div class="btn btn-success accept_request">
                     <i class="fas fa-check"></i> Accept
