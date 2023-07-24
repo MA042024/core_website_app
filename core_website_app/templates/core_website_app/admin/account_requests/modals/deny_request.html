@@ -23,11 +23,11 @@
     {% endif %}
 {% endblock %}
 {% block modal_footer %}
-        <button type="button" class="btn btn-secondary pull-left" {% if BOOTSTRAP_VERSION == "4.6.2" %}data-dismiss{% elif BOOTSTRAP_VERSION == "5.1.3" %}data-bs-dismiss{% endif %}="modal">
+        <button type="button" class="btn btn-secondary pull-left" {% if BOOTSTRAP_VERSION|first == "4" %}data-dismiss{% elif BOOTSTRAP_VERSION|first == "5"  %}data-bs-dismiss{% endif %}="modal">
             <i class="fas fa-times"></i> Cancel
         </button>
         <div class="confirm-btn-group">
-            <button type="button" id="btn-deny-request" class="{% if BOOTSTRAP_VERSION == "4.6.2" %}ml-3{% elif BOOTSTRAP_VERSION == "5.1.3" %}ms-3{% endif %} btn btn-danger">
+            <button type="button" id="btn-deny-request" class="{% if BOOTSTRAP_VERSION|first == "4" %}ml-3{% elif BOOTSTRAP_VERSION|first == "5"  %}ms-3{% endif %} btn btn-danger">
                 <i class="fas fa-user-times"></i>
             {% if data.send_email_when_account_request_is_denied %}
                     Deny without email
