@@ -1,11 +1,10 @@
 """contact message API
 """
 import logging
-from django.conf import settings
+from core_website_app import settings
 import core_main_app.utils.notifications.mail as send_mail_api
 from core_main_app.commons import exceptions
 from core_website_app.components.contact_message.models import ContactMessage
-from core_website_app.settings import SERVER_URI
 
 
 logger = logging.getLogger("core_website_app.components.contact_message.api")
@@ -60,7 +59,7 @@ def upsert(contact_message):
         # Check if new contact message
         if contact_message.id is None:
             if settings.SEND_EMAIL_WHEN_CONTACT_MESSAGE_IS_RECEIVED:
-                context = {"URI": SERVER_URI}
+                context = {"URI": settings.SERVER_URI}
                 template_path = (
                     "core_website_app/admin/email"
                     "/contact_message_for_admin.html"

@@ -57,13 +57,17 @@ class TestSendEmailContactMessage(TestCase):
             mail.outbox[0].to, ["admin1@test.com", "admin2@test.com"]
         )
 
-    @override_settings(SEND_EMAIL_WHEN_CONTACT_MESSAGE_IS_RECEIVED=False)
+    @patch.object(contact_message_api, "settings")
     @patch(
         "core_website_app.components.contact_message.models"
         ".ContactMessage.save"
     )
-    def test_contact_message_send_mail_when_disabled(self, mock_save):
+    def test_contact_message_does_not_send_mail_when_email_disabled(
+        self, mock_save, mock_settings
+    ):
+        """test_contact_message_does_not_send_mail_when_email_disabled"""
         # Arrange
+        mock_settings.SEND_EMAIL_WHEN_CONTACT_MESSAGE_IS_RECEIVED = False
         mock_save.return_value = self.contact_message
 
         # Act
