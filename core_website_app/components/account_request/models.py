@@ -9,7 +9,7 @@ from core_main_app.commons import exceptions
 
 
 class AccountRequest(models.Model):
-    """Represents a request sent by an user to get an account"""
+    """Represents a request sent by a user to get an account"""
 
     username = models.CharField(
         blank=False, max_length=200

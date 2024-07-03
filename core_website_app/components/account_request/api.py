@@ -1,8 +1,9 @@
 """ Account request API
 """
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.conf import settings
+
 import core_main_app.utils.notifications.mail as send_mail_api
 from core_main_app.commons.exceptions import ApiError
 from core_website_app.components.account_request.models import AccountRequest
@@ -65,27 +66,38 @@ def insert(user):
         _get_user_by_username(user.username)
         raise ApiError("A user with the same username already exists.")
     except ObjectDoesNotExist:
-        user.save()
+        # no user with the same username, continue
+        pass
 
-        # Create the account request and save it
-        account_request = AccountRequest(
-            username=user.username,
-            first_name=user.first_name,
-            last_name=user.last_name,
-            email=user.email,
-        )
+    try:
+        # check if a user with the same email exists
+        _get_user_by_email(user.email)
+        raise ApiError("A user with the same email already exists.")
+    except ObjectDoesNotExist:
+        # no user with the same email, continue
+        pass
 
-        context = {"URI": SERVER_URI}
-        template_path = (
-            "core_website_app/admin/email/request_account_for_admin.html"
-        )
-        send_mail_api.send_mail_to_administrators(
-            subject="New Account Request",
-            path_to_template=template_path,
-            context=context,
-        )
-        account_request.save()
-        return account_request
+    user.save()
+
+    # Create the account request and save it
+    account_request = AccountRequest(
+        username=user.username,
+        first_name=user.first_name,
+        last_name=user.last_name,
+        email=user.email,
+    )
+
+    context = {"URI": SERVER_URI}
+    template_path = (
+        "core_website_app/admin/email/request_account_for_admin.html"
+    )
+    send_mail_api.send_mail_to_administrators(
+        subject="New Account Request",
+        path_to_template=template_path,
+        context=context,
+    )
+    account_request.save()
+    return account_request
 
 
 def accept(account_request):
@@ -199,6 +211,20 @@ def _get_user_by_username(username):
     return User.objects.get(username=username)
 
 
+def _get_user_by_email(email):
+    """Returns a user given its email
+
+    Args:
+
+        email: Given email
+
+    Returns:
+
+        User
+    """
+    return User.objects.get(email=email)
+
+
 def _get_user_by_id(user_id):
     """Returns a user given its primary key
 
@@ -218,7 +244,7 @@ def _create_and_save_user(username, password, first_name, last_name, email):
 
     Args:
 
-        username: Given user name
+        username: Given username
         password: Given password
         first_name: Given first name
         last_name: Given last name

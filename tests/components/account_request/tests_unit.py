@@ -1,11 +1,10 @@
 """ Tests of the account request API
 """
 from unittest.case import TestCase
+from unittest.mock import Mock, patch
 
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from unittest.mock import Mock, patch
-
 
 from core_main_app.commons.exceptions import ApiError
 from core_website_app.components.account_request import (
@@ -238,8 +237,11 @@ class TestsAccountRequestInsert(TestCase):
         "core_website_app.components.account_request.api"
         "._get_user_by_username"
     )
-    def test_account_request_insert_return_request(
-        self, mock_get_user_by_username, mock_save
+    @patch(
+        "core_website_app.components.account_request.api" "._get_user_by_email"
+    )
+    def test_account_request_raises_error_if_email_already_exists(
+        self, mock_get_user_by_email, mock_get_user_by_username, mock_save
     ):
         """test_account_request_insert_return_request"""
 
@@ -247,6 +249,34 @@ class TestsAccountRequestInsert(TestCase):
         mock_user = Mock(spec=User)
         mock_user.username = "username"
         mock_get_user_by_username.side_effect = ObjectDoesNotExist()
+        mock_get_user_by_email.return_value = mock_user
+        mock_save.return_value = self.mock_account_request
+
+        # Act # Assert
+        with self.assertRaises(ApiError):
+            account_request_api.insert(mock_user)
+
+    @patch(
+        "core_website_app.components.account_request.models"
+        ".AccountRequest.save"
+    )
+    @patch(
+        "core_website_app.components.account_request.api"
+        "._get_user_by_username"
+    )
+    @patch(
+        "core_website_app.components.account_request.api" "._get_user_by_email"
+    )
+    def test_account_request_insert_return_request(
+        self, mock_get_user_by_email, mock_get_user_by_username, mock_save
+    ):
+        """test_account_request_insert_return_request"""
+
+        # Arrange
+        mock_user = Mock(spec=User)
+        mock_user.username = "username"
+        mock_get_user_by_username.side_effect = ObjectDoesNotExist()
+        mock_get_user_by_email.side_effect = ObjectDoesNotExist()
         mock_save.return_value = self.mock_account_request
 
         # Act

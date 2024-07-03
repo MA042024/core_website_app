@@ -4,6 +4,11 @@ from captcha.fields import CaptchaField
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
+
+from core_website_app.components.account_request import (
+    api as account_request_api,
+)
 
 
 class RequestAccountForm(UserCreationForm):
@@ -35,6 +40,20 @@ class RequestAccountForm(UserCreationForm):
             "password1",
             "password2",
         )
+
+    def clean_email(self):
+        """Check email field
+
+        Returns:
+
+        """
+        try:
+            # Check if user with same email already exists
+            account_request_api._get_user_by_email(self.cleaned_data["email"])
+            # Raise validation error if found
+            raise ValidationError("A user with that email already exists.")
+        except ObjectDoesNotExist:
+            pass
 
 
 class ContactForm(forms.Form):
