@@ -47,13 +47,14 @@ class RequestAccountForm(UserCreationForm):
         Returns:
 
         """
+        email = self.cleaned_data["email"]
         try:
             # Check if user with same email already exists
-            account_request_api._get_user_by_email(self.cleaned_data["email"])
+            account_request_api._get_user_by_email(email)
             # Raise validation error if found
             raise ValidationError("A user with that email already exists.")
         except ObjectDoesNotExist:
-            pass
+            return email
 
 
 class ContactForm(forms.Form):

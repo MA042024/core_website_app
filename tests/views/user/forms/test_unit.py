@@ -35,19 +35,23 @@ class TestRequestAccountForm(TestCase):
     @patch(
         "core_website_app.components.account_request.api" "._get_user_by_email"
     )
-    def test_request_account_form_clean_email_ok_if_email_does_not_exist(
+    def test_request_account_form_clean_email_returns_email_if_email_does_not_exist(
         self, mock_get_user_by_email
     ):
-        """test_request_account_form_clean_email_ok_if_email_does_not_exist
+        """test_request_account_form_clean_email_returns_email_if_email_does_not_exist
 
         Returns:
 
         """
         # Arrange
         mock_get_user_by_email.side_effect = ObjectDoesNotExist()
+        input_email = "email"
 
         form = RequestAccountForm()
-        form.cleaned_data = {"email": "email"}
+        form.cleaned_data = {"email": input_email}
 
-        # Act + Assert
-        self.assertIsNone(form.clean_email())
+        # Act
+        output_email = form.clean_email()
+
+        # Assert
+        self.assertEqual(input_email, output_email)
